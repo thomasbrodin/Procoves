@@ -1,1 +1,1 @@
-Procoves Industrie Wordpress Site Repositery
+Procoves Industrie Wordpress Site Repository
