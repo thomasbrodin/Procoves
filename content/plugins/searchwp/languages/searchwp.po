@@ -1,0 +1,352 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SearchWP\n"
+"POT-Creation-Date: 2013-07-26 08:06-0500\n"
+"PO-Revision-Date: 2013-07-26 08:06-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: /Users/jchristopher/dev/searchwp.com/wp-content/"
+"plugins/searchwp\n"
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:36
+msgid ""
+"SearchWP requires WordPress 3.5 or higher. Please upgrade before activating "
+"this plugin."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:432
+msgid "Search Statistics"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:432
+msgid "Search Stats"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:522
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:661
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:702
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:743
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:784
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:832
+msgid "Searches"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:589
+msgid "Searches Performed in the Past 30 Days"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:636
+msgid "Popular Searches"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:639
+msgid "Today"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:660
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:701
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:742
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:783
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:831
+msgid "Query"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:674
+msgid "There have been no searches today."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:680
+msgid "Week"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:715
+msgid "There have been no searches within the past 7 days."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:721
+msgid "Month"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:756
+msgid "There have been no searches within the past 30 days."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:762
+msgid "Year"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:797
+msgid "There have been no searches within the past year."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:806
+msgid "Failed Searches"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:809
+msgid "Past 30 Days"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:845
+msgid "There have been no failed searches within the past 30 days."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:969
+msgid "License"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:972
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1042
+msgid "Index purged. Reindex initiated."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:974
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:982
+msgid "License Key"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:975
+msgid "Your license key was included in your purchase receipt."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:986
+msgid "Enter your license key"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:992
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1001
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1112
+msgid "Activate License"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:996
+msgid "Active"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:998
+msgid "Deactivate License"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1039
+msgid "Advanced Settings"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1044
+msgid "Purge index"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1045
+msgid ""
+"If you would like to <strong>completely wipe out the index and start fresh</"
+"strong>, you can do so."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1046
+msgid "Purge Index"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1050
+msgid "Are you SURE you want to delete the entire SearchWP index?"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1051
+msgid "Are you completely sure? THIS CAN NOT BE UNDONE!"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1110
+msgid "Settings"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1114
+msgid "Manage License"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1127
+msgid "Indexing is"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1127
+msgid "almost"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1127
+msgid "complete"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1127
+msgid ""
+"This process is running in the background. You can leave this page and the "
+"index will continue to be built until completion."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1138
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:207
+msgid "Any"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1151
+msgid "Default Search Engine"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1155
+msgid ""
+"These settings will override WordPress default searches. You can customize "
+"which post types are included in search results, attributing specific "
+"weights to various content types within each post type."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1155
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1169
+msgid ""
+"Only checked post types will be included in search results. If a post type "
+"isn't displayed, ensure <code>exclude_from_search</code> is set to false "
+"when registering it."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1165
+msgid "Supplemental Search Engines"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1169
+msgid ""
+"Here you can build supplemental search engines to use in specific sections "
+"of your site. When used, the default search engine settings are completely "
+"ignored."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1187
+msgid "Add New Supplemental Engine"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1196
+msgid "Advanced"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/searchwp.php:1541
+msgid ""
+"SearchWP has been activated and the index is now being built. <a href="
+"\"options-general.php?page=searchwp\">View progress and settings</a>"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/includes/class.indexer.php:152
+msgid "Error: index timed out and has been restarted"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/includes/class.indexer.php:152
+msgid "The indexer timed out. The process has been restarted automatically."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:106
+msgid "Media"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:123
+msgid ""
+"These values add weight to results.<br /><br />A weight of 1 is neutral<br /"
+">Between 0 &amp; 1 lowers result weight<br />Over 1 increases result "
+"weight<br />Zero omits the result"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:130
+msgid "Title"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:136
+msgid "Content"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:136
+msgid "Description"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:142
+msgid "Slug"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:160
+msgid "Excerpt"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:160
+msgid "Caption"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:166
+msgid "Comments"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:193
+msgid "PDF Content (when applicable)"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:221
+msgid "Add Custom Field"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:222
+msgid ""
+"<strong>Advanced Use Only</strong><br />Include Custom Field data in search "
+"results. Meta values do not need to be plain strings, available keywords are "
+"extracted and indexed.<br /><br />You can customize the listed meta keys "
+"with the <code>swp_custom_fields</code> filter."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:235
+msgid "Exclude: "
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:238
+msgid "Comma separated IDs"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:238
+msgid ""
+"Comma separated post IDs. Will be excluded entirely, even if attributed to."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:270
+msgid "Attribute search results to "
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:274
+msgid ""
+"<strong>Expects single post ID</strong><br/>If permalinks for this post type "
+"should not be included in search results, you can have it's search weight "
+"count toward another post ID."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:279
+msgid "Attribute post parent"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:283
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:293
+msgid "Enabled"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:284
+msgid ""
+"When enabled, search weights will be applied to the post parent, not the "
+"post GUID"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:289
+msgid "Use keyword stem"
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.engine.config.php:294
+msgid ""
+"<em>May increase search latency</em><br />For example: when enabled, "
+"searches for <strong>run</strong> and <strong>running</strong> will generate "
+"the same results. When disabled, results may be different."
+msgstr ""
+
+#: /Users/jchristopher/dev/searchwp.com/wp-content/plugins/searchwp/templates/tmpl.supplemental.config.php:42
+msgid "Remove"
+msgstr ""

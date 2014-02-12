@@ -1,0 +1,9 @@
+/*  Theme Name: TB Theme
+	Description: Custom Theme for Thomas Brodin
+	Author: HEX creative
+*/
+
+@import url("css/bootstrap.min.css");
+#wpadminbar {
+	display: none
+}
