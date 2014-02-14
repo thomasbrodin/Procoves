@@ -9,11 +9,16 @@
 	add_action('wp_enqueue_scripts', 'load_scripts');
 	add_action('wp_enqueue_scripts', 'load_styles');
 
+	add_action('init', 'removeHeadLinks');
+    remove_action('wp_head', 'wp_generator');
 
 	define('THEME_URL', get_template_directory_uri());
+
+	$proc = get_option('proc');
+
 	function add_to_context($data){
 		/* this is where you can add your own data to Timber's context object */
-		$data['qux'] = 'I am a value set in your functions.php file';
+		$data['qfd'] = 'value set in function';
 		$data['menu'] = new TimberMenu();
 		return $data;
 	}
@@ -31,8 +36,11 @@
 	}
 
 	function load_scripts(){
+		wp_deregister_script('jquery');
+		wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js', array(),'1.1', true); 
 		wp_enqueue_script('jquery');
-		wp_enqueue_script( 'bootstrap-js', THEME_URL . '/js/bootstrap.min.js', array('jquery'), true);
+		wp_enqueue_script( 'bootstrap-js', THEME_URL . '/js/bootstrap.min.js', array('jquery'), '3.1.0',true);
+		wp_enqueue_script( 'site', THEME_URL . '/js/site.js', array('jquery'), '1.0', true);
 	}
 
 	function load_styles() {
@@ -40,3 +48,8 @@
 		wp_enqueue_style( 'custom', THEME_URL . '/style.css'); 
 	}
 
+	function removeHeadLinks() {
+    	remove_action('wp_head', 'rsd_link');
+    	remove_action('wp_head', 'wlwmanifest_link');
+    }
+   

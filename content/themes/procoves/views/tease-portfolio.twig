@@ -1,7 +1,0 @@
-{% extends "tease.twig" %}
-{% block content %}
-	<h2 class="h2"><a href="{{post.link}}">{{post.title}}</a></h2>
-		{% if post.thumbnail.src %}
-			<img src="{{post.portfolio_image.src|resize (300,300)}}" />
-		{% endif %}
-{% endblock %}
