@@ -1,8 +1,21 @@
 {% extends "base.twig" %}
 
 {% block content %}
-	{% for post in posts %}
-		{% include ['tease.twig'] %}
-	{% endfor %}
+	<div class="row">
+		
+		{% include ['sidebar.twig'] %}
 
+		<div class="col-md-9 page-content pull-right" role="main">
+			{% for post in posts %}
+				<article class="actu" id="actu-{{post.ID}}">
+					<h2>{{post.title}}</h2>
+					<p>{{post.content}}</p>
+
+					{% if post.get_thumbnail %}
+						<img src="{{post.thumbnail.src}}" />
+					{% endif %}
+				</article>
+			{% endfor %}
+		</div>
+    </div>             
 {% endblock %}

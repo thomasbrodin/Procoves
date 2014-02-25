@@ -2,12 +2,15 @@
 
 {% block content %}
 	<div class="row">
-		<div id="navside" class="col-md-3">
-	 		ACTU BAR
-		</div>
+		
+		{% include ['sidebar.twig'] %}
+
 		<div class="col-md-9 page-content pull-right" role="main">
 			{% for post in posts %}
-				{% include ['tease.twig'] %}
+				<article class="actu" id="actu-{{post.ID}}">
+					<h2>{{ post.title }}</h2>
+					<p>{{post.content}}</p>
+				</article>
 			{% endfor %}
 		</div>
     </div>             

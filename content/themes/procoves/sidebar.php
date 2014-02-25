@@ -1,10 +1,12 @@
 <?php
 /**
- * The Template for displaying all single posts
+ * The Template for displaying all the dynamic sidebar
  *
  *
  * @package  WordPress
  * @subpackage  Timber
  */
 
-Timber::render(array('sidebar.twig'), $data);
+$context = array();
+$context['sidebar'] = Timber::get_widgets('actu-sidebar');
+Timber::render(array('sidebar.twig'), $context);

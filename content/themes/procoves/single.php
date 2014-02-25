@@ -16,10 +16,5 @@ if (isset($post->img_prod) && strlen($post->img_prod)){
 }
 $context['post'] = $post;
 $context['wp_title'] .= ' - ' . $post->title();
-
-// $context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
-// $context['normes'] = Timber::get_terms('normes');
-// $context['activite'] = Timber::get_terms('activite');
-// $context['matieres'] = Timber::get_terms('matieres');
-
+$context['sidebar'] = Timber::get_sidebar('sidebar.php');
 Timber::render(array('single-' . $post->ID . '.twig', 'single-' . $post->post_type . '.twig', 'single.twig'), $context);
