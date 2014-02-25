@@ -5,7 +5,12 @@
 	 	<div id="navside" class="col-md-3">
 	 		<ul class="navlist">
 				 {% for subpage in subpages %}
-				<li><a href="#{{subpage.post_name}}" data-scroll="{{subpage.post_name}}">{{subpage.post_title}}</a></li>
+					<li>
+						<span class="redline"></span>
+						<a href="#{{subpage.post_name}}" data-scroll="{{subpage.post_name}}">{{subpage.post_title}}
+						<i class="angle-right"></i>
+						</a>
+					</li>
 				{% endfor %}
 			</ul>
 		</div>
@@ -17,7 +22,7 @@
 			</section>
 			{% for subpage in subpages %}
 				<section id="{{subpage.post_name}}" data-anchor="{{subpage.post_name}}">
-					
+					<h2>{{subpage.post_title}}</h2>
 					{{subpage.post_content}}
 				
 				</section>
