@@ -15,6 +15,8 @@
 	add_action('wp_enqueue_scripts', 'load_scripts');
 	add_action('wp_enqueue_scripts', 'load_styles');
 
+	add_action( 'widgets_init', 'hex_widgets_init' );
+
 	add_action('init', 'removeHeadLinks');
     remove_action('wp_head', 'wp_generator');
 
@@ -46,10 +48,17 @@
 		return $twig;
 	}
 
-	function myfoo($text){
-    	$text .= ' bar!';
-    	return $text;
+	function hex_widgets_init() {
+		register_sidebar( array(
+			'name' => 'Actualites',
+			'id' => 'actu-sidebar',
+			'before_widget' => '<div>',
+			'after_widget' => '</div>',
+			'before_title' => '<h2><span class="redline"></span>',
+			'after_title' => '</h2>',
+			) );
 	}
+
 
 	function load_scripts(){
 		wp_deregister_script('jquery');
