@@ -1,0 +1,51 @@
+{% extends "base.twig" %}
+
+{% block content %}
+		
+	<section class="produit-content">
+		<div class="row">
+			<div class="produit-image col-md-6">
+				<img src="{{post.img_prod.src}}">
+			</div>
+
+			<div class="produit-desc col-md-6">
+				<h2 class="produit">{{post.title}}</h2>
+				<span class="pro pull-right"><img src="{{logo_pro_noir}}"></span>
+				<p class="ref">REF : {{ post.ref }}</p>
+
+				<ul class="gammes-list">
+				    {% for gamme in post.terms('gammes', true) %}
+				        <li><a href="{{gamme.link}}">{{gamme.name}}</a>
+				        	
+						</li>
+				    {% endfor %}
+				</ul>
+
+				<ul class="normes-list">
+				    {% for norme in post.terms('normes') %}
+				        <li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+				    {% endfor %}
+				</ul>
+				
+				<h4>Utilisations preconisées</h4>
+				<p class="use_prod">{{ post.use_prod }}</p>
+				<h4>Description techniques</h4>
+				<p class="desc_tech">{{ post.desc_tech }}</p>
+				
+				<ul class="matieres-list">
+				    {% for matiere in post.terms('matieres') %}
+				        <li><a href="{{matiere.link}}">{{matiere.name}}</a>
+				        </li>
+				        {% if matiere.tax_img %}
+							<span class="pull-right"><img src="{{TimberImage(matiere.tax_img)}}"></span>{% endif %}
+				    {% endfor %}
+
+				</ul>
+
+			</div>
+
+		</div><!-- /.row -->
+	</section>
+
+		
+{% endblock %}

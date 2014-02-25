@@ -3,33 +3,24 @@
 {% endblock %}
 </head>
     <body class="{{body_class}}" data-source="base.twig">
-        <div id="wrap">
 
             {% include 'header.twig' %}
+            {% include 'breadcrumbs.twig' %}
 
-            <section id="content" role="main" class="content-wrapper">
+            <section id="content" class="content-wrapper">
+
                 <div class="container {{sidebar_class}}">
-                    {% if title %}<h1>{{title}}</h1>{% endif %}
+                   
                     {% block content %}
                         Sorry, no content
                     {% endblock %}
                  
-                    {% if sidebar %}
-                        <aside class="sidebar">
-                            {{sidebar}}
-                        </aside>
-                    {% endif %}
                 </div>
             </section>
 
-        </div>
+        </div><!-- /.row -->
 
-        <footer id="footer">
-            <div class="container">
-                {% include 'footer.twig' %}
-            </div>
-        </footer>
-
+        {% include 'footer.twig' %}
         {{ function('wp_footer') }}
 
     </body>

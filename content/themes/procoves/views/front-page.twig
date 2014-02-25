@@ -1,5 +1,65 @@
-{% extends "base.twig" %}
-
-{% block content %}
-	<h2>{{slogan}}</h2>
+{% include 'html-header.twig' %}
+{% block head %}
 {% endblock %}
+</head>
+    <body class="{{body_class}}" data-source="base.twig">
+
+        {% include 'header.twig' %}
+		
+		<section id="home" role="main" class="content-wrapper">
+		    
+		    <!-- Slider-->
+		    <div id="SliderContainer">
+	            <div class="slider">
+	                <ul class="slides">                                    
+		                {% for image in images %}
+	    					<li>
+				          		<img src="{{TimberImage(image.url).src}}">
+				            	<div class="captionwrap">
+				            		<div class="container">
+				            			<p class="pull-right">{{image.caption}}</p>
+				            		</div>
+				            	<div>
+		  	    			</li>
+						{% endfor %}
+	            
+					</ul>
+				</div>
+				<div id="controlswrap">
+					<div class="container">
+					</div>
+				</div>
+           		</div><!--/ #controls -->
+			</div>
+
+		    <!-- Marketing messaging  -->
+			<div class="jumbotron">
+				<div class="container">
+					<h2>{{slogan|print_r}}</h2>
+					<span class="pull-right"><img src="{{logo_pro_blanc}}"></span>
+				</div>
+			</div>
+
+		    <div class="container marketing">
+				<div class="row">
+					<div class="col-md-4">
+						<h2>{{concep.post_title}}</h2>
+						<p>{{concep.get_content}}</p>		 
+					</div><!-- /.col-lg-4 -->
+					<div class="col-md-4">
+						<h2>{{fab.post_title}}</h2>
+						<p>{{fab.get_content}}</p>	 
+					</div><!-- /.col-lg-4 -->
+					<div class="col-md-4">
+						<h2>{{preco.post_title}}</h2>
+						<p>{{preco.get_content}}</p>
+					</div><!-- /.col-lg-4 -->
+				</div><!-- /.row -->
+			<div>
+		</section>
+
+        {% include 'footer.twig' %}
+        {{ function('wp_footer') }}
+      
+  </body>
+</html>

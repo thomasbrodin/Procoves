@@ -1,0 +1,91 @@
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+
+@media (min-width: 768px) {
+
+  header {
+    padding-top: 10px;
+    padding-bottom: 12px
+  }
+  section#home {
+    padding-top: 110px;
+  }
+  section#content {
+    padding-top: 250px;
+  }
+  header .navbar {
+    padding-right: 0;
+    padding-left:  0;
+  }
+  header .container {
+    padding-right: 15px;
+    padding-left:  15px;
+  }
+  header .navbar {
+    border-radius: 4px;
+  }
+  .breadcrumbs {
+    padding-top: 110px
+  }
+  .container>.navbar-collapse {
+    margin-left: 64px;
+    position: absolute;
+    margin-top: 54px;
+  }
+  .navbar-nav>li:first-child{
+    margin-left:-15px;
+  }
+  /* Nav Indicator */
+   #access .indicator {
+    margin-left:64px;
+  }
+  #access .indicator div {
+    background-color:rgb(240,70,70);;
+    top: 85px;
+    height: 8px;
+    position: absolute;
+    -webkit-transition-property: margin-left,width;
+    -moz-transition-property: margin-left,width;
+    -o-transition-property: margin-left,width;
+    transition-property: margin-left,width;
+    -webkit-transition-duration: 0.35s;
+    -moz-transition-duration: 0.35s;
+    -o-transition-duration: 0.35s;
+    transition-duration: 0.35s;
+    -webkit-transition-timing-function: cubic-bezier(0, 0.71, 0.51, 0.97);
+    -moz-transition-timing-function: cubic-bezier(0, 0.71, 0.51, 0.97);
+    -o-transition-timing-function: cubic-bezier(0, 0.71, 0.51, 0.97);
+    transition-timing-function: cubic-bezier(0, 0.71, 0.51, 0.97);
+    visibility: hidden;
+  }
+
+  #access .indicator.on div {
+    visibility: visible;
+  }
+  #access .indicator div.left10 {
+    width: 96px;
+    margin-left: 16px;
+  }
+  #access .indicator div.left44 {
+    width: 67px;
+    margin-left: 141px;
+  }
+
+  .marketing {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .carousel-caption p {
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: 1.4;
+  }
+  #navside.affix {
+  position: fixed;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  .flex-direction-nav .flex-prev { opacity: 1; left: 10px;}
+  .flex-direction-nav .flex-next { opacity: 1; right: 10px;}
+}

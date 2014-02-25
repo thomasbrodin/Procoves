@@ -1,0 +1,21 @@
+{% block content %}
+	<div class="row">
+		{% for produit in produits %}
+	      <div class="col-md-4">
+	      	<div class="produit-thumb">
+		      	<a href="{{produit.link}}">	
+			      	<img src="{{TimberImage(produit.img_prod)}}">
+			    </a>
+		      	<div class="produit-info">
+		      		<h4><a href="{{produit.link}}">{{produit.title}}</a></h4>
+		      		<ul class="gammes">
+				    {% for gamme in produit.terms('gammes', false) %}
+				        	 <li><a href="{{gamme.link}}">{{gamme.name}}</a></li>	  
+				    {% endfor %}
+					</ul>
+		      	</div>
+		    </div>
+	      </div>
+      {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.twig" %}
+
+{% block content %}
+	<div class="row">
+		<div id="navside" class="col-md-3">
+	 		SEARCH BAR
+		</div>
+		<div class="col-md-9 produits pull-right" role="main">
+			
+			<!-- Gammes Slider-->
+		    <div id="Slidergammes">
+	            <div class="slider">
+	                <ul class="slides">  
+	                	{% for produit in produits %}
+			                {% for image in produit.terms('gammes') %}
+			                	{% if image.tax_img %}
+				                 	<li><img src="{{image.tax_img}}">
+									<p class="caption">{{image.name}}</p>
+			                 		</li>  
+			                 	{% endif %}
+						    {% endfor %}
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			
+			{% include ['produits-loop.twig'] %}
+		</div>
+    </div>             
+{% endblock %}
