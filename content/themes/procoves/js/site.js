@@ -3,7 +3,7 @@ $(window).load(function() {
 	$('.slider').flexslider({
 		slideshow: false, 
 		animation: "slide", 
-		animationLoop: true, 
+		animationLoop: false, 
 		controlNav: false,
 		controlsContainer: "#controlswrap .container",
 		keyboard: true,
@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
 
 		$('.navlist li a').on('click', function() {
 		var scrollAnchor = $(this).attr('data-scroll'),
-			scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 280;
+			scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 300;
 		$('body,html').animate({
 			scrollTop: scrollPoint
 		}, 500);   
