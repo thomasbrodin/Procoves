@@ -82,6 +82,7 @@
   }
   #navside.affix {
   position: fixed;
+  width: 294px;
   }
 }
 
