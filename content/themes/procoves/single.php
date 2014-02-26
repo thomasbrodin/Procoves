@@ -17,4 +17,6 @@ if (isset($post->img_prod) && strlen($post->img_prod)){
 $context['post'] = $post;
 $context['wp_title'] .= ' - ' . $post->title();
 $context['sidebar'] = Timber::get_sidebar('sidebar.php');
+$context['fiche'] = get_field('fiche_tech');
+
 Timber::render(array('single-' . $post->ID . '.twig', 'single-' . $post->post_type . '.twig', 'single.twig'), $context);

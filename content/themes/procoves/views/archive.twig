@@ -3,7 +3,9 @@
 {% block content %}
 	<div class="row">
 		
-		{% include ['sidebar.twig'] %}
+		<div id="navside" class="col-md-3">
+			{% include ['sidebar.twig'] %}
+		</div>
 
 		<div class="col-md-9 page-content pull-right" role="main">
 			{% for post in posts %}
