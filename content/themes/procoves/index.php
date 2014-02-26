@@ -22,6 +22,7 @@
 	$context['sidebar'] = Timber::get_sidebar('sidebar.php');
 	$templates = array('index.twig');
 	if (is_home()){
+		$context['title'] = 'Actualites';
 		array_unshift($templates, 'home.twig');
 	}
 
