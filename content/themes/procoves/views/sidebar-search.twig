@@ -8,10 +8,33 @@
 		<input type="text" class="form-control sidebar" placeholder="Matieres">
 		<input type="text" class="form-control sidebar" placeholder="Secteur d'activite">
 	</div>
-<div class="normeside">
-	
+<div class="searchside">
+	<h2><span class="redline"></span>
+	NIVEAU DE PERFORMANCE</h2>
+	<ul class="normes-list">
+	{% for norme in normes %}
+	    <li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+	{% endfor %}
+</ul>
 </div>
-<div class="gammeside">
-	
+<div class="searchside">
+	<h2><span class="redline"></span>
+	GAMMES</h2>
+	<ul class="gammes-list">
+	{% for gamme in gammes %}
+	    <li><a href="{{gamme.link}}">{{gamme.name}}</a>
+	    	{% if gamme.children %}
+					<i data-toggle="collapse" data-target="#subgammes" class="angle-down"></i>
+				    <ul id="subgammes" class="collapse gamme-list-children">
+				        {% for child in gamme.children %}
+				            <li><a href="{{child.link}}">{{child.name}}</a></li>
+				        {% endfor %}
+				    </ul>
+				</li>
+			{% else %}
+			</li>
+	    	{% endif %}
+	{% endfor %}
+</ul>
 </div>
 
