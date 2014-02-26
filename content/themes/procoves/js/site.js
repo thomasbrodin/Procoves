@@ -20,11 +20,6 @@ jQuery(document).ready(function($) {
 		}, 500);   
 		return false;
 		});
-		$('#navside').affix({
-			offset: {
-				top: 0,
-			}
-		});
 		var nav_index;
 		$("#access li.nav-main-item").hover(function(){
 			$("#access .indicator").addClass("on");
@@ -37,5 +32,10 @@ jQuery(document).ready(function($) {
 			$("#access li.nav-main-item").click(function(){
 			nav_index = $("#access-js-slider").attr("class");
 		});
-          
+		$('#navside').affix({
+			offset: {
+				top: 0,
+			}
+		});
+		$("[data-toggle=tooltip").tooltip();
 });
