@@ -4,43 +4,63 @@
 		
 	<section class="produit-content">
 		<div class="row">
+
 			<div class="produit-image col-md-6">
 				<img src="{{post.img_prod.src}}">
 			</div>
 
 			<div class="produit-desc col-md-6">
-				<h2 class="produit">{{post.title}}</h2>
-				<span class="pro pull-right"><img src="{{logo_pro_noir}}"></span>
-				<p class="ref">REF : {{ post.ref }}</p>
 
-				<ul class="gammes-list">
-				    {% for gamme in post.terms('gammes', true) %}
-				        <li><a href="{{gamme.link}}">{{gamme.name}}</a>
-				        	
-						</li>
-				    {% endfor %}
-				</ul>
+				<div class="prod-desc-heading">
+					<h2 class="produit-title">{{post.title}}</h2>
+					<span><img src="{{logo_pro_noir}}"></span>
+					<p>REF : {{ post.ref }}</p>
+				</div>
 
-				<ul class="normes-list">
-				    {% for norme in post.terms('normes') %}
-				        <li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
-				    {% endfor %}
-				</ul>
-				
-				<h4>Utilisations preconisées</h4>
-				<p class="use_prod">{{ post.use_prod }}</p>
-				<h4>Description techniques</h4>
-				<p class="desc_tech">{{ post.desc_tech }}</p>
-				
-				<ul class="matieres-list">
-				    {% for matiere in post.terms('matieres') %}
-				        <li><a href="{{matiere.link}}">{{matiere.name}}</a>
-				        </li>
-				        {% if matiere.tax_img %}
-							<span class="pull-right"><img src="{{TimberImage(matiere.tax_img)}}"></span>{% endif %}
-				    {% endfor %}
+				<div class="prod-desc-panel">
+					
+					<ul class="gammes">
+					    {% for gamme in post.terms('gammes') %}
+					        <li><a href="{{gamme.link}}">{{gamme.name}}</a>
+					        	
+							</li>
+					    {% endfor %}
+					</ul>
 
-				</ul>
+					<ul class="normes">
+					    {% for norme in post.terms('normes') %}
+					        <li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+					    {% endfor %}
+					</ul>
+					
+					<h4>Utilisations preconisées</h4>
+					<p class="use_prod">{{ post.use_prod }}</p>
+					<h4>Description techniques</h4>
+					<p class="desc_tech">{{ post.desc_tech }}</p>
+					
+					<ul class="matieres">
+					    {% for matiere in post.terms('matieres') %}
+					        <li><a href="{{matiere.link}}">{{matiere.name}}</a>
+					        </li>
+					        {% if matiere.tax_img %}
+								<span class="pull-right"><img src="{{TimberImage(matiere.tax_img)}}"></span>{% endif %}
+					    {% endfor %}
+					</ul>
+
+				</div>
+
+				<div class="infos">
+					<span>
+						<a target="_blank" href="{{mode_emploi}}" data-toggle="tooltip" title="Mode d'emploi">
+							<i class="info"></i>
+						</a>
+					</span>
+					<span>
+						<a target="_blank" href="{{fiche}}" data-toggle="tooltip" title="Imprimer la fiche technique">
+							<i class="print"></i>
+						</a>
+					</span>
+				</div>
 
 			</div>
 
