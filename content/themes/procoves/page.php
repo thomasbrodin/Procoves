@@ -18,7 +18,9 @@
  */
 
 $context = Timber::get_context();
+
 $post = new TimberPost();
 $context['post'] = $post;
 $context ['subpages'] =  get_pages(array( 'child_of' => $post->ID, 'sort_column' => 'menu_order')); 
+
 Timber::render(array('page-' . $post->post_name . '.twig', 'page.twig'), $context);

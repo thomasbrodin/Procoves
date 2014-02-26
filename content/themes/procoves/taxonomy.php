@@ -24,6 +24,8 @@
      	 ),
 	);
 	$context['produits'] = Timber::get_posts($args);
+	$context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
+	$context['normes'] = Timber::get_terms('normes');
 
 	$context['title'] = 'Nos Produits';
 		if (is_tax('gammes')){

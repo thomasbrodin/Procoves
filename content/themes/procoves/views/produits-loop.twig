@@ -9,7 +9,7 @@
 		      	<div class="produit-info">
 		      		<h4><a href="{{produit.link}}">{{produit.title}}</a></h4>
 		      		<ul class="gammes">
-				    {% for gamme in produit.terms('gammes', false) %}
+				    {% for gamme in produit.terms('gammes') %}
 				        	 <li><a href="{{gamme.link}}">{{gamme.name}}</a></li>	  
 				    {% endfor %}
 					</ul>
