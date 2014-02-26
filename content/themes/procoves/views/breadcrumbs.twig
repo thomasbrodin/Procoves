@@ -1,6 +1,17 @@
  <!-- Breadcrumbs  -->
 <div class="breadcrumbs">
 	<div class="container">
+		 
+		 <ul class="bclist">
+			<li><a href="/" rel="home">Procoves</a>&nbsp;</li>
+			<!--  -->
+			{% if title %}
+			<li>/&nbsp;<a href="/produits">{{title}}</a></li>
+			{% else %}
+			<li>/&nbsp;<a href="{{post.link}}">{{post.title}}</a></li>
+			{% endif %}
+		 </ul>
+
 		  {% if title %}
 		  		<h1 class="title">{{title}}</h1>
 		  {% else %}
