@@ -36,8 +36,11 @@
 		$data['logo_pro_noir'] = new TimberImage($tech_logo_id1);
 		$tech_logo_id2 = get_field('tech_logo_blanc', 'options');
 		$data['logo_pro_blanc'] = new TimberImage($tech_logo_id2);
-		
-		$data['menu'] = new TimberMenu();
+		$logo_afaq = get_field('normes_iso', 'options');
+		$data['logo_afaq'] = new TimberImage($logo_afaq);
+		$data['mode_emploi'] = get_field('guide_pratique', 'options');
+		$data['menu'] = new TimberMenu('navigation');
+		$data['footer'] = new TimberMenu('footer');
 		return $data;
 	}
 
@@ -52,7 +55,7 @@
 		register_sidebar( array(
 			'name' => 'Actualites',
 			'id' => 'actu-sidebar',
-			'before_widget' => '<div>',
+			'before_widget' => '<div class="widget">',
 			'after_widget' => '</div>',
 			'before_title' => '<h2><span class="redline"></span>',
 			'after_title' => '</h2>',
