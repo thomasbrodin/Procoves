@@ -8,6 +8,15 @@ $(window).load(function() {
 		controlsContainer: "#controlswrap .container",
 		keyboard: true,
 	});
+	$('.thumbslider').flexslider({
+		animation: "slide",
+		animationLoop: false,
+		itemWidth: 200,
+		itemMargin: 30,
+		controlNav: false,
+		minItems: 2,
+		maxItems: 4
+  	});
 });
 
 jQuery(document).ready(function($) {
