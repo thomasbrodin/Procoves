@@ -1,0 +1,39 @@
+<!-- Slider Thumbs  -->
+<div id="thumbslider-wrap">
+	<div class="container thumbslider">
+	      	<ul class="slides">
+	      		{% for produit in produits %}
+		      	<li>
+		      		<a href="{{produit.link}}">	
+			      		<img src="{{TimberImage(produit.img_prod)}}">
+			    	</a>
+			    </li>
+			    {% endfor %}
+		    </ul>
+    </div>
+</div>	
+
+<!-- actu a la une  -->
+<div class="a-la-une">
+	<div class="container">
+		<div class="row">
+			
+			<div class="col-md-6 actu-tease">
+				<div class="row">
+					<div class="col-md-6 actu-img">
+						<img class="actu" src="{{actu.get_thumbnail.get_src}}" />
+					</div>
+					<div class="col-md-6 actu-body">
+						<h4>{{ actu.title }}</h4>
+						<p class="blog-date">
+							<span>{{ actu.display_date }}</span>
+						</p>
+						<p>{{actu.content}}</P>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		
+	</div>
+</div>
