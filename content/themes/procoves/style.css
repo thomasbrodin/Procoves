@@ -249,10 +249,6 @@ nav#access {
 .flex-control-nav,
 .flex-direction-nav {margin: 0; padding: 0; list-style: none;}
 
-#SliderContainer {
-  height:500px;
-}
-
 .slider { 
   margin: 0; 
   padding: 0;
@@ -269,7 +265,7 @@ nav#access {
 } /* Hide the slides before the JS is loaded. Avoids image jumping */
 .slider .slides img {
   width: 100%; 
-  max-height: 500px;
+  height: auto;
   position: relative;
   z-index: 1;
 }
@@ -292,7 +288,7 @@ html[xmlns] .slides {display: block;}
 /* CONTROLS */
 #controlswrap {
   position: absolute;
-  top: 12%;
+  top: 11%;
   width: 100%;
   z-index: 999;
 }
@@ -657,7 +653,7 @@ h2.produit-title{
   font-style: normal;
   font-weight: normal;
   line-height: 1;
-  font-size: 2em;
+  font-size: 30px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "\f129";
@@ -669,7 +665,7 @@ h2.produit-title{
   font-style: normal;
   font-weight: normal;
   line-height: 1;
-  font-size: 2em;
+  font-size: 30px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "\f02f";
@@ -852,7 +848,7 @@ ul.navlist li a {
   color:rgb(240,70,70);
 }
 .page-content article{
-  margin-top: 10px;
+  margin-top: 4px;
 }
 
 /* FOOTER

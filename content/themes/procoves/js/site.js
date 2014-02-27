@@ -23,7 +23,7 @@ jQuery(document).ready(function($) {
 
 		$('.navlist li a').on('click', function() {
 		var scrollAnchor = $(this).attr('data-scroll'),
-			scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 300;
+			scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 265;
 		$('body,html').animate({
 			scrollTop: scrollPoint
 		}, 500);   
@@ -44,6 +44,7 @@ jQuery(document).ready(function($) {
 		$('#navside').affix({
 			offset: {
 				top: 0,
+				bottom:85
 			}
 		});
 		$("[data-toggle=tooltip").tooltip();

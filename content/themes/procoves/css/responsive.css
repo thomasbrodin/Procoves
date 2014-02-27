@@ -86,9 +86,20 @@
     font-size: 21px;
     line-height: 1.4;
   }
+}
+@media (min-width: 992px) {
   #navside.affix {
-  position: fixed;
-  width: 293px;
+    position: fixed;
+    width: 243px;
+  }
+  #navside.affix-bottom{
+    position: relative;
+  }
+}
+@media (min-width: 1200px) {
+  #navside.affix {
+    position: fixed;
+    width: 293px;
   }
 }
 
