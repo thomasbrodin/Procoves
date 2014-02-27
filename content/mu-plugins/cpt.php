@@ -31,11 +31,11 @@ function hex_cpt() {
         'menu_icon'=> 'dashicons-portfolio',
         'public' => true,
         'publicly_queryable' => true,
-        'has_archive' => true,
         'query_var' => true,
         'show_ui' => true,
         'show_in_menu' => true,
         'menu_position' => 5,
+        'has_archive' => true,
         'supports' => array( 'title', 'revisions',),
         'rewrite' => array('slug' => 'produits') 
       );
@@ -85,6 +85,17 @@ function produits_taxonomies() {
           'show_admin_column' => true, 
           'query_var' => true,  
           'rewrite' => array('slug' => 'matieres','hierarchical' =>true)  
+      )  
+    ); 
+  register_taxonomy(  
+    'mots_cles',  
+    'produits',
+      array( 
+          'hierarchical' => false,
+          'labels' => array('name' => 'Mots Clés', 'add_new_item' => __( 'Ajouter un nouveau Mot-clé' )),
+          'show_admin_column' => true, 
+          'query_var' => true,  
+          'rewrite' => array('slug' => 'tag')  
       )  
     ); 
 }  

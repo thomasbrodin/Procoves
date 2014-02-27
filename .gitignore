@@ -11,3 +11,5 @@ local-config.php
 /content/upgrade
 
 /content/uploads
+
+/content/plugins/taxonomy-images

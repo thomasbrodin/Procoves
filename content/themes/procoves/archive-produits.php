@@ -11,7 +11,10 @@
 
 	$context = Timber::get_context();
 
-	$args = array('post_type' => 'produits', 'numberposts' => -1);
+	$args = array(
+		'post_type' => 'produits', 
+		'numberposts' => -1
+	);
 	$context['produits'] = Timber::get_posts($args);
 	
 	$context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
