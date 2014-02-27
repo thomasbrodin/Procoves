@@ -22,6 +22,7 @@ body {
 section#home{
   padding-top: 70px
 }
+
 section#content {
 	position: relative;
 	padding-top: 180px;
@@ -186,12 +187,64 @@ nav#access {
 
 /* HOME
 -------------------------------------------------- */
+/* HEADLINE */
+.jumbotron {
+  padding: 20px;
+  margin-bottom: 20px;
+  color: #fff;
+  background-color: rgb(240,70,70);
+  text-transform: uppercase;
+}
+.jumbotron h2{
+  font-family:'L Futura W01';
+  font-size: 24px;
+  float: left;
+  margin: 10px 0;
+  letter-spacing: 0.02em;
+}
+.jumbotron span img{
+  max-width:100px;
+}
 
-/* Slider */
+.marketing {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin:30px auto;
+}
+
+.marketing .col-lg-4 {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.marketing h2 {
+  font-weight: 400;
+  text-align: left;
+  font-size:18px;
+  text-transform: uppercase;
+  font-family:'L Futura W01';
+  border-bottom: 1px solid #ccc;
+  padding:0 30px 10px 0;
+  display: inline-block;
+  color:#333;
+}
+
+.marketing .col-lg-4 p {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+
+/* Slider globals */
 #SliderContainer a:active,
 .slider a:active,
 .SliderContainer a:focus,
-.slider a:focus  {outline: none;}
+.slider a:focus  
+#thumbslider-wrap a:active,
+.thumbslider  a:active,
+#thumbslider-wrap a:focus,
+.thumbslider  a:focus {outline: none;}
+
 .slides,
 .flex-control-nav,
 .flex-direction-nav {margin: 0; padding: 0; list-style: none;}
@@ -216,7 +269,6 @@ nav#access {
 } /* Hide the slides before the JS is loaded. Avoids image jumping */
 .slider .slides img {
   width: 100%; 
-  display: block;
   max-height: 500px;
   position: relative;
   z-index: 1;
@@ -240,7 +292,7 @@ html[xmlns] .slides {display: block;}
 /* CONTROLS */
 #controlswrap {
   position: absolute;
-  top: 20%;
+  top: 12%;
   width: 100%;
   z-index: 999;
 }
@@ -340,50 +392,105 @@ html[xmlns] .slides {display: block;}
   font-weight: 400
 }
 
-/* HEADLINE */
-.jumbotron {
-  padding: 20px;
-  margin-bottom: 20px;
-  color: #fff;
-  background-color: rgb(240,70,70);
-  text-transform: uppercase;
-}
-.jumbotron h2{
-  font-family:'L Futura W01';
-  font-size: 24px;
-  float: left;
-  margin: 10px 0;
-  letter-spacing: 0.02em;
-}
-.jumbotron span img{
-  max-width:100px;
+/* VEDETTE */
+#vedette #thumbslider-wrap{
+  background-color:#ccc;
+  padding: 50px 0;
+  margin-top::;0px;
 }
 
-.marketing {
-  padding-right: 15px;
-  padding-left: 15px;
+.thumbslider  { 
+  position: relative; 
+  zoom: 1; 
+  z-index: 0
+}
+.thumbslider .slides > li {
+  display: none; 
+  -webkit-backface-visibility: hidden;
+} 
+.thumbslider .slides li {
+  margin-right: 30px
+}
+/* Hide the slides before the JS is loaded. Avoids image jumping */
+.thumbslider .slides img {
+  width: 100%; 
+  display: block;
+  max-height: 300px;
 }
 
-.marketing .col-lg-4 {
-  margin-bottom: 20px;
-  text-align: left;
+/* Clearfix for the .slides element */
+.thumbslider .slides:after {
+  content: "\0020"; 
+  display: block; 
+  clear: both; 
+  visibility: hidden; 
+  line-height: 0; 
+  height: 0;
 }
 
-.marketing h2 {
-  font-weight: 400;
-  text-align: left;
-  font-size:18px;
-  text-transform: uppercase;
-  font-family:'L Futura W01';
-  border-bottom: 1px solid #ccc;
-  padding:0 30px 10px 0;
+.thumbslider .slides { zoom: 1; }
+
+/* Direction Nav */
+.thumbslider .flex-direction-nav {
+  *height: 0;
+}
+.thumbslider .flex-direction-nav a  { 
+  text-decoration:none; 
+  display: block; 
+  top: 50%;
+  width: 40px; 
+  height: 40px; 
+  margin: -20px 0 0; 
+  position: absolute; 
+  overflow: hidden; 
+  opacity: 0; 
+  color: #333;
+  z-index: 10; 
+  cursor: pointer; 
+  border:none;
+  text-align: center;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.3);
+   -webkit-transition: all .3s ease; 
+   -moz-transition: all .3s ease; 
+   transition: all .3s ease;
+   background: transparent;
+}
+.thumbslider .flex-direction-nav .flex-prev { left: -50px; }
+.thumbslider .flex-direction-nav .flex-next { right: -50px; text-align: right; }
+.thumbslider:hover .flex-prev { opacity: 0.7; left: -30px; }
+.thumbslider:hover .flex-next { opacity: 0.7; right: -20px; }
+.thumbslider:hover .flex-next:hover, .thumbslider:hover .flex-prev:hover { opacity: 1; }
+
+.thumbslider .flex-direction-nav a:hover{
+  background: transparent;
+}
+
+.thumbslider .flex-direction-nav a:before  { 
   display: inline-block;
-  color:#333;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'FontAwesome'; 
+  font-size: 42px; 
+  content:"\f104"
 }
 
-.marketing .col-lg-4 p {
-  margin-right: 10px;
-  margin-left: 10px;
+.thumbslider .flex-direction-nav a.flex-next:before  { 
+    content:"\f105"; 
+}
+
+#vedette .a-la-une{
+  background-color:#666;
+  color:#fff;
+}
+#vedette .actu-tease {
+  padding: 50px 0
+}
+#vedette .actu-tease img{
+  max-width:100%;
+  display: block
 }
 
 
@@ -731,6 +838,7 @@ ul.navlist li a {
   border-bottom: 1px solid #cccccc;
   padding:0 0 15px 0;
   color:#333;
+  margin-top: 0
 }
 
 
@@ -742,6 +850,9 @@ ul.navlist li a {
 
 #navside .widget ul li a:hover{
   color:rgb(240,70,70);
+}
+.page-content article{
+  margin-top: 10px;
 }
 
 /* FOOTER
