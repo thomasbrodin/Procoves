@@ -1,4 +1,3 @@
-
 $(window).load(function() {
 	$('.slider').flexslider({
 		slideshow: false, 
@@ -23,7 +22,7 @@ jQuery(document).ready(function($) {
 
 		$('.navlist li a').on('click', function() {
 		var scrollAnchor = $(this).attr('data-scroll'),
-			scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 265;
+			scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 245;
 		$('body,html').animate({
 			scrollTop: scrollPoint
 		}, 500);   
@@ -43,9 +42,9 @@ jQuery(document).ready(function($) {
 		});
 		$('#navside').affix({
 			offset: {
-				top: 0,
-				bottom:85
-			}
+				top: 60,
+				bottom: 85
+				}
 		});
 		$("[data-toggle=tooltip").tooltip();
 });

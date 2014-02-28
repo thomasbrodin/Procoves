@@ -91,14 +91,20 @@
   #navside.affix {
     position: fixed;
     width: 243px;
+    top: 225px;
   }
   #navside.affix-bottom{
-    position: relative;
+    position: absolute;
+    width: 243px;
   }
 }
 @media (min-width: 1200px) {
   #navside.affix {
     position: fixed;
+    width: 293px;
+  }
+  #navside.affix-bottom{
+    position: absolute;
     width: 293px;
   }
 }
