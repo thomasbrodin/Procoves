@@ -80,7 +80,7 @@ function produits_taxonomies() {
     'matieres',  
     'produits',
       array( 
-          'hierarchical' => false,
+          'hierarchical' => true,
           'labels' => array('name' => 'Matieres', 'add_new_item' => __( 'Ajouter une nouvelle matiere' )),
           'show_admin_column' => true, 
           'query_var' => true,  
