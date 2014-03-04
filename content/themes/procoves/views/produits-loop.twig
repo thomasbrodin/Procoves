@@ -4,7 +4,11 @@
 	      <div class="col-md-4">
 	      	<div class="produit-thumb">
 		      	<a href="{{produit.link}}">	
-			      	<img src="{{TimberImage(produit.img_prod)}}">
+		      		{% if produit.img_prod %}
+			      		<img src="{{TimberImage(produit.img_prod)}}">
+					{% else %}
+						<img src="http://placehold.it/300x300">
+					{% endif %}
 			    </a>
 		      	<div class="produit-info">
 		      		<h4><a href="{{produit.link}}">{{produit.title}}</a></h4>
