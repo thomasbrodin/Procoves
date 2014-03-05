@@ -826,9 +826,10 @@ input.sidebar {
 
 #navside .normes-list li {
   display: inline-block;
+  padding: 0 5px
 }
 #navside .normes-list li:first-child {
-  margin-left: -10px
+  padding-left: 0
 }
 #navside .normes-list li img {
   max-height: 50px
