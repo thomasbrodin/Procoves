@@ -16,6 +16,9 @@ if (isset($post->img_prod) && strlen($post->img_prod)){
 }
 $context['post'] = $post;
 $context['wp_title'] .= ' - ' . $post->title();
+$context['actu'] = Timber::get_post('category_name=a-la-une');
+$context['email'] = get_field('email', 'options');
+$context['adresse'] = get_field('adresse', 'options');
 $context['sidebar'] = Timber::get_sidebar('sidebar.php');
 $context['fiche'] = get_field('fiche_tech');
 

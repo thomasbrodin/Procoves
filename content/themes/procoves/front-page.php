@@ -27,8 +27,10 @@
         )
 	);
 	$context['produits'] = Timber::get_posts($args);
-	
+
 	$context['actu'] = Timber::get_post('category_name=a-la-une');
+	$context['email'] = get_field('email', 'options');
+	$context['adresse'] = get_field('adresse', 'options');
 
 	$frontID = get_option('page_on_front');
 	$childs = get_pages( array( 'child_of' => $frontID,'sort_column' => 'menu_order') );
@@ -38,7 +40,6 @@
 	$context['preco'] = Timber::get_post($childs[2]->ID);
 	
 	$context['images'] = get_field('home_slide');
-	$context['slogan'] = get_field('accroche');
 	
 	Timber::render('front-page.twig', $context);
 

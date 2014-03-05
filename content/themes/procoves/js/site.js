@@ -40,6 +40,14 @@ jQuery(document).ready(function($) {
 			$("#access li.nav-main-item").click(function(){
 			nav_index = $("#access-js-slider").attr("class");
 		});
+		$('.thumbslider ul.slides li').bind('mouseenter',function() {
+			var height = $(this).height();
+			var width = $(this).width();
+			$(this).children('.caption_overlay').css({'height':height, 'width':width});
+			$(this).children('.caption_overlay').animate({'opacity':'1'},'fast');
+        }).bind('mouseleave',function() {
+			$(this).children('.caption_overlay').animate({'opacity':'0'},'slow');
+        });
 		$('#navside').affix({
 			offset: {
 				top: 60,

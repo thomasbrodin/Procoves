@@ -2,7 +2,7 @@
 {% block head %}
 {% endblock %}
 </head>
-    <body class="{{body_class}}" data-source="base.twig">
+    <body class="{{body_class}}">
 
         {% include 'header.twig' %}
 		
@@ -35,7 +35,7 @@
 		    <!-- Marketing messaging  -->
 			<div class="jumbotron">
 				<div class="container">
-					<h2>{{slogan|print_r}}</h2>
+					<h2>{{site.description}}</h2>
 					<span class="pull-right"><img src="{{logo_pro_blanc}}"></span>
 				</div>
 			</div>
@@ -58,10 +58,9 @@
 			</div>
 
 			<div id="vedette">
-
 				{% include 'vedette.twig' %}
-
 			</div>
+
 		</section>
 
         {% include 'footer.twig' %}
