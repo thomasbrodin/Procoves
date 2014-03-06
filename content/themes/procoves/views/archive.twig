@@ -8,11 +8,8 @@
 		</div>
 
 		<div class="col-md-9 page-content pull-right" role="main">
-			{% for post in posts %}
-				<article class="actu" id="actu-{{post.ID}}">
-					<h2>{{ post.title }}</h2>
-					<p>{{post.content}}</p>
-				</article>
+			{% for actu in posts %}
+				{% include ['article.twig'] %}
 			{% endfor %}
 		</div>
     </div>             

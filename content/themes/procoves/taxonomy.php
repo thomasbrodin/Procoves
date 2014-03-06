@@ -27,15 +27,16 @@
 	$context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
 	$context['normes'] = Timber::get_terms('normes');
 
-	$context['title'] = 'Nos Produits';
-		if (is_tax('gammes')){
-			$context['title'] = 'Gammes ';
-		} else if (is_tax('normes')){
-			$context['title'] = 'Normes';
-		} else if (is_tax('activite')){
-			$context['title'] = 'Secteur D\'activite';
-		} else if (is_tax('matieres')){
-			$context['title'] = 'Matieres';
-		} 
+	$termname = $qobj->name;
+	if (is_tax('gammes')){
+		$context['title'] = $termname;
+	} else if (is_tax('normes')){
+		$context['title'] = 'Normes&nbsp;-&nbsp;'.$termname;
+	} else if (is_tax('activite')){
+		$context['title'] = 'Secteur D\'activite&nbsp;-&nbsp;'.$termname;
+	} else if (is_tax('matieres')){
+		$context['title'] = 'Matieres&nbsp;-&nbsp;'.$termname;
+	} 
+	$context['link'] = get_term_link( $qobj );
 
 	Timber::render('taxonomy.twig', $context);
