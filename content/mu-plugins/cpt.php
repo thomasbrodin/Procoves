@@ -37,7 +37,7 @@ function hex_cpt() {
         'menu_position' => 5,
         'has_archive' => true,
         'supports' => array( 'title', 'revisions',),
-        'rewrite' => array('slug' => 'produits') 
+        'rewrite' => false 
       );
   register_post_type( 'produits', $args);
 }
@@ -51,7 +51,7 @@ function produits_taxonomies() {
           'labels' => array('name' => 'Gammes', 'add_new_item' => __( 'Ajouter une nouvelle gamme' )),
           'show_admin_column' => true, 
           'query_var' => true,  
-          'rewrite' => array('slug' => 'gammes', 'hierarchical' =>true)  
+          'rewrite' => false  
       )  
     );  
   register_taxonomy(  
@@ -62,7 +62,7 @@ function produits_taxonomies() {
           'labels' => array('name' => 'Normes', 'add_new_item' => __( 'Ajouter une nouvelle norme' )),
           'show_admin_column' => true, 
           'query_var' => true,  
-          'rewrite' => array('slug' => 'normes','hierarchical' =>true)  
+          'rewrite' => false 
       )  
     );  
   register_taxonomy(  
@@ -73,7 +73,7 @@ function produits_taxonomies() {
           'labels' => array('name' => 'Secteurs d\'activité', 'add_new_item' => __( 'Ajouter une nouveau secteur d\'activité' )),
           'show_admin_column' => true, 
           'query_var' => true,  
-          'rewrite' => array('slug' => 'activite', 'hierarchical' =>true)  
+          'rewrite' => false  
       )  
     );  
   register_taxonomy(  
@@ -84,7 +84,7 @@ function produits_taxonomies() {
           'labels' => array('name' => 'Matieres', 'add_new_item' => __( 'Ajouter une nouvelle matiere' )),
           'show_admin_column' => true, 
           'query_var' => true,  
-          'rewrite' => array('slug' => 'matieres','hierarchical' =>true)  
+          'rewrite' => false  
       )  
     ); 
   register_taxonomy(  
