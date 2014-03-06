@@ -1,73 +1,95 @@
-{% extends "base.twig" %}
-
-{% block content %}
-		
-	<div id="produit-content">
-		<div class="row">
-
-			<div class="produit-image col-md-6">
-				{% if post.img_prod %}
-					<img src="{{post.img_prod.src}}">
-				{% else %}
-					<img src="http://placehold.it/1000x1000">
-				{% endif %}
-			</div>
-
-			<div class="produit-desc col-md-6">
-
-				<div class="prod-desc-heading">
-					<h2 class="produit-title">{{post.title}}</h2>
-					<span><img src="{{logo_pro_noir}}"></span>
-					<p>REF : {{ post.ref }}</p>
-				</div>
-
-				<div class="prod-desc-panel">
-					
-					<ul class="gammes">
-					    {% for gamme in post.terms('gammes') %}
-					        <li><a href="{{gamme.link}}">{{gamme.name}}</a>
-					        	
-							</li>
-					    {% endfor %}
-					</ul>
-
-					<ul class="normes">
-					    {% for norme in post.terms('normes') %}
-					        <li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
-					    {% endfor %}
-					</ul>
-					
-					<h4>Utilisations preconisées</h4>
-					<p class="use_prod">{{ post.use_prod }}</p>
-					<h4>Description techniques</h4>
-					<p class="desc_tech">{{ post.desc_tech }}</p>
-					
-					<ul class="matieres">
-					    {% for matiere in post.terms('matieres') %}
-					        <li><a href="{{matiere.link}}">{{matiere.name}}</a>
-					        </li>
-					        {% if matiere.tax_img %}
-								<span class="pull-right"><img src="{{TimberImage(matiere.tax_img)}}"></span>{% endif %}
-					    {% endfor %}
-					</ul>
-
-				</div>
-
-				<div class="infos">
-					<span>
-						<a target="_blank" href="{{mode_emploi}}" data-toggle="tooltip" title="Mode d'emploi">
-							<i class="info"></i>
-						</a>
-					</span>
-					<span>
-						<a target="_blank" href="{{fiche}}" data-toggle="tooltip" title="Imprimer la fiche technique">
-							<i class="print"></i>
-						</a>
-					</span>
-				</div>
-
-			</div>
-
-		</div><!-- /.row -->
-	</div>	
+{% include 'html-header.twig' %}
+{% block head %}
 {% endblock %}
+</head>
+
+ <body class="{{body_class}}" data-source="base.twig">
+
+            {% include 'header.twig' %}
+            {% include 'breadcrumbs.twig' %}
+
+            <section id="content" class="content-wrapper">
+
+                <div class="container">
+		
+					<article id="produit-content">
+						<div class="row">
+
+							<div class="produit-image col-md-6">
+								{% if post.img_prod %}
+									<img src="{{post.img_prod.src}}">
+								{% else %}
+									<img src="http://placehold.it/1000x1000">
+								{% endif %}
+							</div>
+
+							<div class="produit-desc col-md-6">
+
+								<div class="prod-desc-heading">
+									<h2 class="produit-title">{{post.title}}</h2>
+									<span><img src="{{logo_pro_noir}}"></span>
+									<p>REF : {{ post.ref }}</p>
+								</div>
+
+								<div class="prod-desc-panel">
+									
+									<ul class="gammes">
+									    {% for gamme in post.terms('gammes') %}
+									        <li><a href="{{gamme.link}}">{{gamme.name}}</a>
+									        	
+											</li>
+									    {% endfor %}
+									</ul>
+
+									<ul class="normes">
+									    {% for norme in post.terms('normes') %}
+									        <li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+									    {% endfor %}
+									</ul>
+									
+									<h4>Utilisations preconisées</h4>
+									<p class="use_prod">{{ post.use_prod }}</p>
+									<h4>Description techniques</h4>
+									<p class="desc_tech">{{ post.desc_tech }}</p>
+									
+									<ul class="matieres">
+									    {% for matiere in post.terms('matieres') %}
+									        <li><a href="{{matiere.link}}">{{matiere.name}}</a>
+									        </li>
+									        {% if matiere.tax_img %}
+												<span class="pull-right"><img src="{{TimberImage(matiere.tax_img)}}"></span>{% endif %}
+									    {% endfor %}
+									</ul>
+
+								</div>
+
+								<div class="infos">
+									<span>
+										<a target="_blank" href="{{mode_emploi}}" data-toggle="tooltip" title="Mode d'emploi">
+											<i class="info"></i>
+										</a>
+									</span>
+									<span>
+										<a target="_blank" href="{{fiche}}" data-toggle="tooltip" title="Imprimer la fiche technique">
+											<i class="print"></i>
+										</a>
+									</span>
+								</div>
+
+							</div>
+
+						</div><!-- /.row -->
+					</article>
+				</div><!-- /.container -->
+
+					<div id="vedette">
+						{% include 'vedette.twig' %}
+					</div>
+
+		</section>
+
+        {% include 'footer.twig' %}
+        {{ function('wp_footer') }}
+      
+  </body>
+</html>

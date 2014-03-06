@@ -1,0 +1,12 @@
+<article class="actu" id="actu-{{post.ID}}">
+	<h2>{{ actu.title }}</h2>
+	<p class="date">
+		<span>{{ actu.display_date }}</span>
+	</p>
+	<div class="actu-body">
+		{% if actu.get_thumbnail %}
+			<img src="{{actu.thumbnail.src}}" />
+		{% endif %}
+		<p>{{actu.content}}</P>
+	</div>
+</article>

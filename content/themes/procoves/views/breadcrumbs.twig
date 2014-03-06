@@ -4,14 +4,15 @@
 		 
 		 <ul class="bclist">
 			<li><a href="/" rel="home">Procoves</a>&nbsp;</li>
-			<!--  -->
+			<!-- quick links  -->				  
 			{% if title %}
-			<li>/&nbsp;<a href="/produits">{{title}}</a></li>
+			<li>/&nbsp;<a href="{{link}}">{{title}}</a></li>
 			{% else %}
 			<li>/&nbsp;<a href="{{post.link}}">{{post.title}}</a></li>
 			{% endif %}
 		 </ul>
 
+			<!-- titre  -->
 		  {% if title %}
 		  		<h1 class="title">{{title}}</h1>
 		  {% else %}

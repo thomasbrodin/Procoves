@@ -7,17 +7,9 @@
 			{% include ['sidebar.twig'] %}
 		</div>
 		
-		<div class="col-md-9 page-content pull-right" role="main" id="post-{{post.ID}}">
-			<section class="article-content">	
-				<h2>{{ post.title }}</h2>
-				<p class="blog-date">
-					<span>{{ post.display_date }}</span>
-				</p>
-
-				<div class="article-body">
-					{{post.content}}
-				</div>
-			</section>
+		<div class="col-md-9 page-content pull-right" role="main" id="actu-{{post.ID}}">
+			
+			{% include ['article.twig'] %}
 
 		</div>
 	</div> <!-- /.row -->

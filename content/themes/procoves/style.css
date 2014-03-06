@@ -20,14 +20,14 @@ body {
   font-weight: 300;
   font-size: 13px
 }
+
 section#home{
-  padding-top: 70px
+  padding-top: 90px
 }
 
 section#content {
 	position: relative;
-	padding-top: 180px;
-  padding-bottom: 60px
+	padding-top: 170px;
 }
 
 footer {
@@ -581,6 +581,10 @@ html[xmlns] .slides {display: block;}
 
 /* GAMMES
 -------------------------------------------------- */
+section#content .taxonomy {
+  min-height: 700px
+}
+
 #Slidergammes .slider{
   border:4px solid;
   border-color:#f0f0f0;
@@ -610,8 +614,10 @@ html[xmlns] .slides {display: block;}
 
 .produit-thumb {
   border:4px solid;
-  border-color:#f0f0f0
+  border-color:#f0f0f0;
+  margin-bottom: 30px
 }
+
 .produit-thumb:hover{
   border-color:rgb(240,70,70);
 }
@@ -649,8 +655,8 @@ html[xmlns] .slides {display: block;}
 
 /* PRODUIT
 -------------------------------------------------- */
-section#content .produits {
-  min-height: 700px
+article#produit-content {
+  padding-bottom: 30px
 }
 
 .produit-desc a {
@@ -941,6 +947,18 @@ ul.navlist li a {
 
 .page-content article{
   margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+article .actu-body img{
+  max-width:50%;
+  display: block;
+  float: left;
+  padding-right: 30px
+}
+
+article.actu p.date {
+  margin-bottom: 15px;
 }
 
 /* FOOTER
