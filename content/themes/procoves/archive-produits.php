@@ -10,17 +10,11 @@
  */
 
 	$context = Timber::get_context();
-
-	$args = array(
-		'post_type' => 'produits', 
-		'numberposts' => -1
-	);
-	$context['produits'] = Timber::get_posts($args);
 	
 	$context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
 	$context['normes'] = Timber::get_terms('normes');
 
-	$context['title'] = 'Nos Produits';
+	$context['title'] = 'Nos gammes';
 
 	Timber::render('archive-produits.twig', $context);
 

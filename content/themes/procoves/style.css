@@ -74,6 +74,36 @@ ul li {
   list-style: none
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family:'L Futura W01';
+}
+
+h1, h2, h3 {
+  font-weight: 700
+}
+h4, h5, h6 {
+  font-weight: 500
+}
+
+.page-content section p{
+  font-family:'L Futura W01';
+  font-size:16px;
+  font-weight: 300
+}
+
+.page-content section p strong, .page-content section ul li strong{
+  font-weight: 500
+}
+
+.page-content section ul {
+  padding-left:30px;
+}
+.page-content section ul li {
+  list-style: disc;
+  font-family:'L Futura W01';
+  font-size:16px;
+}
+
 /* HEADER
 -------------------------------------------------- */
 
@@ -304,7 +334,7 @@ html[xmlns] .slides {display: block;}
   background: #333; 
   padding:8px 10px;
   font-size: 36px;
-  font-weight: 400
+  font-weight: 700
 }
 
 /* HEADLINE */
@@ -338,7 +368,7 @@ html[xmlns] .slides {display: block;}
 }
 
 .marketing h2 {
-  font-weight: 400;
+  font-weight: 700;
   font-size:18px;
   text-transform: uppercase;
   font-family:'L Futura W01';
@@ -360,7 +390,7 @@ html[xmlns] .slides {display: block;}
 }
 
 #vedette #thumbslider-wrap h2{
-  font-weight: 400;
+  font-weight: 700;
   text-align: center;
   font-size:24px;
   text-transform: uppercase;
@@ -389,7 +419,8 @@ html[xmlns] .slides {display: block;}
 } 
 .thumbslider .slides li {
   margin-right: 30px;
-  cursor: pointer
+  cursor: pointer;
+  border: 1px solid #333;
 }
 /* Hide the slides before the JS is loaded. Avoids image jumping */
 .thumbslider .slides img {
@@ -461,20 +492,19 @@ html[xmlns] .slides {display: block;}
     content:"\f105"; 
 }
 
-
 .thumbslider .caption_overlay {
   display: table;
   position: absolute;
   z-index: 1;
   text-align: left;
   color: #f8f8f8;
-  background: rgba(0,0,0,0.6);
+  background: rgba(85,185,75,0.6);
   opacity: 0;
 }
 
 .thumbslider .caption_overlay h4 {
   font-family:'L Futura W01';
-  font-weight: 500;
+  font-weight: 700;
   color: #fff;
   font-size: 14px;
   position: relative;
@@ -554,7 +584,7 @@ html[xmlns] .slides {display: block;}
 }
 
 .a-la-une h2 {
-  font-weight: 400;
+  font-weight: 700;
   text-align: left;
   font-size:18px;
   text-transform: uppercase;
@@ -585,32 +615,40 @@ section#content .taxonomy {
   min-height: 700px
 }
 
-#Slidergammes .slider{
+.collection .gamme-thumb {
   border:4px solid;
   border-color:#f0f0f0;
-  margin-bottom:30px;
-}
-#Slidergammes p.caption{
-  font-family:'L Futura W01';
-  position: absolute;
-  top:25%;
-  color:#fff;
-  display: block;
-  background: #333; 
-  padding:10px;
-  font-size: 30px;
-  margin-left:30px;
-  font-weight: 400;
-  z-index: 3;
-}
-#Slidergammes .flex-direction-nav {
-  left: 0;
-  position: absolute;
-  top: 15%;
+  margin-bottom: 30px;
+  cursor: pointer
 }
 
-#Slidergammes .flex-direction-nav .flex-prev { margin-left:30px;}
-#Slidergammes .flex-direction-nav .flex-next { margin-left:75px;}
+.collection .gamme-thumb img{
+  max-width: 100%;
+  height:auto;
+}
+
+.collection .gamme-thumb .caption_overlay {
+  display: table;
+  position: absolute;
+  z-index: 1;
+  text-align: left;
+  color: #f8f8f8;
+  background: rgba(85,185,75,0.6);
+  opacity: 0;
+}
+
+.collection .gamme-thumb .caption_overlay h4 {
+  font-family:'L Futura W01';
+  font-weight: 700;
+  color: #fff;
+  font-size: 18px;
+  position: relative;
+  margin: 10px 0 0 6px;
+  padding: 0 10px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center
+}
 
 .produit-thumb {
   border:4px solid;
@@ -619,7 +657,7 @@ section#content .taxonomy {
 }
 
 .produit-thumb:hover{
-  border-color:rgb(240,70,70);
+  border-color:rgb(85,185,75);
 }
 
 .produit-thumb img{
@@ -682,7 +720,7 @@ article#produit-content {
 }
 
 h2.produit-title{
-  font-weight: 400;
+  font-weight: 700;
   font-size:24px;
   text-transform: uppercase;
   font-family:'L Futura W01';
@@ -778,6 +816,7 @@ h2.produit-title{
 }
 #navside a {
   color:#333;
+  font-weight: 700;
 }
 
 #navside ul {
@@ -785,13 +824,13 @@ h2.produit-title{
 }
 
 #navside h2 {
-  font-weight: 400;
+  font-weight: 700;
   text-align: left;
   font-size:14px;
   text-transform: uppercase;
   font-family:'L Futura W01';
   border-bottom: 1px solid #cccccc;
-  padding: 15px 0 15px 0;
+  padding: 0 0 15px 0;
   margin: 5px 0 20px 0;
   display: block;
 }
@@ -820,6 +859,7 @@ input.sidebar {
 #navside .searchside a, #navside .searchside a img {
   border:none;
   color:#333;
+  font-weight: 500;
 }
 
 #navside .searchside ul {
@@ -891,7 +931,7 @@ i.angle-down {
 /* PAGE
 -------------------------------------------------- */
 ul.navlist li {
-  font-weight: 400;
+  font-weight: 700;
   text-align: left;
   font-size:14px;
   text-transform: uppercase;
@@ -921,11 +961,15 @@ ul.navlist li a {
 
 .page-content section{
   margin-top: 20px;
-  margin-bottom:800px;
+  margin-bottom:225px;
 }
 
-.page-content section h2, .page-content article h2 {
-  font-weight: 400;
+.page-content section:last-child {
+  min-height: 550px
+}
+
+.page-content section h2 {
+  font-weight: 700;
   text-align: left;
   font-size:18px;
   text-transform: uppercase;
@@ -945,9 +989,21 @@ ul.navlist li a {
   color:rgb(240,70,70);
 }
 
-.page-content article{
+.actu-content article{
   margin-top: 20px;
   margin-bottom: 30px;
+}
+.actu-content article.actu h2 {
+  font-weight: 700;
+  text-align: left;
+  font-size:18px;
+  text-transform: uppercase;
+  font-family:'L Futura W01';
+  border-bottom: 1px solid #cccccc;
+  padding:0 0 12px 0;
+  color:#333;
+  margin-top: 0;
+  margin-bottom:5px;
 }
 
 article .actu-body img{

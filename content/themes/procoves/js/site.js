@@ -11,7 +11,7 @@ $(window).load(function() {
 		animation: "slide",
 		animationLoop: false,
 		itemWidth: 200,
-		itemMargin: 30,
+		itemMargin: 28,
 		controlNav: false,
 		minItems: 2,
 		maxItems: 4
@@ -48,9 +48,17 @@ jQuery(document).ready(function($) {
         }).bind('mouseleave',function() {
 			$(this).children('.caption_overlay').animate({'opacity':'0'},'slow');
         });
+        $('.gamme-thumb').bind('mouseenter',function() {
+			var height = $(this).height();
+			var width = $(this).width();
+			$(this).children('.caption_overlay').css({'height':height, 'width':width});
+			$(this).children('.caption_overlay').animate({'opacity':'1'},'fast');
+        }).bind('mouseleave',function() {
+			$(this).children('.caption_overlay').animate({'opacity':'0'},'slow');
+        });
 		$('#navside').affix({
 			offset: {
-				top: 60,
+				top: 30,
 				bottom: 85
 				}
 		});
