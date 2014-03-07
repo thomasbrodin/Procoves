@@ -13,3 +13,5 @@ local-config.php
 /content/uploads
 
 /content/plugins/taxonomy-images
+
+/content/plugins/wpdbspringclean

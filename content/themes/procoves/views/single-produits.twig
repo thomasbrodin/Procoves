@@ -52,6 +52,7 @@
 									<h4>Description techniques</h4>
 									<p class="desc_tech">{{ post.desc_tech }}</p>
 									
+									<h4>Matieres utilisées</h4>
 									<ul class="matieres">
 									    {% for matiere in post.terms('matieres') %}
 									        <li><a href="{{matiere.link}}">{{matiere.name}}</a>
