@@ -239,7 +239,7 @@
 	width:12px;
 	height:12px;
 	border-radius:5px;
-	padding-top:2px;
+	padding:1px 0 0 !important;
 	border:1px solid #dadada;
 	color:#999;
 	font-weight:bold;
@@ -252,9 +252,27 @@
 	margin-left:7px !important;
 }
 
+.swp-tooltip-custom-field {
+	margin-top:15px;
+}
+
+.swp-custom-field-select {
+	padding-bottom:5px;
+}
+
+.swp-custom-fields-heading strong {
+	margin-top:1em;
+	border-top:1px solid #f1f1f1;
+	display:block;
+	padding:1em 0 0.5em;
+}
+
 .swp-delete {
 	color:#B80000;
 	font-weight:normal;
+	padding:0 !important;
+	position:relative;
+	top:3px;
 }
 
 .ui-tooltip {
@@ -473,4 +491,18 @@ select.swp-exclude-select {
 		width:auto;
 		float:none;
 	}
+}
+
+.swp-progress-notes {
+	position:relative;
+	padding-right:100px;
+}
+
+.swp-progress-notes a.swp-dismiss {
+	display:block;
+	width:80px;
+	position:absolute;
+	right:10px;
+	top:10px;
+	text-align:right;
 }

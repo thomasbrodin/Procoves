@@ -7,10 +7,9 @@ if( !defined( 'ABSPATH' ) ) die();
 include_once ABSPATH . 'wp-admin/includes/file.php';
 
 /**
- * Class SearchWPDebug is responsible for generating the search index
+ * Class SearchWPDebug is responsible for various debugging operations
  */
-class SearchWPDebug extends SearchWP
-{
+class SearchWPDebug extends SearchWP {
 	public $active;
 
 	private $logfile;
@@ -18,40 +17,37 @@ class SearchWPDebug extends SearchWP
 
 	private $apiPrefix = 'swpapi';
 
-	function __construct()
-	{
+	function __construct() {
 		global $wp_filesystem;
 
 		// determine whether we are active
 		$this->active = apply_filters( 'searchwp_debug', false );
 
 		// if we're not active, don't do anything
-		if( $this->active )
-		{
+		if( $this->active ) {
 			$this->logfile = trailingslashit( $this->instance()->dir ) . 'debug.log';
 
 			// init environment
-			if( !file_exists( $this->logfile ) )
-			{
+			if( !file_exists( $this->logfile ) ) {
 				WP_Filesystem();
-				if( !$wp_filesystem->put_contents( $this->logfile, '' ) );
-				{
+				if( !$wp_filesystem->put_contents( $this->logfile, '' ) ); {
 					$this->active = false;
 				}
 			}
 
 			// after determining whether we can write to the logfile, add our action
-			if( $this->active )
+			if( $this->active ) {
 				add_action( 'searchwp_log', array( $this, 'log' ), 1, 2 );
+			}
 		}
 
 		// handle remote debugging call
-		if( isset( $_REQUEST[$this->apiPrefix . 'key'] ) && isset( $_REQUEST[$this->apiPrefix . 'action'] ) )
-		{
+		if( isset( $_REQUEST[$this->apiPrefix . 'key'] ) && isset( $_REQUEST[$this->apiPrefix . 'action'] ) ) {
 			$exitCode = -1;
-			if( get_option( SEARCHWP_PREFIX . 'remote' ) == sanitize_text_field( $_REQUEST[$this->apiPrefix . 'key'] ) )
-			{
-				$this->remoteMeta = get_option( SEARCHWP_PREFIX . 'remote_meta' );
+			$live_settings = get_option( SEARCHWP_PREFIX . 'settings' );
+			$remote = isset( $live_settings['remote'] ) ? $live_settings['remote'] : false;
+			if( $remote && $remote == sanitize_text_field( $_REQUEST[$this->apiPrefix . 'key'] ) ) {
+				$this->remoteMeta = isset( $live_settings['remote_meta'] ) ? $live_settings['remote_meta'] : false;
 				switch( $_REQUEST[$this->apiPrefix . 'action'] ) {
 					case 'resetlicense':
 						$this->resetLicenseStatus();
@@ -83,16 +79,16 @@ class SearchWPDebug extends SearchWP
 			}
 			die();
 		}
-
 	}
 
-	function log( $message = '', $type = 'notice' )
-	{
+	function log( $message = '', $type = 'notice' ) {
 		global $wp_filesystem;
 		WP_Filesystem();
 
 		// if we're not active, don't do anything
-		if( !$this->active || !file_exists( $this->logfile ) ) return false;
+		if( !$this->active || !file_exists( $this->logfile ) ) {
+			return false;
+		}
 
 		// get the existing log
 		$existing = $wp_filesystem->get_contents( $this->logfile );
@@ -101,10 +97,15 @@ class SearchWPDebug extends SearchWP
 		$entry = '[' . date( 'Y-d-m G:i:s', current_time( 'timestamp' ) ) . '][' . sanitize_text_field( $type ) . ']';
 
 		// flag it with the process ID
-		$entry .= '[' . parent::getPid() . ']';
+		$entry .= '[' . SearchWP::instance()->getPid() . ']';
+
+		// sanitize the message
+		$message = sanitize_text_field( esc_html( $message ) );
+		$message = str_replace( '=&gt;', '=>', $message ); // put back array identifiers
+		$message = str_replace( '&#039;', "'", $message ); // put back apostrophe's
 
 		// finally append the message
-		$entry .= ' ' . sanitize_text_field( esc_html( $message ) );
+		$entry .= ' ' . $message;
 
 		// append the entry
 		$log = $existing . "\n" . $entry;
@@ -114,10 +115,8 @@ class SearchWPDebug extends SearchWP
 	}
 
 	function resetLicenseStatus() {
-		if( update_option( SEARCHWP_PREFIX . 'license_status', 'valid' ) )
-			echo 'License status reset';
-		else
-			echo 'License already valid';
+		searchwp_set_setting( 'license_status', 'valid' );
+		echo 'License status reset';
 	}
 
 	function getEnvironment() {
@@ -130,14 +129,14 @@ class SearchWPDebug extends SearchWP
 	}
 
 	function wakeUpIndexer() {
-		$running = get_option( SEARCHWP_PREFIX . 'running' );
+		$running = searchwp_get_setting( 'running' );
 		if( $running ) {
 			echo 'Indexer thought it was running. ';
-			delete_option( SEARCHWP_PREFIX . 'running' );
-			delete_option( SEARCHWP_PREFIX . 'total' );
-			delete_option( SEARCHWP_PREFIX . 'remaining' );
-			delete_option( SEARCHWP_PREFIX . 'done' );
-			delete_option( SEARCHWP_PREFIX . 'last_activity' );
+			searchwp_set_setting( 'running', false );
+			searchwp_set_setting( 'total', null, 'stats' );
+			searchwp_set_setting( 'remaining', null, 'stats' );
+			searchwp_set_setting( 'done', null, 'stats' );
+			searchwp_set_setting( 'last_activity', null, 'stats' );
 		}
 		$this->triggerIndex();
 		echo 'Woken up.';
@@ -162,8 +161,9 @@ class SearchWPDebug extends SearchWP
 		$posts = array_map( 'absint', $query->posts );
 
 		$postMeta = array();
-		foreach( $posts as $post_id )
+		foreach( $posts as $post_id ) {
 			$postMeta[$post_id] = get_post_meta( $post_id, $key, true );
+		}
 
 		echo json_encode( $postMeta );
 	}
@@ -187,8 +187,9 @@ class SearchWPDebug extends SearchWP
 		$posts = array_map( 'absint', $query->posts );
 
 		$postMeta = array();
-		foreach( $posts as $post_id )
+		foreach( $posts as $post_id ) {
 			$postMeta[$post_id] = get_post_meta( $post_id, $key, true );
+		}
 
 		echo json_encode( $postMeta );
 	}

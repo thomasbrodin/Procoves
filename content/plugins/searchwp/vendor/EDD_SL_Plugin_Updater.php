@@ -47,6 +47,7 @@ class EDD_SL_Plugin_Updater {
 	private function hook() {
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'pre_set_site_transient_update_plugins_filter' ) );
 		add_filter( 'plugins_api', array( $this, 'plugins_api_filter' ), 10, 3 );
+		add_filter( 'http_request_args', array( $this, 'http_request_args' ), 10, 2 );
 	}
 
 	/**
@@ -74,7 +75,7 @@ class EDD_SL_Plugin_Updater {
 		if( false !== $api_response && is_object( $api_response ) && isset( $api_response->new_version ) ) {
 			if( version_compare( $this->version, $api_response->new_version, '<' ) )
 				$_transient_data->response[$this->name] = $api_response;
-	}
+		}
 		return $_transient_data;
 	}
 
@@ -98,6 +99,22 @@ class EDD_SL_Plugin_Updater {
 		if ( false !== $api_response ) $_data = $api_response;
 
 		return $_data;
+	}
+
+
+	/**
+	 * Disable SSL verification in order to prevent download update failures
+	 *
+	 * @param array $args
+	 * @param string $url
+	 * @return object $array
+	 */
+	function http_request_args( $args, $url ) {
+		// If it is an https request and we are performing a package download, disable ssl verification
+		if( strpos( $url, 'https://' ) !== false && strpos( $url, 'edd_action=package_download' ) ) {
+			$args['sslverify'] = false;
+		}
+		return $args;
 	}
 
 	/**
@@ -128,7 +145,8 @@ class EDD_SL_Plugin_Updater {
 			'license' 		=> $data['license'],
 			'name' 			=> $data['item_name'],
 			'slug' 			=> $this->slug,
-			'author'		=> $data['author']
+			'author'		=> $data['author'],
+			'url'           => home_url()
 		);
 		$request = wp_remote_post( $this->api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
 

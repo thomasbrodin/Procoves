@@ -55,7 +55,7 @@ class SearchWPIndexer
 	/**
 	 * @var bool Whether to index Attachments at all
 	 */
-	private $indexAttachments = true;
+	private $indexAttachments = false;
 
 	/**
 	 * @var array Character entities as specified by Ando Saabas in Sphider http://www.sphider.eu/
@@ -97,27 +97,61 @@ class SearchWPIndexer
 
 
 	/**
+	 * @var int The maximum length of a term, as defined by the database schema
+	 *
+	 * @since 1.8.4
+	 */
+	private $max_term_length = 80;
+
+
+	/**
+	 * @var bool Whether SearchWP will also keep track of accent-less versions of accented terms when indexing
+	 *           which allows for 'lazy' searches without accents to show accented results
+	 */
+	private $leinant_accents = false;
+
+
+	/**
 	 * Constructor
 	 *
 	 * @param string $hash The key used to validate instantiation
 	 * @since 1.0
 	 */
 	public function __construct( $hash = '' ) {
+		global $searchwp;
 		// make sure we've got a valid request to index
 		if ( get_transient( 'searchwp' ) !== $hash ) {
 			do_action( 'searchwp_log', 'Invalid index request ' . $hash );
 		} else {
+
+			do_action( 'searchwp_indexer_pre' );
+
+			// init
+			$this->common = $searchwp->common;
+
+			$this->leinant_accents = apply_filters( 'searchwp_leinant_accents', $this->leinant_accents );
+
+			// dynamically decide whether we're going to index Attachments based on whether Media is enabled for any search engine
+			$index_attachments_from_settings = false;
+			if( isset( $searchwp->settings['engines'] ) && is_array( $searchwp->settings['engines'] ) ) {
+				foreach( $searchwp->settings['engines'] as $engine ) {
+					if( isset( $engine['attachment'] ) && isset( $engine['attachment']['enabled'] ) && true == $engine['attachment']['enabled'] ) {
+						$index_attachments_from_settings = true;
+						break;
+					}
+				}
+			}
+
 			// allow dev to completely disable indexing of Attachments to save indexing time
-			$this->indexAttachments = apply_filters( 'searchwp_index_attachments', $this->indexAttachments );
+			$this->indexAttachments = apply_filters( 'searchwp_index_attachments', $index_attachments_from_settings );
+			if ( ! is_bool( $this->indexAttachments ) ) {
+				$this->indexAttachments = false;
+			}
 
 			// allow dev to customize post statuses are included
 			$this->post_statuses = (array) apply_filters( 'searchwp_post_statuses', $this->post_statuses, null );
 			foreach( $this->post_statuses as $post_status_key => $post_status_value ) {
 				$this->post_statuses[$post_status_key] = sanitize_key( $post_status_value );
-			}
-
-			if ( ! is_bool( $this->indexAttachments ) ) {
-				$this->indexAttachments = false;
 			}
 
 			// allow dev to forcefully omit posts from being indexed
@@ -141,29 +175,74 @@ class SearchWPIndexer
 				$this->postTypesToIndex = 'any';
 			}
 
+			/**
+			 * Allow for some catch-up from the last request
+			 */
+
+			// auto-throttle based on load
+			$waitTime = 1;
+
+			if( apply_filters( 'searchwp_indexer_load_monitoring', false ) && function_exists( 'sys_getloadavg' ) ) {
+				$load = sys_getloadavg();
+				$loadThreshold = abs( apply_filters( 'searchwp_load_maximum', 1 ) );
+
+				// if the load has breached the threshold, scale the wait time
+				if( $load[0] > $loadThreshold ) {
+					$waitTime = 5 * ceil( $load[0] );
+					do_action( 'searchwp_log', 'Load threshold (' . $loadThreshold . ') has been breached! Current load: ' . $load[0] . '. Automatically injecting a wait time of ' . $waitTime );
+				}
+			}
+
+			// allow developers to throttle the indexer
+			$waitTime = absint( apply_filters( 'searchwp_indexer_throttle', $waitTime ) );
+			$iniMaxExecutionTime = absint( ini_get( 'max_execution_time' ) ) - 5;
+			if( $iniMaxExecutionTime < 10 ) $iniMaxExecutionTime = 10;
+			if( $waitTime > $iniMaxExecutionTime ) {
+				do_action( 'searchwp_log', 'Requested throttle of ' . $waitTime . 's exceeds max execution time, forcing ' . $iniMaxExecutionTime . 's' );
+				$waitTime = $iniMaxExecutionTime;
+			}
+
+			$memoryUse = size_format( memory_get_usage() );
+			do_action( 'searchwp_log', 'Memory usage: ' . $memoryUse . ' - sleeping for ' . $waitTime . 's' );
+
+			if( 1 == $waitTime ) {
+				// wait time was not adjusted, so we're just going to usleep because 1 second is an eternity
+				usleep( 500000 );
+			} else {
+				sleep( $waitTime );
+			}
+
 			// see if the indexer has stalled
 			$this->checkIfStalled();
 
-			// init
-			$searchwp = SearchWP::instance();
-			$this->common = $searchwp->common;
-
 			// check to see if indexer is already running
-			$running = get_option( SEARCHWP_PREFIX . 'running' );
+			$running = searchwp_get_setting( 'running' );
 			if( empty( $running ) ) {
 				do_action( 'searchwp_log', 'Indexer NOW RUNNING' );
-				update_option( SEARCHWP_PREFIX . 'last_activity', current_time( 'timestamp' ) );
-				update_option( SEARCHWP_PREFIX . 'running', true );
+
+				searchwp_set_setting( 'last_activity', current_time( 'timestamp' ), 'stats' );
+				searchwp_set_setting( 'running', true );
+
+				do_action( 'searchwp_indexer_running' );
 
 				$this->updateRunningCounts();
 
 				if ( $this->findUnindexedPosts() !== false ) {
+
+					do_action( 'searchwp_indexer_posts' );
+
+					$start_time = time();
+
 					// index this chunk of posts
 					$this->index();
 
+					$index_time = time() - $start_time;
+
 					// clean up
-					do_action( 'searchwp_log', 'Indexing chunk complete' );
-					update_option( SEARCHWP_PREFIX . 'running', false );
+					do_action( 'searchwp_log', 'Indexing chunk complete: ' . $index_time . 's' );
+
+					searchwp_set_setting( 'running', false );
+					searchwp_set_setting( 'in_process', false, 'stats' );
 
 					// reset the transient
 					delete_transient( 'searchwp' );
@@ -172,65 +251,43 @@ class SearchWPIndexer
 
 					do_action( 'searchwp_log', 'Request index (internal loopback) ' . trailingslashit( site_url() ) . '?swpnonce=' . $hash );
 
-					// auto-throttle based on load
-					$waitTime = 1;
-
-					if( function_exists( 'sys_getloadavg' ) ) {
-						$load = sys_getloadavg();
-						$loadThreshold = abs( apply_filters( 'searchwp_load_maximum', 1 ) );
-
-						// if the load has breached the threshold, scale the wait time
-						if( $load[0] > $loadThreshold ) {
-							$waitTime = 5 * ceil( $load[0] );
-							do_action( 'searchwp_log', 'Load threshold (' . $loadThreshold . ') has been breached! Current load: ' . $load[0] . '. Automatically injecting a wait time of ' . $waitTime );
-						}
-					}
-
-					// allow developers to throttle the indexer
-					$waitTime = absint( apply_filters( 'searchwp_indexer_throttle', $waitTime ) );
-					$iniMaxExecutionTime = absint( ini_get( 'max_execution_time' ) ) - 5;
-					if( $iniMaxExecutionTime < 10 ) $iniMaxExecutionTime = 10;
-					if( $waitTime > $iniMaxExecutionTime ) {
-						do_action( 'searchwp_log', 'Requested throttle of ' . $waitTime . 's exceeds max execution time, forcing ' . $iniMaxExecutionTime . 's' );
-						$waitTime = $iniMaxExecutionTime;
-					}
-
-					$memoryUse = size_format( memory_get_usage() );
-					do_action( 'searchwp_log', 'Memory usage before throttle: ' . $memoryUse );
-
-					do_action( 'searchwp_log', 'Sleeping for ' . $waitTime . 's' );
-					sleep( $waitTime );
-					do_action( 'searchwp_log', 'Done sleeping' );
-
-					$memoryUse = size_format( memory_get_usage() );
-					do_action( 'searchwp_log', 'Memory usage after throttle: ' . $memoryUse );
-
 					$timeout = abs( apply_filters( 'searchwp_timeout', 0.02 ) );
 
 					// recursive trigger
+					$args = array(
+						'body'        => array( 'swpnonce' => $hash ),
+						'blocking'    => false,
+						'user-agent'  => 'SearchWP',
+						'timeout'     => $timeout,
+						'sslverify'   => false
+					);
+					$args = apply_filters( 'searchwp_indexer_loopback_args', $args );
+
+					do_action( 'searchwp_indexer_loopback', $args );
+
 					wp_remote_post(
 						trailingslashit( site_url() ),
-						array(
-							'body'        => array( 'swpnonce' => $hash ),
-							'blocking'    => false,
-							'user-agent'  => 'SearchWP',
-							'timeout'     => $timeout,
-							'sslverify'   => false
-						)
+						$args
 					);
 				} else {
 					do_action( 'searchwp_log', 'Nothing left to index' );
-					$initial = get_option( SEARCHWP_PREFIX . 'initial' );
+					do_action( 'searchwp_index_up_to_date' );
+					$initial = searchwp_get_setting( 'initial_index_built' );
 					if ( empty( $initial ) ) {
 						wp_clear_scheduled_hook( 'swp_indexer' ); // clear out the pre-initial-index cron event
 						do_action( 'searchwp_log', 'Initial index complete' );
-						update_option( SEARCHWP_PREFIX . 'initial', true );
+						searchwp_set_setting( 'initial_index_built', true );
+						searchwp_set_option( 'progress', -1 );
+						do_action( 'searchwp_index_initial_complete' );
 					}
+					searchwp_set_setting( 'running', false );
+					searchwp_set_setting( 'in_process', false, 'stats' );
 				}
 
 				// done indexing
-				update_option( SEARCHWP_PREFIX . 'running', false );
-				delete_option( SEARCHWP_PREFIX . 'last_activity' );
+				searchwp_set_setting( 'last_activity', false, 'stats' );
+			} else {
+				do_action( 'searchwp_log', 'SHORT CIRCUIT: Indexer already running' );
 			}
 		}
 	}
@@ -253,15 +310,19 @@ class SearchWPIndexer
 
 		$remaining = intval( $total - $indexed );
 
-		update_option( SEARCHWP_PREFIX . 'total', $total );
-		update_option( SEARCHWP_PREFIX . 'remaining', $remaining );
-		update_option( SEARCHWP_PREFIX . 'done', $indexed );
+		searchwp_set_setting( 'total', $total, 'stats' );
+		searchwp_set_setting( 'remaining', $remaining, 'stats' );
+		searchwp_set_setting( 'done', $indexed, 'stats' );
+
+		$percent_progress = ( $total > 0 ) ? ( ( $total - $remaining ) / $total ) * 100 : 0;
+		$percent_progress = number_format( $percent_progress, 2, '.', '' );
+		searchwp_update_option( 'progress', $percent_progress );
 
 		do_action( 'searchwp_log', 'Updating counts: ' . $total . ' ' . $remaining . ' ' . $indexed );
 
 		if ( $remaining < 1 ) {
 			do_action( 'searchwp_log', 'Setting initial' );
-			update_option( SEARCHWP_PREFIX . 'initial', true );
+			searchwp_set_setting( 'initial_index_built', true );
 		}
 	}
 
@@ -272,14 +333,15 @@ class SearchWPIndexer
 	 * @since 1.0
 	 */
 	function checkIfStalled() {
-		do_action( 'searchwp_log', 'checkIfStalled()' );
 		// if the last activity was over three minutes ago, let's reset and notify of an issue
-		//		(it shouldn't take 3 minutes to index 10 posts)
-		if( false !== get_option( SEARCHWP_PREFIX . 'last_activity' ) ) {
-			if( current_time( 'timestamp' ) > get_option( SEARCHWP_PREFIX . 'last_activity' ) + 180 ) {
+		//		(it shouldn't take 3 minutes to index a chunk of posts)
+		$last_activity = searchwp_get_setting( 'last_activity', 'stats' );
+		if( ! is_null( $last_activity ) && false !== $last_activity ) {
+			if( current_time( 'timestamp' ) > $last_activity + 180 ) {
 				// stalled
-				do_action( 'searchwp_log', 'Stalled' );
-				update_option( SEARCHWP_PREFIX . 'running', false );
+				do_action( 'searchwp_log', '---------- Indexer has stalled, jumpstarting' );
+				searchwp_set_setting( 'running', false );
+				searchwp_set_setting( 'in_process', false, 'stats' );
 				delete_transient( 'searchwp' );
 				$hash = sha1( uniqid( 'searchwpindex' ) );
 				set_transient( 'searchwp', $hash );
@@ -298,7 +360,7 @@ class SearchWPIndexer
 				);
 			}
 		} else {
-			update_option( SEARCHWP_PREFIX . 'last_activity', current_time( 'timestamp' ) );
+			searchwp_set_setting( 'last_activity', current_time( 'timestamp' ), 'stats' );
 		}
 	}
 
@@ -427,7 +489,7 @@ class SearchWPIndexer
 		// no event fires if that changes over time, so we're going to offload that
 		// to be taken into consideration at query time
 
-		$indexChunk = apply_filters( 'searchwp_index_chunk_size', 8 );
+		$indexChunk = apply_filters( 'searchwp_index_chunk_size', 10 );
 
 		$args = array(
 			'posts_per_page'  => intval( $indexChunk ),
@@ -460,26 +522,26 @@ class SearchWPIndexer
 		$unindexedPosts = get_posts( $args );
 
 		// also check for media
-		if ( $this->indexAttachments !== false ) {
-			$indexChunk = apply_filters( 'searchwp_index_chunk_size', 5 );
+		if ( empty( $unindexedPosts ) && $this->indexAttachments !== false ) {
+			$indexChunk = apply_filters( 'searchwp_index_chunk_size', 10 );
 			$mediaArgs = array(
-				'posts_per_page'	=> intval( $indexChunk ),
-				'post_type' 			=> 'attachment',
-				'post_status'			=> 'inherit',
-				'post__not_in'    => $this->excludeFromIndex,
-				'meta_query' 			=> array(
-					'relation'			=> 'AND',
+				'posts_per_page'    => intval( $indexChunk ),
+				'post_type'         => 'attachment',
+				'post_status'       => 'inherit',
+				'post__not_in'      => $this->excludeFromIndex,
+				'meta_query'        => array(
+					'relation'      => 'AND',
 					array(
-						'key' 				=> '_' . SEARCHWP_PREFIX . 'indexed',
-						'value' 			=> '',	// http://core.trac.wordpress.org/ticket/23268
-						'compare' 		=> 'NOT EXISTS',
-						'type'				=> 'BINARY'
+						'key'       => '_' . SEARCHWP_PREFIX . 'indexed',
+						'value'     => '', // http://core.trac.wordpress.org/ticket/23268
+						'compare'   => 'NOT EXISTS',
+						'type'      => 'BINARY'
 					),
 					array(
-						'key' 				=> '_' . SEARCHWP_PREFIX . 'skip',
-						'value' 			=> '',	// only want media that hasn't failed indexing multiple times
-						'compare' 		=> 'NOT EXISTS',
-						'type'				=> 'BINARY'
+						'key'       => '_' . SEARCHWP_PREFIX . 'skip',
+						'value'     => '', // only want media that hasn't failed indexing multiple times
+						'compare'   => 'NOT EXISTS',
+						'type'      => 'BINARY'
 					)
 				)
 			);
@@ -496,14 +558,73 @@ class SearchWPIndexer
 
 
 	/**
+	 * Checks the stored in-process post IDs and existing index to ensure a rogue parallel indexer is not running
+	 *
+	 * @since 1.9
+	 */
+	function check_for_parallel_indexer() {
+		global $wpdb;
+
+		if ( is_array( $this->unindexedPosts ) && count( $this->unindexedPosts ) ) {
+			// prevent parallel indexers
+			$ids_to_index = array();
+			foreach( $this->unindexedPosts as $unindexed_post ) {
+				$ids_to_index[] = (int) $unindexed_post->ID;
+			}
+			reset( $this->unindexedPosts );
+
+			// check what's in process *right now*
+			$in_process = searchwp_get_setting( 'in_process', 'stats' );
+			if( is_array( $in_process ) ) {
+				$in_process = array_intersect( $ids_to_index, $in_process );
+			}
+
+			// check the index too
+			$ids_to_index_sql = implode( ',', $ids_to_index );
+			$index_table = $wpdb->prefix . SEARCHWP_DBPREFIX . 'index';
+			$ids_to_index_sql = "SELECT post_id  FROM {$index_table} WHERE post_id IN ({$ids_to_index_sql}) GROUP BY post_id LIMIT 100";
+			$already_indexed = $wpdb->get_col( $ids_to_index_sql );
+
+			// if it's in the index, force the indexed flag
+			if( is_array( $already_indexed ) && ! empty( $already_indexed ) ) {
+				foreach( $already_indexed as $already_indexed_id ) {
+					do_action( 'searchwp_log', (int) $already_indexed_id . ' is already in the index' );
+
+					// if we're not dealing with a term queue, mark this post as indexed
+					if( get_post_meta( (int) $already_indexed_id, '_' . SEARCHWP_PREFIX . 'terms', true ) ) {
+						update_post_meta( (int) $already_indexed_id, '_' . SEARCHWP_PREFIX . 'indexed', true );
+					}
+				}
+			}
+
+			// combine the two results so we have one collection of conflicts
+			$conflicts = is_array( $in_process ) ? array_values( array_merge( (array) $in_process, (array) $already_indexed ) ) : (array) $already_indexed;
+
+			if( ! empty( $conflicts ) ) {
+				do_action( 'searchwp_log', 'Parallel indexer detected when attempting to index: ' . implode( ', ', $conflicts ) );
+				die();
+			}
+
+			searchwp_set_setting( 'in_process', $ids_to_index, 'stats' );
+		}
+	}
+
+
+	/**
 	 * Index posts stored in $this->unindexedPosts
 	 *
 	 * @since 1.0
 	 */
 	function index() {
-		global $wp_filesystem, $wpdb;
+		global $wp_filesystem;
+
+		$this->check_for_parallel_indexer();
 
 		if ( is_array( $this->unindexedPosts ) && count( $this->unindexedPosts ) ) {
+
+			do_action( 'searchwp_indexer_pre_chunk' );
+
+			// all of the IDs to index have not been indexed, proceed with indexing them
 			while ( ( $unindexedPost = current( $this->unindexedPosts ) ) !== false ) {
 				$this->setPost( $unindexedPost );
 
@@ -524,13 +645,20 @@ class SearchWPIndexer
 				// if we breached the maximum number of attempts, flag it to skip
 				$this->maxAttemptsToIndex = absint( apply_filters( 'searchwp_max_index_attempts', $this->maxAttemptsToIndex ) );
 				if ( intval( $count ) > $this->maxAttemptsToIndex ) {
+
 					do_action( 'searchwp_log', 'Too many indexing attempts on ' . $this->post->ID . ' (' . $this->maxAttemptsToIndex . ') - skipping' );
 					// flag it to be skipped
 					update_post_meta( $this->post->ID, '_' . SEARCHWP_PREFIX . 'skip', true );
+
 				} else {
+
 					// check to see if we're running a second pass on terms
 					$termCache = get_post_meta( $this->post->ID, '_' . SEARCHWP_PREFIX . 'terms', true );
+
 					if ( ! is_array( $termCache ) ) {
+
+						do_action( 'searchwp_index_post', $this->post );
+
 						// if it's an attachment, we want the permalink
 						$slug = $this->post->post_type == 'attachment' ? str_replace( get_bloginfo( 'wpurl' ), '', get_permalink( $this->post->ID ) ) : '';
 
@@ -598,7 +726,6 @@ class SearchWPIndexer
 								WP_Filesystem();
 								$filename = get_attached_file( $this->post->ID );
 								$textContent = $wp_filesystem->exists( $filename ) ? $wp_filesystem->get_contents( $filename ) : '';
-								$textContent = preg_replace( '/[\x00-\x1F\x80-\xFF]/', ' ', $textContent );
 								$textContent = str_replace( "\n", " ", $textContent );
 								if ( ! empty( $textContent ) ) {
 									update_post_meta( $this->post->ID, SEARCHWP_PREFIX . 'content', $textContent );
@@ -635,11 +762,13 @@ class SearchWPIndexer
 								$customFieldName = key( $customFields );
 
 								$excludedCustomFieldKeys = apply_filters( 'searchwp_excluded_custom_fields', array(
-									'_edit_lock',
-									'_wp_page_template',
-									'_edit_last',
-									'_wp_old_slug',
-								) );
+										'_edit_lock',
+										'_wp_page_template',
+										'_edit_last',
+										'_wp_old_slug',
+										'_searchwp_indexed',
+										'_searchwp_last_index',
+									) );
 
 								$omitWpMetadata = apply_filters( 'searchwp_omit_wp_metadata', true );
 								if( !$omitWpMetadata || ( $omitWpMetadata && !in_array( $customFieldName, $excludedCustomFieldKeys ) ) ) {
@@ -660,15 +789,13 @@ class SearchWPIndexer
 							if( is_array( $extraMetadata ) ) {
 								foreach( $extraMetadata as $extraMetadataKey => $extraMetadataValue ) {
 									// TODO: make sure there are no collisions?
-//									while( isset( $postTerms['customfield'][$extraMetadataKey] ) ) {
-//										$extraMetadataKey .= '_';
-//									}
+									// while( isset( $postTerms['customfield'][$extraMetadataKey] ) ) {
+									//    $extraMetadataKey .= '_';
+									// }
 									$postTerms['customfield'][$extraMetadataKey] = $this->indexCustomField( $extraMetadataKey, $extraMetadataValue );
 								}
 							}
 						}
-
-						// TODO: index author info?
 
 						// we need to break out the terms from all of this content
 						$termCountBreakout = array();
@@ -732,9 +859,7 @@ class SearchWPIndexer
 						}
 					}
 
-					do_action( 'searchwp_log', '$termChunkMax = ' . $termChunkMax );
 					$termChunkLimit = apply_filters( 'searchwp_process_term_limit', $termChunkMax );
-					do_action( 'searchwp_log', '$termChunkLimit = ' . $termChunkLimit );
 
 					if ( count( $termCountBreakout ) > $termChunkLimit ) {
 						$acceptableTermCountBreakout = array_slice( $termCountBreakout, 0, $termChunkLimit );
@@ -773,6 +898,8 @@ class SearchWPIndexer
 				next( $this->unindexedPosts );
 			}
 			reset( $this->unindexedPosts );
+
+			do_action( 'searchwp_indexer_post_chunk' );
 		}
 	}
 
@@ -822,11 +949,19 @@ class SearchWPIndexer
 
 		// insert all of the terms into the terms table so each gets an ID
 		$attemptCount = 1;
-		$maxAttempts = absint( apply_filters( 'searchwp_indexer_max_attempts', 2 ) ) + 1;
-		while( is_wp_error( $wpdb->query( $wpdb->prepare( "INSERT IGNORE INTO {$termsTable} (term,reverse,stem) VALUES " . implode( ',', $newTermsSQL ), $newTerms ) ) ) && $attemptCount < $maxAttempts ) {
+		$maxAttempts = absint( apply_filters( 'searchwp_indexer_max_attempts', 4 ) ) + 1;  // try to recover 5 times
+		$insert_result = $wpdb->query(
+		                      $wpdb->prepare( "INSERT IGNORE INTO {$termsTable} (term,reverse,stem) VALUES " . implode( ',', $newTermsSQL ), $newTerms )
+		);
+		while( ( is_wp_error( $insert_result ) || false === $insert_result ) && $attemptCount < $maxAttempts ) {
 			// sometimes a deadlock can happen, wait a second then try again
-			sleep(2);
+			do_action( 'searchwp_log', 'INSERT Deadlock ' . $attemptCount . '/' . $maxAttempts );
+			sleep(3);
 			$attemptCount++;
+		}
+
+		if( $attemptCount > 1 ) {
+			do_action( 'searchwp_log', 'Recovered from Deadlock at ' . $attemptCount . '/' . $maxAttempts );
 		}
 
 		// retrieve IDs for all terms
@@ -901,14 +1036,14 @@ class SearchWPIndexer
 				// insert the counts for our standard fields
 				$indexTermsSQL[] = "(%d,%d,%d,%d,%d,%d,%d)";
 				$indexTerms = array_merge( $indexTerms, array(
-					$termID,
-					isset( $term['content'] )  ? absint( $term['content'] ) : 0,
-					isset( $term['title'] )    ? absint( $term['title'] ) : 0,
-					isset( $term['comments'] ) ? absint( $term['comments'] ) : 0,
-					isset( $term['excerpt'] )  ? absint( $term['excerpt'] ) : 0,
-					isset( $term['slug'] )     ? absint( $term['slug'] ) : 0,
-					absint( $this->post->ID )
-				) );
+						$termID,
+						isset( $term['content'] )  ? absint( $term['content'] ) : 0,
+						isset( $term['title'] )    ? absint( $term['title'] ) : 0,
+						isset( $term['comments'] ) ? absint( $term['comments'] ) : 0,
+						isset( $term['excerpt'] )  ? absint( $term['excerpt'] ) : 0,
+						isset( $term['slug'] )     ? absint( $term['slug'] ) : 0,
+						absint( $this->post->ID )
+					) );
 
 				// insert our custom field counts
 				if( isset( $term['customfield'] ) && is_array( $term['customfield'] ) && count( $term['customfield'] ) ) {
@@ -917,11 +1052,11 @@ class SearchWPIndexer
 						$customField = key( $term['customfield'] );
 						$customFieldTermsSQL[] = "(%s,%d,%d,%d)";
 						$customFieldTerms = array_merge( $customFieldTerms, array(
-							$customField,
-							isset( $term['id'] ) ? absint( $term['id'] ) : 0,
-							absint( $customFieldCount ),
-							absint( $this->post->ID )
-						) );
+								$customField,
+								isset( $term['id'] ) ? absint( $term['id'] ) : 0,
+								absint( $customFieldCount ),
+								absint( $this->post->ID )
+							) );
 						next( $term['customfield'] );
 					}
 					reset( $term['customfield'] );
@@ -933,11 +1068,11 @@ class SearchWPIndexer
 						$taxonomyName = key( $term['taxonomy'] );
 						$taxonomyTermsSQL[] = "(%s,%d,%d,%d)";
 						$taxonomyTerms = array_merge( $taxonomyTerms, array(
-							$taxonomyName,
-							isset( $term['id'] ) ? absint( $term['id'] ) : 0,
-							absint( $taxonomyCount ),
-							absint( $this->post->ID )
-						) );
+								$taxonomyName,
+								isset( $term['id'] ) ? absint( $term['id'] ) : 0,
+								absint( $taxonomyCount ),
+								absint( $this->post->ID )
+							) );
 						next( $term['taxonomy'] );
 					}
 					reset( $term['taxonomy'] );
@@ -952,7 +1087,7 @@ class SearchWPIndexer
 		if( !empty( $indexTerms ) ) {
 			$indexTable = $wpdb->prefix . SEARCHWP_DBPREFIX . 'index';
 			$wpdb->query(
-				$wpdb->prepare( "INSERT INTO {$indexTable} (term,content,title,comment,excerpt,slug,post_id) VALUES " . implode( ',', $indexTermsSQL ), $indexTerms )
+			     $wpdb->prepare( "INSERT INTO {$indexTable} (term,content,title,comment,excerpt,slug,post_id) VALUES " . implode( ',', $indexTermsSQL ), $indexTerms )
 			);
 		}
 
@@ -960,7 +1095,7 @@ class SearchWPIndexer
 		if( !empty( $customFieldTerms ) ) {
 			$cfTable = $wpdb->prefix . SEARCHWP_DBPREFIX . 'cf';
 			$wpdb->query(
-				$wpdb->prepare( "INSERT INTO {$cfTable} (metakey,term,count,post_id) VALUES " . implode( ',', $customFieldTermsSQL ), $customFieldTerms )
+			     $wpdb->prepare( "INSERT INTO {$cfTable} (metakey,term,count,post_id) VALUES " . implode( ',', $customFieldTermsSQL ), $customFieldTerms )
 			);
 		}
 
@@ -968,11 +1103,26 @@ class SearchWPIndexer
 		if( !empty( $taxonomyTerms ) ) {
 			$taxTable = $wpdb->prefix . SEARCHWP_DBPREFIX . 'tax';
 			$wpdb->query(
-				$wpdb->prepare( "INSERT INTO {$taxTable} (taxonomy,term,count,post_id) VALUES " . implode( ',', $taxonomyTermsSQL ), $taxonomyTerms )
+			     $wpdb->prepare( "INSERT INTO {$taxTable} (taxonomy,term,count,post_id) VALUES " . implode( ',', $taxonomyTermsSQL ), $taxonomyTerms )
 			);
 		}
 
 		return $success;
+	}
+
+
+	/**
+	 * Remove accents from the submitted string
+	 *
+	 * Written by Ando Saabas in Sphider http://www.sphider.eu/
+	 *
+	 * @param string $string The string from which to remove accents
+	 * @return string
+	 * @since 1.0
+	 */
+	function remove_accents( $string ) {
+		return( strtr( $string, "ÀÁÂÃÄÅÆàáâãäåæÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñÞßÿý",
+			"aaaaaaaaaaaaaaoooooooooooooeeeeeeeeecceiiiiiiiiuuuuuuuunntsyy" ) );
 	}
 
 
@@ -991,25 +1141,31 @@ class SearchWPIndexer
 		if( is_string( $string ) && !empty( $string ) ) {
 			$string = strtolower( $string );
 			$exploded = explode( " ", $string );
+
+			// ensure word length obeys database schema
+			foreach ( $exploded as $term_key => $term_term ) {
+				$exploded[$term_key] = trim( $term_term );
+				if( strlen( $term_term ) > $this->max_term_length ) {
+					// just drop it, it's useless anyway
+					unset( $exploded[$term_key] );
+				} else {
+					// accommodate accent-less searches (e.g. allow accented search results with non-accented search terms)
+					// this happens with WordPress taxonomy terms (WP strips them out)
+					if( $this->leinant_accents ) {
+						$without_accent = $this->remove_accents( $term_term );
+						if( $without_accent != $term_term ) {
+							// "duplicate" the term with this accent-less version
+							$exploded[] = $without_accent;
+						}
+					}
+				}
+			}
+			$exploded = array_values( $exploded );
+
 			$wordArray = $this->getWordCountFromArray( $exploded );
 		}
 
 		return $wordArray;
-	}
-
-
-	/**
-	 * Remove accents from the submitted string
-	 *
-	 * Written by Ando Saabas in Sphider http://www.sphider.eu/
-	 *
-	 * @param string $string The string from which to remove accents
-	 * @return string
-	 * @since 1.0
-	 */
-	function removeAccents( $string ) {
-		return( strtr( $string, "ÀÁÂÃÄÅÆàáâãäåæÒÓÔÕÕÖØòóôõöøÈÉÊËèéêëðÇçÐÌÍÎÏìíîïÙÚÛÜùúûüÑñÞßÿý",
-			"aaaaaaaaaaaaaaoooooooooooooeeeeeeeeecceiiiiiiiiuuuuuuuunntsyy" ) );
 	}
 
 
@@ -1060,9 +1216,20 @@ class SearchWPIndexer
 	 * @since 1.0
 	 */
 	function cleanContent( $content = '' ) {
+		global $searchwp;
+
 		if ( is_array( $content ) || is_object( $content ) ) {
 			$content = $this->parseVariableForTerms( $content );
 		}
+
+		// we need front and back spaces so we can perform exact matches when whitelisting
+		$content = ' ' . $content . ' ';
+
+		// extract terms based on whitelist pattern, allowing for approved indexing of terms with punctuation
+		$whitelisted_terms = $searchwp->extract_terms_using_pattern_whitelist( $content );
+
+		// we're not going to remove the matches here, we'll rely on the sanitization to give us more broad matches
+		// so as to still accommodate partial matches
 
 		// buffer tags with spaces before removing them
 		$content = preg_replace( "/<[\w ]+>/", "\\0 ", $content );
@@ -1078,6 +1245,13 @@ class SearchWPIndexer
 		$content = str_replace( $punctuation, ' ', $content );
 		$content = preg_replace( "/[[:punct:]]/uiU", " ", $content );
 		$content = preg_replace( "/[[:space:]]/uiU", " ", $content );
+
+		// append our whitelist
+		if( is_array( $whitelisted_terms ) && ! empty( $whitelisted_terms ) ) {
+			$content .= ' ' . implode( ' ' , $whitelisted_terms );
+		}
+
+		$content = sanitize_text_field( $content );
 		$content = trim( $content );
 
 		return $content;
@@ -1226,9 +1400,9 @@ class SearchWPIndexer
 
 		// index comments
 		$comments = get_comments( array(
-			'status'	=> 'approve',
-			'post_id'	=> $this->post->ID
-		) );
+				'status'	=> 'approve',
+				'post_id'	=> $this->post->ID
+			) );
 
 		$commentTerms = array();
 		if ( ! empty( $comments ) ) {
@@ -1349,24 +1523,30 @@ class SearchWPIndexer
 
 		// check to see if it's encoded
 		if ( is_string( $input ) ) {
-			if ( is_null( $json_decoded_input = json_decode( $input ) ) ) {
+			if ( is_null( $json_decoded_input = json_decode( $input, true ) ) ) {
 				$input = maybe_unserialize( $input );
 			} else {
-				$input = $json_decoded_input;
+				if( ! is_numeric( $input ) ) {
+					$input = $json_decoded_input;
+				}
 			}
 		}
 
 		// proceed with decoded input
 		if( is_string( $input ) ) {
 			$output = $this->cleanContent( $input );
-		} elseif( is_object( $input ) ) {
-			$input = get_object_vars( $input );
-			foreach( $input as $key => $val ) {
-				$output .= ' ' . $this->parseVariableForTerms( $val );
-			}
-		} elseif( is_array( $input ) ) {
-			foreach( $input as $key => $val ) {
-				$output .= ' ' . $this->parseVariableForTerms( $val );
+		} elseif( is_array( $input ) || is_object( $input ) ) {
+			foreach( (array) $input as $key => $val ) {
+				$array_output = self::parseVariableForTerms( $val );
+				if( ! is_object( $array_output ) && 'object' == gettype( $array_output ) ) {
+					// we hit a __PHP_Incomplete_Class Object because a serialized object was unserialized
+					$incomplete_class_output = '';
+					foreach( $array_output as $array_output_key => $array_output_val ) {
+						$incomplete_class_output .= ' ' . self::parseVariableForTerms( $array_output_val );
+					}
+					$array_output = $incomplete_class_output;
+				}
+				$output .= ' ' . $array_output;
 			}
 		} elseif( !is_bool( $input ) ) {
 			// it's a number
