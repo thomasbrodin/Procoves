@@ -1,0 +1,13 @@
+{% extends "base.twig" %}
+
+{% block content %}
+	<div class="row">
+		<div id="navside" class="col-md-3">
+	 		{% include ['sidebar-search.twig'] %}
+		</div>
+		<div class="col-md-9 taxonomy pull-right" role="main">
+			BANNER
+			{% include ['produits-loop.twig'] %}
+		</div>
+    </div>             
+{% endblock %}

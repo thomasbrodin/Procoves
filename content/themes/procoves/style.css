@@ -334,7 +334,7 @@ html[xmlns] .slides {display: block;}
   background: #333; 
   padding:8px 10px;
   font-size: 36px;
-  font-weight: 700
+  font-weight: 700;
 }
 
 /* HEADLINE */
@@ -508,11 +508,11 @@ html[xmlns] .slides {display: block;}
   color: #fff;
   font-size: 14px;
   position: relative;
-  margin: 10px 0 0 6px;
   padding: 0 10px;
   display: table-cell;
   vertical-align: middle;
-  text-align: center
+  text-align: center;
+  text-transform: uppercase;
 }
 
 /* VEDETTE */
@@ -643,11 +643,37 @@ section#content .taxonomy {
   color: #fff;
   font-size: 18px;
   position: relative;
-  margin: 10px 0 0 6px;
   padding: 0 10px;
   display: table-cell;
   vertical-align: middle;
-  text-align: center
+  text-align: center;
+  text-transform: uppercase;
+
+}
+.collection .gamme-thumb .caption_overlay ul {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.collection .gamme-thumb .caption_overlay li a{ 
+  font-family:'L Futura W01';
+  font-weight: 700;
+  color: #fff;
+  font-size: 14px;
+  position: relative;
+  padding: 0 10px;
+  border-bottom: none
+}
+.collection .gamme-thumb .caption_overlay li a:hover{ 
+  color: rgb(240,70,70);
+}
+
+.collection .gamme-thumb .caption_overlay li.parent {
+  font-size: 18px;
+  text-transform: uppercase;
+  font-family:'L Futura W01';
+  font-weight: 700;
+  color: #fff;
 }
 
 .produit-thumb {

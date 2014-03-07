@@ -11,25 +11,28 @@
 
 	$context = Timber::get_context();
 
-	$qobj = get_queried_object();
+	$templates = array('taxonomy.twig', 'archive.twig', 'index.twig');
+
+	$qobj = $wp_query->get_queried_object();
 	$args = array(
 		'post_type' => 'produits', 
-		'numberposts' => -1 ,
+		'posts_per_page' => 12,
 		'tax_query' => array(
 			        array(
 			          'taxonomy' => $qobj->taxonomy,
-			          'field' => 'slug', 
-			       	  'terms' => $qobj->name
+			          'field' => 'slug',  
+			          'terms' => $qobj->name
 			        )
      	 ),
 	);
 	$context['produits'] = Timber::get_posts($args);
 	$context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
-	$context['normes'] = Timber::get_terms('normes');
+	$context['normes'] = Timber::get_terms('normes', array('parent' => 0));
 
 	$termname = $qobj->name;
 	if (is_tax('gammes')){
 		$context['title'] = $termname;
+		array_unshift($templates, 'taxonomy-gammes.twig');
 	} else if (is_tax('normes')){
 		$context['title'] = 'Normes&nbsp;-&nbsp;'.$termname;
 	} else if (is_tax('activite')){
@@ -39,4 +42,4 @@
 	} 
 	$context['link'] = get_term_link( $qobj );
 
-	Timber::render('taxonomy.twig', $context);
+	Timber::render($templates, $context);
