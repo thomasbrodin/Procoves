@@ -8,7 +8,7 @@ Author URI: http://www.hexcreativenetwork.com
 
 add_action( 'wp_before_admin_bar_render', 'remove_admin_bar_links' );
 add_action( 'wp_before_admin_bar_render', 'child_theme_creator_admin_bar_render', 100);
-add_action( 'admin_menu', 'remove_menus' );
+add_action( 'admin_menu', 'remove_menus', 999 );
 add_action( 'wp_dashboard_setup', 'remove_dashboard_widgets');
 
 function remove_admin_bar_links() {
