@@ -34,7 +34,9 @@ function hex_cpt() {
         'query_var' => true,
         'show_ui' => true,
         'show_in_menu' => true,
-        'menu_position' => 5,
+        'show_in_nav_menus' => true,
+        'show_in_admin_bar' => true,
+        'menu_position' => 0,
         'has_archive' => true,
         'supports' => array( 'title', 'revisions',),
         'rewrite' => false 
@@ -100,18 +102,18 @@ function produits_taxonomies() {
     ); 
 }  
 
-function maybe_rewrite_rules() {
+// function maybe_rewrite_rules() {
 
-  $ver = filemtime( __FILE__ ); // Get the file time for this file as the version number
-  $defaults = array( 'version' => 0, 'time' => time() );
-  $r = wp_parse_args( get_option( __CLASS__ . '_flush', array() ), $defaults );
+//   $ver = filemtime( __FILE__ ); // Get the file time for this file as the version number
+//   $defaults = array( 'version' => 0, 'time' => time() );
+//   $r = wp_parse_args( get_option( __CLASS__ . '_flush', array() ), $defaults );
 
-  if ( $r['version'] != $ver || $r['time'] + 172800 < time() ) { // Flush if ver changes or if 48hrs has passed.
-    flush_rewrite_rules();
-    // trace( 'flushed' );
-    $args = array( 'version' => $ver, 'time' => time() );
-    if ( ! update_option( __CLASS__ . '_flush', $args ) )
-      add_option( __CLASS__ . '_flush', $args );
-  }
+//   if ( $r['version'] != $ver || $r['time'] + 172800 < time() ) { // Flush if ver changes or if 48hrs has passed.
+//     flush_rewrite_rules();
+//     // trace( 'flushed' );
+//     $args = array( 'version' => $ver, 'time' => time() );
+//     if ( ! update_option( __CLASS__ . '_flush', $args ) )
+//       add_option( __CLASS__ . '_flush', $args );
+//   }
 
-}
+// }

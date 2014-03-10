@@ -1,17 +1,8 @@
 local-config.php
 .DS_Store
-/content/mu-plugins/options
-
 /content/plugins/debug-bar
 /content/plugins/debug-bar-post-types
 /content/plugins/debug-bar-timber
-
 /content/plugins/wp-migrate-db
-
 /content/upgrade
-
 /content/uploads
-
-/content/plugins/taxonomy-images
-
-/content/plugins/wpdbspringclean

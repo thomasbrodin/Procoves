@@ -61,20 +61,6 @@ define( 'WPLANG', 'fr_FR' );
 ini_set( 'display_errors', 0 );
 define( 'WP_DEBUG_DISPLAY', false );
 
-// =================================================================
-// Debug mode
-// Debugging? Enable these. Can also enable them in local-config.php
-// =================================================================
-// define( 'SAVEQUERIES', true );
-// define( 'WP_DEBUG', true );
-
-
-// ===========================================================================================
-// This can be used to programatically set the stage when deploying (e.g. production, staging)
-// ===========================================================================================
-define( 'WP_STAGE', '%%WP_STAGE%%' );
-define( 'STAGING_DOMAIN', '%%WP_STAGING_DOMAIN%%' ); // Does magic in WP Stack to handle staging domain rewriting
-
 // ===================
 // Bootstrap WordPress
 // ===================

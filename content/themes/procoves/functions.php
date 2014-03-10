@@ -4,7 +4,6 @@
 	include_once('inc/acf-options-page/acf-options-page.php');
 	include_once('inc/acf-gallery/acf-gallery.php');
 
-	add_theme_support('post-formats');
 	add_theme_support('post-thumbnails');
 	add_theme_support('menus');
 
@@ -19,6 +18,8 @@
 
 	add_action('init', 'removeHeadLinks');
     remove_action('wp_head', 'wp_generator');
+
+    add_image_size( 'square-thumbnail', 300, 300);
 
 	define('THEME_URL', get_template_directory_uri());
 
