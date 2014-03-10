@@ -32,7 +32,6 @@ function remove_admin_bar_links() {
 function remove_menus() {
     global $wp_admin_bar, $current_user;
     remove_menu_page('index.php'); //Dashboard
-
     if ($current_user->ID != 1) {
         remove_menu_page('upload.php'); //Media
         remove_menu_page('plugins.php'); //Plugins
@@ -40,7 +39,9 @@ function remove_menus() {
         remove_menu_page('tools.php'); //Tools
         remove_menu_page('themes.php'); //Appearance
         remove_menu_page('edit-comments.php');  
-        remove_menu_page( 'upload.php' );      
+        remove_menu_page('upload.php' );     
+        remove_menu_page('options-general.php'); //Settings 
+        remove_menu_page('edit.php?post_type=acf');
     }       
 }
 
