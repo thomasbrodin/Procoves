@@ -14,7 +14,7 @@
 	NIVEAU DE PERFORMANCE</h2>
 	<ul class="normes-list">
 	{% for norme in normes %}
-		{% if norme.tax_img is null %} <!-- Do nothing  -->
+		{% if norme.tax_img is empty %} <!-- Do nothing  -->
 		{% else %}
     		<li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
     	{% endif %}

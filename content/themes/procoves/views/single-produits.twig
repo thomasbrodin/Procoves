@@ -42,7 +42,7 @@
 									</ul>
 									<ul class="normes">
 									    {% for norme in post.terms('normes') %}
-										    {% if norme.tax_img is null %} 
+										    {% if norme.tax_img is empty %} 
 										    	<li><a href="{{norme.link}}">{{ norme.name}}</a></li>
 										    {% else %}
 										        <li class="pull-left"><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
