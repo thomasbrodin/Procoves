@@ -10,6 +10,7 @@
 	add_filter('get_twig', 'add_to_twig');
 	add_filter('timber_context', 'add_to_context');
 	add_filter('acf/options_page/settings', 'options_page_settings');
+	add_filter( 'searchwp_admin_bar', '__return_false' );
 
 	add_action('wp_enqueue_scripts', 'load_scripts');
 	add_action('wp_enqueue_scripts', 'load_styles');
@@ -39,9 +40,11 @@
 		$data['logo_pro_blanc'] = new TimberImage($tech_logo_id2);
 		$logo_afaq = get_field('normes_iso', 'options');
 		$data['logo_afaq'] = new TimberImage($logo_afaq);
+		
 		$data['mode_emploi'] = get_field('guide_pratique', 'options');
 		$data['menu'] = new TimberMenu('navigation');
 		$data['footer'] = new TimberMenu('footer');
+		
 		return $data;
 	}
 
