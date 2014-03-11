@@ -44,12 +44,14 @@
               </div>
 
               <div id="block-lang-search">
-                <input type="text" class="form-control sidebar-top" value="Recherche" onfocus="if (this.value=='Recherche') this.value='';">
-                <select name="language" class="form-control sidebar-top">
-                  <option value="francais">Francais</option>
-                  <option value="English">English</option>
-                  <option value="Deutsch">Deutsch</option>
-                </select>
+                <form action="/" method="get" role="search">
+                  <input type="text" class="form-control sidebar-top" value="Rechercher" name="s" id="s" onfocus="if (this.value=='Rechercher') this.value='';">
+                </form>
+                  <select name="language" class="form-control sidebar-top">
+                    <option value="francais">Francais</option>
+                    <option value="English">English</option>
+                    <option value="Deutsch">Deutsch</option>
+                  </select>
               </div>
             </nav><!-- #access -->
 
