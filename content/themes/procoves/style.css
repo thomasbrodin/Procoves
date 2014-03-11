@@ -475,7 +475,7 @@ html[xmlns] .slides {display: block;}
   -webkit-backface-visibility: hidden;
 } 
 .thumbslider .slides li {
-  margin-right: 30px;
+  margin-right: 28px;
   cursor: pointer;
   border: 1px solid #333;
 }
@@ -840,7 +840,7 @@ h2.produit-title{
 }
 
 .prod-desc-panel {
-  width:65%;
+  width:70%;
 }
 .prod-desc-panel h4{
   text-transform: uppercase;
@@ -848,6 +848,7 @@ h2.produit-title{
   color: #000;
   margin-top: 20px;
   margin-bottom: 5px;
+  clear: both;
 }
 
 .prod-desc-panel ul {
@@ -858,23 +859,44 @@ h2.produit-title{
 .prod-desc-panel ul li{
   display: inline-block;
   text-transform: uppercase;
-  font-size: 18px;
-  padding: 0 8px;
-}
-
-.prod-desc-panel ul li:first-child{
-  padding-left: 0
+  font-size: 14px;
+  padding: 0 8px 4px 0;
 }
 
 .prod-desc-panel ul.gammes li{
   display: block;
-  padding: 0
+  padding: 0;
+  font-size: 18px;
 }
-.prod-desc-panel ul.normes li img{
-  max-height: 50px
+.prod-desc-panel ul.normes li a{
+  font-size: 14px;
+  background: #000;
+  color: #fff;
+  padding:4px 6px;
 }
-.prod-desc-panel ul.matieres li{
-  font-size: 14px
+
+.prod-desc-panel ul.normes li a:hover {
+  color:rgb(240,70,70);
+}
+.prod-desc-panel ul.normes li.pull-left a{
+  background: transparent;
+}
+
+.prod-desc-panel ul.normes li a img{
+  max-height: 60px;
+  margin-bottom: 20px;
+  padding-right: 8px;
+  background: transparent;
+}
+
+.prod-desc-panel ul.matieres li a{
+  font-size: 12px;
+  background: rgb(85,185,75);
+  color: #fff;
+  padding: 3px 4px;
+}
+.prod-desc-panel ul.matieres li a:hover {
+  color:#000;
 }
 .prod-desc-panel ul.matieres img{
    max-height: 50px

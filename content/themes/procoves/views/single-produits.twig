@@ -40,16 +40,21 @@
 											</li>
 									    {% endfor %}
 									</ul>
-
 									<ul class="normes">
 									    {% for norme in post.terms('normes') %}
-									        <li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+										    {% if norme.tax_img is null %} 
+										    	<li><a href="{{norme.link}}">{{ norme.name}}</a></li>
+										    {% else %}
+										        <li class="pull-left"><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+										    {% endif %}
 									    {% endfor %}
 									</ul>
+								
+								
 									
 									<h4>Utilisations preconisées</h4>
 									<p class="use_prod">{{ post.use_prod }}</p>
-									<h4>Description techniques</h4>
+									<h4>Description technique</h4>
 									<p class="desc_tech">{{ post.desc_tech }}</p>
 									
 									<h4>Matieres utilisées</h4>

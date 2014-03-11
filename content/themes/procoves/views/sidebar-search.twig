@@ -6,15 +6,18 @@
 		<input type="text" class="form-control sidebar" value="Nom" onfocus="if (this.value=='Nom') this.value='';">
 		<input type="text" class="form-control sidebar" value="Refs" onfocus="if (this.value=='Refs') this.value='';">
 		<input type="text" class="form-control sidebar" value="Matieres" onfocus="if (this.value=='Matieres') this.value='';">
-		<input type="text" class="form-control sidebar" value="Secteur" onfocus="if (this.value=='Secteur') this.value='';">
-		
+	<!-- 	<input type="text" class="form-control sidebar" value="Secteur" onfocus="if (this.value=='Secteur') this.value='';"> -->
+
 	</div>
 <div class="searchside">
 	<h2><span class="redline"></span>
 	NIVEAU DE PERFORMANCE</h2>
 	<ul class="normes-list">
 	{% for norme in normes %}
-	    <li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+		{% if norme.tax_img is null %} <!-- Do nothing  -->
+		{% else %}
+    		<li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+    	{% endif %}
 	{% endfor %}
 </ul>
 </div>
