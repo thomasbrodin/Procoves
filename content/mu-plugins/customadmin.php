@@ -41,7 +41,8 @@ function remove_menus() {
         remove_menu_page('edit-comments.php');  
         remove_menu_page('upload.php' );     
         remove_menu_page('options-general.php'); //Settings 
-        remove_menu_page('edit.php?post_type=acf');
+        remove_menu_page('edit.php?post_type=acf'); //ACF
+        remove_menu_page('wpcf7'); // Contact Form
     }       
 }
 
