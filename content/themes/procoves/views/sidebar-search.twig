@@ -2,10 +2,15 @@
 <div class="searchside">
 	<h2><span class="redline"></span>
 	RECHERCHE</h2>
-
-		<input type="text" class="form-control sidebar" value="Nom" onfocus="if (this.value=='Nom') this.value='';">
-		<input type="text" class="form-control sidebar" value="Refs" onfocus="if (this.value=='Refs') this.value='';">
-		<input type="text" class="form-control sidebar" value="Matieres" onfocus="if (this.value=='Matieres') this.value='';">
+        <form action="/" method="get" role="search"> 
+			<input type="text" class="form-control sidebar" name="s" value="Nom" onfocus="if (this.value=='Nom') this.value='';">
+		</form>
+		 <form action="/" method="get" role="search"> 
+			<input type="text" class="form-control sidebar" name="s" value="Refs" onfocus="if (this.value=='Refs') this.value='';">
+		</form>
+		 <form action="/" method="get" role="search"> 
+			<input type="text" class="form-control sidebar" name="s" value="Matieres" onfocus="if (this.value=='Matieres') this.value='';">
+		</form>
 	<!-- 	<input type="text" class="form-control sidebar" value="Secteur" onfocus="if (this.value=='Secteur') this.value='';"> -->
 
 	</div>
