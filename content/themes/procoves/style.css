@@ -952,7 +952,9 @@ h2.produit-title{
 #navside ul {
   padding-left:0px
 }
-
+#navside .searchside.last{
+  margin-bottom: 120px
+}
 #navside h2 {
   font-weight: 700;
   text-align: left;
