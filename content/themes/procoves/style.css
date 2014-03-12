@@ -756,6 +756,9 @@ section#content .taxonomy {
   border-color:#f0f0f0;
   min-height: 70px;
 }
+.produit-info h4{
+  font-size: 17px
+}
 .produit-info a{
   font-family:'L Futura W01'; 
   border:none;
