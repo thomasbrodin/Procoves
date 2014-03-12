@@ -16,7 +16,7 @@
 	$qobj = $wp_query->get_queried_object();
 	$args = array(
 		'post_type' => 'produits', 
-		'posts_per_page' => 12,
+		'posts_per_page' => -1,
 		'tax_query' => array(
 			        array(
 			          'taxonomy' => $qobj->taxonomy,
