@@ -38,6 +38,10 @@
 		$data['logo_pro_blanc'] = new TimberImage($tech_logo_id2);
 		$logo_afaq = get_field('normes_iso', 'options');
 		$data['logo_afaq'] = new TimberImage($logo_afaq);
+		$logo_ce = get_field('norme_ce', 'options');
+		$data['CE'] = new TimberImage($logo_ce);
+		
+		$data['languages'] = icl_get_languages('skip_missing=1');
 		
 		$data['mode_emploi'] = get_field('guide_pratique', 'options');
 		$data['menu'] = new TimberMenu('navigation');
@@ -49,7 +53,7 @@
 	function add_to_twig($twig){
 		// // retrieve our search query and pagination if applicable
 		// $query = isset( $_REQUEST['swpquery'] ) ? sanitize_text_field( $_REQUEST['swpquery'] ) : '';
-	 // 	$swppg = isset( $_REQUEST['swppg'] ) ? absint( $_REQUEST['swppg'] ) : 1;
+	 	// 	$swppg = isset( $_REQUEST['swppg'] ) ? absint( $_REQUEST['swppg'] ) : 1;
 
 		// // begin SearchWP Supplemental Search Engine results retrieval
 		// if( class_exists( 'SearchWP' ) ) {

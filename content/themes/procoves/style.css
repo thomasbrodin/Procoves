@@ -149,12 +149,12 @@ header .navbar-name h2{
 header a.navbar-brand, header .nav a {
   border-bottom: none
 }
+
 /* Search & lang */
 #block-lang-search {
   position: absolute;
   top:0;
   right:0;
-  background-color: #333;
   color: #fff;
   clear: both;
   width: 300px;
@@ -185,28 +185,40 @@ input.sidebar-top:focus{
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
 }
-#block-lang-search select.sidebar-top {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  border-radius: 0;
+
+#block-lang-search ul.lang-switch{
   height: 28px;
-  background-image: url('img/arrow-down-w.png');
-  background-repeat: no-repeat;
-  background-position: right center;
   background-color: #333;
   color:#fff;
   border:none;
   outline: 0;
-  padding: 0 8px;
-  width:40%;
+  width:41%;
   cursor: pointer;
   display: inline-block;
   margin: 0;
-  font-size: 12px;
   text-transform: none;
-  float: right
+  float: right;
+  padding: 0
 }
+
+#block-lang-search ul li {
+  background-color: #333;
+  color:#fff;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+#block-lang-search ul li a {
+  color:#fff;
+  border: none
+}
+
+#block-lang-search ul#lang-list {
+  padding:0;
+}
+#block-lang-search ul#lang-list li {
+  padding:0;
+}
+
 /* NAV */
 nav#access {
   margin-bottom: 0
@@ -579,6 +591,59 @@ html[xmlns] .slides {display: block;}
   padding-bottom: 30px;
 }
 
+/* VEDETTE SIMILAIRES */
+#vedette #thumbs-wrap{
+  background-color:#f0f0f0;
+  padding-bottom: 30px;
+}
+
+#vedette #thumbs-wrap h2{
+  font-weight: 700;
+  text-align: center;
+  font-size:24px;
+  text-transform: uppercase;
+  font-family:'L Futura W01';
+  border-bottom: 1px solid #333;
+  padding: 30px 0 15px;
+  display: block;
+  color: #333;
+  width: 300px;
+  margin:0 auto 30px;
+}
+
+#vedette #thumbs-wrap span.redline {
+  margin-top: 40px;
+  margin-left: 135px
+}
+.thumbs .related-thumb {
+  cursor: pointer;
+}
+.thumbs .related-thumb img {
+  max-width: 100%;
+  border: 1px solid #333;
+}
+.related-thumb .caption_overlay {
+  display: table;
+  position: absolute;
+  z-index: 1;
+  text-align: left;
+  color: #f8f8f8;
+  background: rgba(85,185,75,0.6);
+  opacity: 0;
+}
+
+.related-thumb .caption_overlay h4 {
+  font-family:'L Futura W01';
+  font-weight: 700;
+  color: #fff;
+  font-size: 14px;
+  position: relative;
+  padding: 0 10px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  text-transform: uppercase;
+}
 
 /* VEDETTE ACTU */
 
@@ -833,13 +898,16 @@ h2.produit-title{
   letter-spacing: 0.3pt
 }
 
-.prod-desc-heading span{
+.prod-desc-heading span {
   right:10px;
   position: absolute;
 }
-
+.prod-desc-heading span img.CE {
+  margin-top:20px;
+}
 .prod-desc-heading span img{
-  max-width: 130px
+  max-width: 150px;
+  padding-left:25px;
 }
 
 .prod-desc-panel {
@@ -1157,7 +1225,8 @@ ul.navlist li a {
 }
 
 .page-content input[type=submit]:hover{
-  
+  background-color: #eee;
+  color: #333;
 }
 
 /* ACTUALITES

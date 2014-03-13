@@ -56,6 +56,14 @@ jQuery(document).ready(function($) {
         }).bind('mouseleave',function() {
 			$(this).children('.caption_overlay').animate({'opacity':'0'},'slow');
         });
+        $('.related-thumb').bind('mouseenter',function() {
+			var height = $(this).height();
+			var width = $(this).width();
+			$(this).children('.caption_overlay').css({'height':height, 'width':width});
+			$(this).children('.caption_overlay').animate({'opacity':'1'},'fast');
+        }).bind('mouseleave',function() {
+			$(this).children('.caption_overlay').animate({'opacity':'0'},'slow');
+        });
 		$('#navside').affix({
 			offset: {
 				top: 30,

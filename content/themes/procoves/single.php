@@ -17,13 +17,14 @@ if (isset($post->img_prod) && strlen($post->img_prod)){
 $context['post'] = $post;
 $context['wp_title'] .= ' - ' . $post->title();
 
+$context['title'] = $post->title();	
 $context['actu'] = Timber::get_post('category_name=a-la-une');
 $context['email'] = get_field('email', 'options');
 $context['adresse'] = get_field('adresse', 'options');
 
 $args = array(
 		'post_type' => 'produits', 
-		'numberposts' => 12,
+		'numberposts' => 4,
 		'tax_query' => array(
             array(
                 'taxonomy' => 'mots_cles',
@@ -32,7 +33,7 @@ $args = array(
             ),
         )
 	);
-$context['produits'] = Timber::get_posts($args);
+$context['similaires'] = Timber::get_posts($args);
 $context['fiche'] = get_field('fiche_tech');
 
 $context['sidebar'] = Timber::get_sidebar('sidebar.php');
