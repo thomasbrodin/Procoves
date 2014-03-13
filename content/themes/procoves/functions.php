@@ -20,8 +20,6 @@
 	add_action('init', 'removeHeadLinks');
     remove_action('wp_head', 'wp_generator');
 
-    add_image_size( 'square-thumbnail', 300, 300);
-
 	define('THEME_URL', get_template_directory_uri());
 
 	function options_page_settings( $settings )
@@ -44,11 +42,30 @@
 		$data['mode_emploi'] = get_field('guide_pratique', 'options');
 		$data['menu'] = new TimberMenu('navigation');
 		$data['footer'] = new TimberMenu('footer');
-		
+
 		return $data;
 	}
 
 	function add_to_twig($twig){
+		// // retrieve our search query and pagination if applicable
+		// $query = isset( $_REQUEST['swpquery'] ) ? sanitize_text_field( $_REQUEST['swpquery'] ) : '';
+	 // 	$swppg = isset( $_REQUEST['swppg'] ) ? absint( $_REQUEST['swppg'] ) : 1;
+
+		// // begin SearchWP Supplemental Search Engine results retrieval
+		// if( class_exists( 'SearchWP' ) ) {
+		// 	// instantiate SearchWP
+		// 	$engine = SearchWP::instance();
+		// 	$nom = 'nom';
+		// 	$ref = 'ref';
+		// 	$matieres = 'matieres'; // taken from the SearchWP settings screen
+		 
+		// 	// perform the search
+		// 	$posts = $engine->search( $nom, $query ,$swppg );
+		// 	$posts = $engine->search( $ref, $query, $swppg );
+		// 	$posts = $engine->search( $matieres, $query ,$swppg );
+	 // 		return $posts;
+		// }
+
 		/* this is where you can add your own functions to twig */
 		$twig->addExtension(new Twig_Extension_StringLoader());
 		$twig->addFilter('myfoo', new Twig_Filter_Function('myfoo'));

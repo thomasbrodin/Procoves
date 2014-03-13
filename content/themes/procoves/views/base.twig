@@ -4,23 +4,23 @@
 </head>
     <body class="{{body_class}}" data-source="base.twig">
 
-            {% include 'header.twig' %}
-            {% include 'breadcrumbs.twig' %}
+        {% include 'partials/header.twig' %}
+        {% include 'partials/breadcrumbs.twig' %}
 
-            <section id="content" class="content-wrapper">
+        <section id="content" class="content-wrapper">
 
-                <div class="container">
-                   
-                    {% block content %}
-                        Sorry, no content
-                    {% endblock %}
-                    
-                </div>
+            <div class="container">
+               
+                {% block content %}
+                    Sorry, no content
+                {% endblock %}
+                
+            </div>
 
-            </section>
+        </section>
 
 
-        {% include 'footer.twig' %}
+        {% include 'partials/footer.twig' %}
         {{ function('wp_footer') }}
 
     </body>

@@ -26,7 +26,7 @@ function remove_admin_bar_links() {
     $wp_admin_bar->remove_node( 'new-produits','new-content');
     $wp_admin_bar->remove_node( 'new-user', 'new-content' );
     $wp_admin_bar->remove_menu( 'SearchWP' );  
-    $wp_admin_bar->remove_menu('w3tc');
+    $wp_admin_bar->remove_menu( 'w3tc');
 }
 
 function remove_menus() {
@@ -35,14 +35,15 @@ function remove_menus() {
     if ($current_user->ID != 1) {
         remove_menu_page('upload.php'); //Media
         remove_menu_page('plugins.php'); //Plugins
-        remove_menu_page('users.php'); //Users
         remove_menu_page('tools.php'); //Tools
-        remove_menu_page('themes.php'); //Appearance
         remove_menu_page('edit-comments.php');  
         remove_menu_page('upload.php' );     
         remove_menu_page('options-general.php'); //Settings 
         remove_menu_page('edit.php?post_type=acf'); //ACF
         remove_menu_page('wpcf7'); // Contact Form
+        remove_submenu_page( 'themes.php', 'customize.php'); //Appearance submenus
+        remove_submenu_page( 'themes.php', 'timber-getting-started');
+        remove_submenu_page( 'themes.php', 'theme-editor.php');
     }       
 }
 

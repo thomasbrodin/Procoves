@@ -4,7 +4,7 @@
 </head>
     <body class="{{body_class}}">
 
-        {% include 'header.twig' %}
+        {% include 'partials/header.twig' %}
 		
 		<section id="home" role="main" class="content-wrapper">
 		    
@@ -58,12 +58,12 @@
 			</div>
 
 			<div id="vedette">
-				{% include 'vedette.twig' %}
+				{% include 'partials/vedette.twig' %}
 			</div>
 
 		</section>
 
-        {% include 'footer.twig' %}
+        {% include 'partials/footer.twig' %}
         {{ function('wp_footer') }}
       
   </body>

@@ -5,97 +5,97 @@
 
  <body class="{{body_class}}" data-source="base.twig">
 
-            {% include 'header.twig' %}
-            {% include 'breadcrumbs.twig' %}
+    {% include 'partials/header.twig' %}
+    {% include 'partials/breadcrumbs.twig' %}
 
-            <section id="content" class="content-wrapper">
+    <section id="content" class="content-wrapper">
 
-                <div class="container">
-		
-					<article id="produit-content">
-						<div class="row">
+        <div class="container">
 
-							<div class="produit-image col-md-6">
-								{% if post.img_prod %}
-									<img src="{{post.img_prod.src}}">
-								{% else %}
-									<img src="{{theme.uri}}/img/blank.jpg">
-								{% endif %}
-							</div>
+			<article id="produit-content">
+				<div class="row">
 
-							<div class="produit-desc col-md-6">
-
-								<div class="prod-desc-heading">
-									<h2 class="produit-title">{{post.title}}</h2>
-									<span><img src="{{logo_pro_noir}}"></span>
-									<p>REF : {{ post.ref }}</p>
-								</div>
-
-								<div class="prod-desc-panel">
-									
-									<ul class="gammes">
-									    {% for gamme in post.terms('gammes') %}
-									        <li><a href="{{gamme.link}}">{{gamme.name}}</a>
-									        	
-											</li>
-									    {% endfor %}
-									</ul>
-									<ul class="normes">
-									    {% for norme in post.terms('normes') %}
-										    {% if norme.tax_img is empty %} 
-										    	<li><a href="{{norme.link}}">{{ norme.name}}</a></li>
-										    {% else %}
-										        <li class="pull-left"><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
-										    {% endif %}
-									    {% endfor %}
-									</ul>
-								
-								
-									
-									<h4>Utilisations preconisées</h4>
-									<p class="use_prod">{{ post.use_prod }}</p>
-									<h4>Description technique</h4>
-									<p class="desc_tech">{{ post.desc_tech }}</p>
-									
-									<h4>Matieres utilisées</h4>
-									<ul class="matieres">
-									    {% for matiere in post.terms('matieres') %}
-									        <li><a href="{{matiere.link}}">{{matiere.name}}</a>
-									        </li>
-									        {% if matiere.tax_img %}
-												<span class="pull-right"><img src="{{TimberImage(matiere.tax_img)}}"></span>{% endif %}
-									    {% endfor %}
-									</ul>
-
-								</div>
-
-								<div class="infos">
-									<span>
-										<a target="_blank" href="{{mode_emploi}}" data-toggle="tooltip" title="Mode d'emploi">
-											<i class="info"></i>
-										</a>
-									</span>
-									<span>
-										<a target="_blank" href="{{fiche}}" data-toggle="tooltip" title="Imprimer la fiche technique">
-											<i class="print"></i>
-										</a>
-									</span>
-								</div>
-
-							</div>
-
-						</div><!-- /.row -->
-					</article>
-				</div><!-- /.container -->
-
-					<div id="vedette">
-						{% include 'vedette.twig' %}
+					<div class="produit-image col-md-6">
+						{% if post.img_prod %}
+							<img src="{{post.img_prod.src}}">
+						{% else %}
+							<img src="{{theme.uri}}/img/blank.jpg">
+						{% endif %}
 					</div>
 
-		</section>
+					<div class="produit-desc col-md-6">
 
-        {% include 'footer.twig' %}
-        {{ function('wp_footer') }}
+						<div class="prod-desc-heading">
+							<h2 class="produit-title">{{post.title}}</h2>
+							<span><img src="{{logo_pro_noir}}"></span>
+							<p>REF : {{ post.ref }}</p>
+						</div>
+
+						<div class="prod-desc-panel">
+							
+							<ul class="gammes">
+							    {% for gamme in post.terms('gammes') %}
+							        <li><a href="{{gamme.link}}">{{gamme.name}}</a>
+							        	
+									</li>
+							    {% endfor %}
+							</ul>
+							<ul class="normes">
+							    {% for norme in post.terms('normes') %}
+								    {% if norme.tax_img is empty %} 
+								    	<li><a href="{{norme.link}}">{{ norme.name}}</a></li>
+								    {% else %}
+								        <li class="pull-left"><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+								    {% endif %}
+							    {% endfor %}
+							</ul>
+						
+						
+							
+							<h4>Utilisations preconisées</h4>
+							<p class="use_prod">{{ post.use_prod }}</p>
+							<h4>Description technique</h4>
+							<p class="desc_tech">{{ post.desc_tech }}</p>
+							
+							<h4>Matieres utilisées</h4>
+							<ul class="matieres">
+							    {% for matiere in post.terms('matieres') %}
+							        <li><a href="{{matiere.link}}">{{matiere.name}}</a>
+							        </li>
+							        {% if matiere.tax_img %}
+										<span class="pull-right"><img src="{{TimberImage(matiere.tax_img)}}"></span>{% endif %}
+							    {% endfor %}
+							</ul>
+
+						</div>
+
+						<div class="infos">
+							<span>
+								<a target="_blank" href="{{mode_emploi}}" data-toggle="tooltip" title="Mode d'emploi">
+									<i class="info"></i>
+								</a>
+							</span>
+							<span>
+								<a target="_blank" href="{{fiche}}" data-toggle="tooltip" title="Imprimer la fiche technique">
+									<i class="print"></i>
+								</a>
+							</span>
+						</div>
+
+					</div>
+
+				</div><!-- /.row -->
+			</article>
+		</div><!-- /.container -->
+
+		<div id="vedette">
+			{% include 'partials/vedette.twig' %}
+		</div>
+
+	</section>
+
+    {% include 'partials/footer.twig' %}
+    {{ function('wp_footer') }}
       
   </body>
 </html>
