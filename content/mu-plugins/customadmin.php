@@ -41,6 +41,7 @@ function remove_menus() {
         remove_menu_page('options-general.php'); //Settings 
         remove_menu_page('edit.php?post_type=acf'); //ACF
         remove_menu_page('wpcf7'); // Contact Form
+        remove_menu_page('sitepress-multilingual-cms/menu/languages.php'); // WPML
         remove_submenu_page( 'themes.php', 'customize.php'); //Appearance submenus
         remove_submenu_page( 'themes.php', 'timber-getting-started');
         remove_submenu_page( 'themes.php', 'theme-editor.php');
