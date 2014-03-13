@@ -23,7 +23,7 @@ function to_plugin_options()
                         <div id="icon-settings" class="icon32"></div>
                             <h2><?php _e( "General Settings", 'to' ) ?></h2>
                             
-                            
+                            <?php tto_info_box() ?>
                            
                             <form id="form_data" name="form" method="post">   
                                 <br />

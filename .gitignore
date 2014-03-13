@@ -6,3 +6,4 @@ local-config.php
 /content/plugins/wp-migrate-db
 /content/upgrade
 /content/uploads
+/content/plugins/searchwp-polylang
