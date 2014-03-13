@@ -27,7 +27,10 @@
 
 						<div class="prod-desc-heading">
 							<h2 class="produit-title">{{post.title}}</h2>
-							<span><img src="{{logo_pro_noir}}"></span>
+							<span>
+								<img src="{{CE}}">
+								<img src="{{logo_pro_noir}}">
+							</span>
 							<p>REF : {{ post.ref }}</p>
 						</div>
 
@@ -89,7 +92,7 @@
 		</div><!-- /.container -->
 
 		<div id="vedette">
-			{% include 'partials/vedette.twig' %}
+			{% include 'partials/featured-single.twig' %}
 		</div>
 
 	</section>

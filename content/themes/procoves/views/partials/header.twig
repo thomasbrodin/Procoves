@@ -44,14 +44,28 @@
         </div>
 
         <div id="block-lang-search">
+          
           <form action="/" method="get" role="search">
             <input type="text" class="form-control sidebar-top" value="Rechercher" name="s" onfocus="if (this.value=='Rechercher') this.value='';">
           </form>
-            <select name="language" class="form-control sidebar-top">
-              <option value="francais">Francais</option>
-              <option value="English">English</option>
-              <option value="Deutsch">Deutsch</option>
-            </select>
+            
+            <ul class="lang-switch">
+              {% for lang in languages %} 
+                {% if lang.active %}      
+                  <li class="lang-id"><a href="{{lang.url}}">{{lang.native_name}}</a>
+                    <i data-toggle="collapse" data-target="#lang-list" class="angle-down"></i>
+                      <ul id="lang-list" class="collapse">
+                          {% for lang in languages %} 
+                            {% if lang.active == 0 and lang.missing == 0 %}    
+                              <li><a href="{{lang.url}}">{{lang.native_name}}</a></li>
+                            {% endif %}
+                          {% endfor %}
+                      </ul>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          
         </div>
       </nav><!-- #access -->
 
