@@ -17,6 +17,7 @@
 	
 	$args = array(
 		'post_type' => 'produits', 
+		'post_status' => 'publish',
 		'numberposts' => 12,
 		'tax_query' => array(
             array(

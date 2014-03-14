@@ -22,17 +22,27 @@ $context['actu'] = Timber::get_post('category_name=a-la-une');
 $context['email'] = get_field('email', 'options');
 $context['adresse'] = get_field('adresse', 'options');
 
-$args = array(
+$post_id = get_the_ID();
+$terms = wp_get_post_terms($post_id, 'gammes');
+if (!empty($terms)) {
+	$term_slugs = array_map(function($item) {
+        return $item->slug;
+    }, $terms);
+	$args = array(
 		'post_type' => 'produits', 
-		'numberposts' => 4,
-		'tax_query' => array(
-            array(
-                'taxonomy' => 'mots_cles',
-                'field' => 'slug',
-                'terms' => array( 'vedette' )
-            ),
-        )
+		'post_status' => 'publish',
+		'posts_per_page' => 4,
+		'post__not_in' => array($post_id),
+	    'tax_query' => array(
+	        array(
+	            'taxonomy' => 'gammes',
+	            'field' => 'slug',
+	            'terms' => $term_slugs,
+	            'operator' => 'IN'
+	        )
+	    )
 	);
+}
 $context['similaires'] = Timber::get_posts($args);
 $context['fiche'] = get_field('fiche_tech');
 
