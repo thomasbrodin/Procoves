@@ -903,11 +903,11 @@ h2.produit-title{
   position: absolute;
 }
 .prod-desc-heading span img.CE {
-  margin-top:20px;
+  margin-top:5px;
 }
 .prod-desc-heading span img{
   max-width: 150px;
-  padding-left:25px;
+  padding-left:10px;
 }
 
 .prod-desc-panel {
