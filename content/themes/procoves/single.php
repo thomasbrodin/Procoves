@@ -11,9 +11,6 @@
 
 $context = Timber::get_context();
 $post = new TimberPost();
-if (isset($post->img_prod) && strlen($post->img_prod)){
-	$post->img_prod = new TimberImage($post->img_prod);
-}
 $context['post'] = $post;
 $context['wp_title'] .= ' - ' . $post->title();
 
@@ -24,25 +21,24 @@ $context['adresse'] = get_field('adresse', 'options');
 
 $post_id = get_the_ID();
 $terms = wp_get_post_terms($post_id, 'gammes');
-if (!empty($terms)) {
-	$term_slugs = array_map(function($item) {
-        return $item->slug;
-    }, $terms);
-	$args = array(
-		'post_type' => 'produits', 
-		'post_status' => 'publish',
-		'posts_per_page' => 4,
-		'post__not_in' => array($post_id),
-	    'tax_query' => array(
-	        array(
-	            'taxonomy' => 'gammes',
-	            'field' => 'slug',
-	            'terms' => $term_slugs,
-	            'operator' => 'IN'
-	        )
-	    )
-	);
-}
+$term_slugs = array_map(function($item) {
+    return $item->slug;
+}, $terms);
+$args = array(
+	'post_type' => 'produits', 
+	'post_status' => 'publish',
+	'posts_per_page' => 4,
+	'post__not_in' => array($post_id),
+    'tax_query' => array(
+        array(
+            'taxonomy' => 'gammes',
+            'field' => 'slug',
+            'terms' => $term_slugs,
+            'operator' => 'IN'
+        )
+    )
+);
+
 $context['similaires'] = Timber::get_posts($args);
 $context['fiche'] = get_field('fiche_tech');
 

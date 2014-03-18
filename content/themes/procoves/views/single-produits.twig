@@ -16,8 +16,8 @@
 				<div class="row">
 
 					<div class="produit-image col-md-6">
-						{% if post.img_prod %}
-							<img src="{{post.img_prod.src}}">
+						{% if post.get_field('img_prod') %}
+							<img src="{{TimberImage(post.get_field('img_prod')).src}}">
 						{% else %}
 							<img src="{{theme.uri}}/img/blank.jpg">
 						{% endif %}
@@ -31,15 +31,14 @@
 								<img class="CE" src="{{CE}}">
 								<img src="{{logo_pro_noir}}">
 							</span>
-							<p>REF : {{ post.ref }}</p>
+							<p>REF : {{ post.get_field('ref') }}</p>
 						</div>
 
 						<div class="prod-desc-panel">
 							
 							<ul class="gammes">
 							    {% for gamme in post.terms('gammes') %}
-							        <li><a href="{{gamme.link}}">{{gamme.name}}</a>
-							        	
+							        <li><a href="{{gamme.link}}">{{gamme.name}}</a>		        	
 									</li>
 							    {% endfor %}
 							</ul>
@@ -53,12 +52,19 @@
 							    {% endfor %}
 							</ul>
 						
+							<ul class="activite ">
+							    {% for activite in post.terms('activite') %}
+							        <li><a href="{{activite.link}}">{{activite.name}}</a>
+									</li>
+							    {% endfor %}
+							</ul>
+						
 						
 							
 							<h4>Utilisations preconisées</h4>
-							<p class="use_prod">{{ post.use_prod }}</p>
+							<p class="use_prod">{{ post.get_field('use_prod') }}</p>
 							<h4>Description technique</h4>
-							<p class="desc_tech">{{ post.desc_tech }}</p>
+							<p class="desc_tech">{{ post.get_field('desc_tech') }}</p>
 							
 							<h4>Matieres utilisées</h4>
 							<ul class="matieres">
