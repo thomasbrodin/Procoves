@@ -111,6 +111,10 @@
     position: absolute;
     width: 293px;
   }
+  #navside .normes-list li img {
+    max-height: 50px;
+    max-width: 40px;
+  }
 }
 
 @media screen and (max-width: 860px) {
