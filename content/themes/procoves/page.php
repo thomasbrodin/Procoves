@@ -21,6 +21,8 @@ $context = Timber::get_context();
 
 $post = new TimberPost();
 $context['post'] = $post;
+$context['wp_title'] .= ' - ' . $post->title();
+$context['title'] = $post->title();
 $context ['subpages'] =  get_pages(array( 'child_of' => $post->ID, 'sort_column' => 'menu_order')); 
 
 Timber::render(array('page-' . $post->post_name . '.twig', 'page.twig'), $context);

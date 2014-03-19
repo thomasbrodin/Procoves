@@ -3,13 +3,8 @@
 	<div class="container">
 		 
 		 <ul class="bclist">
-			<li><a href="/" rel="home">Procoves</a>&nbsp;</li>
-			<!-- quick links  -->				  
-			{% if title %}
-			<li>/&nbsp;<a href="{{link}}">{{title}}</a></li>
-			{% else %}
-			<li>/&nbsp;<a href="{{post.link}}">{{post.title}}</a></li>
-			{% endif %}
+			<li><a href="{{site.url}}" rel="home">{{site.title}}</a>&nbsp;</li>
+			<li>/&nbsp;<a href="{{link}}">{{title}}</a></li>			
 		 </ul>
 
 			<!-- titre  -->

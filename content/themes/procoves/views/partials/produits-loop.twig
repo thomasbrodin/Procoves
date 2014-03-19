@@ -5,7 +5,7 @@
 	      	<div class="produit-thumb">
 		      	<a href="{{produit.link}}">	
 		      		{% if produit.img_prod %}
-			      		<img src="{{TimberImage(produit.img_prod)}}">
+			      		<img src="{{TimberImage(produit.img_prod).src|resize(300,300)}}">
 					{% else %}
 						<img src="{{theme.uri}}/img/blank.jpg">
 					{% endif %}

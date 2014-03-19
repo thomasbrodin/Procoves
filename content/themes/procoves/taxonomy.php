@@ -26,7 +26,6 @@ $args = array(
 		        )
  	 ),
 );
-$context['queriedobject'] = $qobj;
 $context['produits'] = Timber::get_posts($args);
 $context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
 $context['normes'] = Timber::get_terms('normes', array('parent' => 0));
@@ -34,13 +33,17 @@ $context['normes'] = Timber::get_terms('normes', array('parent' => 0));
 $termname = $qobj->name;
 if (is_tax('gammes')){
 	$context['title'] = $termname;
+	$context['wp_title'] .= ' - Gammes';
 	array_unshift($templates, 'taxonomy-gammes.twig');
 } else if (is_tax('normes')){
-	$context['title'] = 'Normes&nbsp;-&nbsp;'.$termname;
+	$context['title'] = 'Normes - '.$termname;
+	$context['wp_title'] .= ' - Normes';
 } else if (is_tax('activite')){
-	$context['title'] = 'Secteur d\'activité&nbsp;-&nbsp;'.$termname;
+	$context['title'] = 'Secteur d\'activité - '.$termname;
+	$context['wp_title'] .= ' - Secteur d\'activité';
 } else if (is_tax('matieres')){
-	$context['title'] = 'Matieres&nbsp;-&nbsp;'.$termname;
+	$context['title'] = 'Matieres - '.$termname;
+	$context['wp_title'] .= ' - Matieres';
 } 
 $context['link'] = get_term_link( $qobj );
 

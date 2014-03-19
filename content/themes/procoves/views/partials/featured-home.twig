@@ -10,7 +10,7 @@
 	      			<div class="caption_overlay">
 						<h4>{{produit.title}}</h4>	
 					</div>
-		      		<img src="{{TimberImage(produit.img_prod)}}">
+		      		<img src="{{TimberImage(produit.img_prod).src|resize(300,300)}}">
 			    </li>
 			    {% endfor %}
 		    </ul>
