@@ -727,12 +727,20 @@ html[xmlns] .slides {display: block;}
   padding: 0 0px 10px 40px;
   margin-bottom: 50px
 }
-.a-la-une .contact a{
+
+.a-la-une .contact a, {
   color:#fff;
   border-bottom: none;
   font-weight: 300
 }
-.a-la-une .contact a:hover{
+
+.a-la-une .contact h2 a, .a-la-une .actu-tease h2 a {
+  font-weight:700;
+  border:none;
+  color:#fff;
+}
+
+.a-la-une .contact a:hover, .a-la-une .actu-tease a:hover{
   color: #000
 }
 

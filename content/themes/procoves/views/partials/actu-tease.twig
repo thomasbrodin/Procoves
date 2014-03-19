@@ -4,7 +4,7 @@
 		<div class="row">
 			
 			<div class="col-md-6 actu-tease">
-				<h2>Actualites</h2>
+				<h2><a href="{{menu.get_items[2].url}}">Actualites</a></h2>
 				<div class="row">
 					<div class="col-md-6 actu-img">
 						<img class="actu" src="{{actu.get_thumbnail.get_src}}" />
@@ -20,7 +20,7 @@
 			</div>
 
 			<div class="col-md-6 contact">
-				<h2>Contact</h2>
+				<h2><a href="{{menu.get_items[3].url}}">Contact</a></h2>
 				<p>{{adresse | print_r}}<br>
 					<a href="mailto:{{email | print_r}}">{{email | print_r}}</a>
 				</p>			
