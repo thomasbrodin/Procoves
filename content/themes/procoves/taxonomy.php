@@ -38,7 +38,7 @@ if (is_tax('gammes')){
 } else if (is_tax('normes')){
 	$context['title'] = 'Normes&nbsp;-&nbsp;'.$termname;
 } else if (is_tax('activite')){
-	$context['title'] = 'Secteur D\'activité&nbsp;-&nbsp;'.$termname;
+	$context['title'] = 'Secteur d\'activité&nbsp;-&nbsp;'.$termname;
 } else if (is_tax('matieres')){
 	$context['title'] = 'Matieres&nbsp;-&nbsp;'.$termname;
 } 
