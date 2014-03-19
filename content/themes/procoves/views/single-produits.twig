@@ -46,7 +46,7 @@
 							<ul class="normes">
 							    {% for norme in post.terms('normes') %}
 								    {% if norme.tax_img %} 
-								    	 <li class="pull-left"><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+								    	 <li class="pull-left"><a class="tax_img" href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
 								    {% elseif norme.description %}<!-- Categorie 1 -->
 										<li class="cat-1"><a href="{{norme.link}}">{{norme.description}}</a></li>
 								    {% else %}

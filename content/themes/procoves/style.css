@@ -945,15 +945,27 @@ h2.produit-title{
   font-size: 14px;
   padding: 0 8px 4px 0;
 }
-
-.prod-desc-panel ul li.cat-1 {
+.prod-desc-panel ul.normes {
+  margin-top:15px;
+}
+.prod-desc-panel ul.normes li a{
+  font-size: 12px;
   border: 1px solid #333;
-  padding:3px 0;
+  padding:4px 6px;
 }
 
-.prod-desc-panel ul.normes li.cat-1 a {
-  background: #fff;
-  color: #000;
+.prod-desc-panel ul.normes li a:hover {
+  color:rgb(240,70,70);
+}
+
+.prod-desc-panel ul.normes li a.tax_img {
+  border: none;
+  padding: 0
+}
+
+.prod-desc-panel ul.normes li a.tax_img img{
+  max-height: 60px;
+  margin-top: -12px;
 }
 
 .prod-desc-panel ul li a.green{
@@ -967,31 +979,11 @@ h2.produit-title{
   color:#000;
 }
 
-.prod-desc-panel ul.normes li a{
-  font-size: 14px;
-  background: #000;
-  color: #fff;
-  padding:4px 6px;
-}
 .prod-desc-panel ul.activite {
   clear:both;
 }
 .prod-desc-panel ul.activite li img{
   max-height:60px;
-}
-
-.prod-desc-panel ul.normes li a:hover {
-  color:rgb(240,70,70);
-}
-.prod-desc-panel ul.normes li.pull-left a{
-  background: transparent;
-  padding: 0
-}
-
-.prod-desc-panel ul.normes li a img{
-  max-height: 60px;
-  background: transparent;
-  margin-top: -5px
 }
 
 .prod-desc-panel ul.matieres img{
