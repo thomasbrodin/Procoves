@@ -11,6 +11,9 @@
 
 $context = Timber::get_context();
 $post = new TimberPost();
+if (isset($post->img_prod) && strlen($post->img_prod)){
+	$post->img_prod = new TimberImage($post->img_prod);
+}
 $context['post'] = $post;
 $context['wp_title'] .= ' - ' . $post->title();
 

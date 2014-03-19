@@ -9,10 +9,10 @@
 			      			<div class="caption_overlay">
 								<h4>{{produit.title}}</h4>	
 							</div>
-			      			{% if produit.get_field('img_prod') %}
-				      			<img src="{{TimberImage(produit.get_field('img_prod')).src}}" />
+			      			{% if produit.img_prod %}
+				      			<img src="{{TimberImage(produit.img_prod)}}">
 							{% else %}
-								<img src="{{theme.uri}}/img/blank.jpg" />
+								<img src="{{theme.uri}}/img/blank.jpg">
 							{% endif %}		  		
 			    	</div>
 			    {% endfor %}

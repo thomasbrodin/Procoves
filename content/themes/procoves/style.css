@@ -916,14 +916,14 @@ h2.produit-title{
   text-transform: uppercase;
   font-weight: 700;
   color: #000;
-  margin-top: 20px;
-  margin-bottom: 5px;
+  margin-top: 12px;
+  margin-bottom: 4px;
   clear: both;
 }
 
 .prod-desc-panel ul {
   padding: 0;
-  margin-bottom: 20px
+  margin-bottom: 10px
 }
 
 .prod-desc-panel ul li{
@@ -936,13 +936,19 @@ h2.produit-title{
 .prod-desc-panel ul.gammes li{
   display: block;
   padding: 0;
-  font-size: 18px;
+  font-size: 16px;
 }
 .prod-desc-panel ul.normes li a{
   font-size: 14px;
   background: #000;
   color: #fff;
   padding:4px 6px;
+}
+.prod-desc-panel ul.activite {
+  clear:both;
+}
+.prod-desc-panel ul.activite li img{
+  max-height:60px;
 }
 
 .prod-desc-panel ul.normes li a:hover {
@@ -955,9 +961,8 @@ h2.produit-title{
 
 .prod-desc-panel ul.normes li a img{
   max-height: 60px;
-  margin-bottom: 20px;
   background: transparent;
-  margin-top: -12px
+  margin-top: -5px
 }
 
 .prod-desc-panel ul.matieres li a{
