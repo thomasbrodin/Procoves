@@ -946,6 +946,16 @@ h2.produit-title{
   padding: 0 8px 4px 0;
 }
 
+.prod-desc-panel ul li.cat-1 {
+  border: 1px solid #333;
+  padding:3px 0;
+}
+
+.prod-desc-panel ul.normes li.cat-1 a {
+  background: #fff;
+  color: #000;
+}
+
 .prod-desc-panel ul.gammes li{
   display: block;
   padding: 0;
