@@ -22,10 +22,11 @@ $args = array(
 		        array(
 		          'taxonomy' => $qobj->taxonomy,
 		          'field' => 'slug',  
-		          'terms' => $qobj->name
+		          'terms' => $qobj->slug
 		        )
  	 ),
 );
+$context['queriedobject'] = $qobj;
 $context['produits'] = Timber::get_posts($args);
 $context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
 $context['normes'] = Timber::get_terms('normes', array('parent' => 0));
@@ -37,7 +38,7 @@ if (is_tax('gammes')){
 } else if (is_tax('normes')){
 	$context['title'] = 'Normes&nbsp;-&nbsp;'.$termname;
 } else if (is_tax('activite')){
-	$context['title'] = 'Secteur D\'activite&nbsp;-&nbsp;'.$termname;
+	$context['title'] = 'Secteur D\'activité&nbsp;-&nbsp;'.$termname;
 } else if (is_tax('matieres')){
 	$context['title'] = 'Matieres&nbsp;-&nbsp;'.$termname;
 } 

@@ -101,6 +101,9 @@
     position: absolute;
     width: 243px;
   }
+  #navside .normes-list li.cat-1 {
+    display: block;
+  }
 }
 @media (min-width: 1200px) {
   #navside.affix {
@@ -114,6 +117,12 @@
   #navside .normes-list li img {
     max-height: 50px;
     max-width: 40px;
+  }
+  #navside .normes-list li.cat-1 {
+    display: block;
+  }
+  #navside .normes-list li.cat-1 a {
+  font-size: 12px
   }
 }
 

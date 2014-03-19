@@ -19,11 +19,12 @@
 	NIVEAU DE PERFORMANCE</h2>
 	<ul class="normes-list">
 	{% for norme in normes %}
-		{% if norme.tax_img is empty %} <!-- Do nothing  -->
-		{% elseif norme.ID == 57 %}<!-- Categorie 1 -->
-			<li class="cat-1"><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+		{% if norme.tax_img %} 
+			<li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+		{% elseif norme.description %}<!-- Categorie 1 -->
+			<li class="cat-1"><a href="{{norme.link}}">{{norme.description}}</a></li>
 		{% else %}	
-    		<li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+    		<!-- Do nothing  -->
     	{% endif %}
 	{% endfor %}
 </ul>
