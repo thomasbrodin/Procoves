@@ -38,7 +38,7 @@
 							
 							<ul class="gammes">
 							    {% for gamme in post.terms('gammes') %}
-							        <li><a href="{{gamme.link}}">{{gamme.name}}</a>
+							        <li><a class="green" href="{{gamme.link}}">{{gamme.name}}</a>
 							        	
 									</li>
 							    {% endfor %}
@@ -74,7 +74,7 @@
 							<h4>Matieres utilisées</h4>
 							<ul class="matieres">
 							    {% for matiere in post.terms('matieres') %}
-							        <li><a href="{{matiere.link}}">{{matiere.name}}</a>
+							        <li><a class="green" href="{{matiere.link}}">{{matiere.name}}</a>
 							        </li>
 							        {% if matiere.tax_img %}
 										<span class="pull-right"><img src="{{TimberImage(matiere.tax_img)}}"></span>{% endif %}
