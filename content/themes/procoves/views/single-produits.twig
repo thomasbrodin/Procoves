@@ -58,7 +58,7 @@
 							<ul class="activite">
 							    {% for activite in post.terms('activite') %}
 							    	{% if activite.tax_img %}
-							    		<li><a href="{{activite.link}}" data-toggle="tooltip" title="{{activite.name}}"><img src="{{TimberImage(activite.tax_img)}}"></a></li>
+							    		<li><a href="{{activite.link}}" data-toggle="tooltip" data-placement="right" title="{{activite.name}}"><img src="{{TimberImage(activite.tax_img)}}"></a></li>
 							    	{% else %}
 							        {% endif %}
 							    {% endfor %}
