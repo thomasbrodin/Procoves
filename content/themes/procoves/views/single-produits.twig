@@ -45,19 +45,19 @@
 							</ul>
 							<ul class="normes">
 							    {% for norme in post.terms('normes') %}
-								    {% if norme.tax_img is empty %} 
-								    	<li><a href="{{norme.link}}">{{ norme.name}}</a></li>
+								    {% if norme.tax_img %} 
+								    	 <li class="pull-left"><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
 								    {% else %}
-								        <li class="pull-left"><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+								       <li><a href="{{norme.link}}">{{ norme.name}}</a></li>
 								    {% endif %}
 							    {% endfor %}
 							</ul>
 							
 							<ul class="activite">
 							    {% for activite in post.terms('activite') %}
-							    	{% if activite.tax_img is empty %}
+							    	{% if activite.tax_img %}
+							    		<li><a href="{{activite.link}}" data-toggle="tooltip" title="{{activite.name}}"><img src="{{TimberImage(activite.tax_img)}}"></a></li>
 							    	{% else %}
-							        	<li><a href="{{activite.link}}" data-toggle="tooltip" title="{{activite.name}}"><img src="{{TimberImage(activite.tax_img)}}"></a></li>
 							        {% endif %}
 							    {% endfor %}
 							</ul>

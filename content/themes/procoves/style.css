@@ -147,6 +147,9 @@ header .navbar-name h2 a{
   font-weight:700;
   border: none
 }
+header .navbar-name h2 a:hover {
+  color:rgb(240,70,70);
+}
 
 header a.navbar-brand, header .nav a {
   border-bottom: none
