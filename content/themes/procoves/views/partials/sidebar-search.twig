@@ -20,7 +20,9 @@
 	<ul class="normes-list">
 	{% for norme in normes %}
 		{% if norme.tax_img is empty %} <!-- Do nothing  -->
-		{% else %}
+		{% elseif norme.ID == 57 %}<!-- Categorie 1 -->
+			<li class="cat-1"><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
+		{% else %}	
     		<li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
     	{% endif %}
 	{% endfor %}
