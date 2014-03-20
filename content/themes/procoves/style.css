@@ -790,7 +790,7 @@ section#content .taxonomy {
 .collection .gamme-thumb {
   border:4px solid;
   border-color:#f0f0f0;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   cursor: pointer
 }
 
@@ -813,7 +813,7 @@ section#content .taxonomy {
   font-family:'L Futura W01';
   font-weight: 700;
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   position: relative;
   padding: 0 10px;
   display: table-cell;
@@ -826,12 +826,13 @@ section#content .taxonomy {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
+  padding: 0;
 }
 .collection .gamme-thumb .caption_overlay li a{ 
   font-family:'L Futura W01';
   font-weight: 700;
   color: #fff;
-  font-size: 14px;
+  font-size: 12px;
   position: relative;
   padding: 0 10px;
   border-bottom: none;
@@ -843,7 +844,7 @@ section#content .taxonomy {
 }
 
 .collection .gamme-thumb .caption_overlay li.parent {
-  font-size: 18px;
+  font-size: 16px;
   text-transform: uppercase;
   font-family:'L Futura W01';
   font-weight: 700;
