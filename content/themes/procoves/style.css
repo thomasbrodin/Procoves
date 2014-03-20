@@ -580,13 +580,35 @@ html[xmlns] .slides {display: block;}
   font-family:'L Futura W01';
   font-weight: 700;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   position: relative;
   padding: 0 10px;
   display: table-cell;
   vertical-align: middle;
   text-align: center;
   text-transform: uppercase;
+}
+
+.thumbslider .caption_overlay ul {
+  padding:8px 0;
+}
+.thumbslider .caption_overlay li {
+  border:none;
+  margin: 0;
+}
+
+.thumbslider .caption_overlay li a{ 
+  font-family:'L Futura W01';
+  font-weight: 700;
+  color: #fff;
+  font-size: 12px;
+  position: relative;
+  padding: 0 10px;
+  border-bottom: none;
+  text-transform: uppercase;
+}
+.thumbslider .caption_overlay li a:hover{
+  color: rgb(240,70,70);
 }
 
 .ribbon-wrapper-home {
@@ -813,7 +835,7 @@ section#content .taxonomy {
   font-family:'L Futura W01';
   font-weight: 700;
   color: #fff;
-  font-size: 16px;
+  font-size: 14px;
   position: relative;
   padding: 0 10px;
   display: table-cell;
@@ -1133,8 +1155,8 @@ input.sidebar {
   padding-left: 0
 }
 #navside .normes-list li img {
-  max-height: 45px;
-  max-width: 35px;
+  max-height: 40px;
+  max-width: 34px;
 }
 
 #navside .normes-list li.cat-1 {

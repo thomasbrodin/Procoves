@@ -7,7 +7,14 @@
 	      		{% for produit in produits %}
 		      	<li onclick="window.location='{{produit.link}}'">
 	      			<div class="caption_overlay">
-						<h4>{{produit.title}}</h4>	
+						<h4>{{produit.title}}
+							<uL>
+								{% for gamme in produit.terms('gammes') %}
+						       	<li><a href="{{gamme.link}}">{{gamme.name}}</a>
+								</li>
+								{% endfor %}
+							</ul>
+						</h4>	
 					</div>
 		      		<img src="{{TimberImage(produit.img_prod).get_src|resize(300,300)}}">
 		      		{% if produit.get_field('nouveau') %}
