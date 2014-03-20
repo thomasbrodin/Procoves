@@ -8,8 +8,9 @@ $(window).load(function() {
 		keyboard: true,
 	});
 	$('.thumbslider').flexslider({
+		slideshow: false,
 		animation: "slide",
-		animationLoop: false,
+		animationLoop: true,
 		itemWidth: 200,
 		itemMargin: 28,
 		controlNav: false,
