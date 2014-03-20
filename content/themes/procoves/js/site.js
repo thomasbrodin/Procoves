@@ -22,12 +22,15 @@ $(window).load(function() {
 jQuery(document).ready(function($) {
 
 		$('.navlist li a').on('click', function() {
-		var scrollAnchor = $(this).attr('data-scroll'),
-			scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 245;
-		$('body,html').animate({
-			scrollTop: scrollPoint
-		}, 500);   
-		return false;
+			var scrollAnchor = $(this).attr('data-scroll'),
+				scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 267;
+			$('body,html').animate({
+				scrollTop: scrollPoint
+			}, 500);   
+			return false;
+		});
+		$('#back-to-top').on('click', function() {
+			$('body,html').animate({scrollTop: 0}, 200);   
 		});
 		var nav_index;
 		$("#access li.nav-main-item").hover(function(){
@@ -67,7 +70,7 @@ jQuery(document).ready(function($) {
         });
 		$('#navside').affix({
 			offset: {
-				top: 30,
+				top: 0,
 				bottom: 85
 				}
 		});

@@ -805,8 +805,8 @@ html[xmlns] .slides {display: block;}
 
 /* GAMMES
 -------------------------------------------------- */
-section#content .taxonomy {
-  min-height: 700px
+section#content .taxonomy, section#content .collection, section#content .produits {
+  min-height: 830px
 }
 
 .collection .gamme-thumb {
@@ -872,6 +872,13 @@ section#content .taxonomy {
   font-weight: 700;
   color: #fff;
   margin-bottom: 8px
+}
+
+.row.collections {
+  margin-top: 25px;
+}
+.row.thumbs {
+  margin-top: 25px;
 }
 
 .produit-thumb {
@@ -1097,7 +1104,7 @@ h2.produit-title{
   padding-left:0px
 }
 #navside .searchside.last{
-  margin-bottom: 120px
+  margin-bottom: 121px
 }
 #navside h2 {
   font-weight: 700;
@@ -1107,7 +1114,7 @@ h2.produit-title{
   font-family:'L Futura W01';
   border-bottom: 1px solid #cccccc;
   padding: 0 0 15px 0;
-  margin: 5px 0 20px 0;
+  margin: 0 0 20px 0;
   display: block;
 }
 
@@ -1350,6 +1357,30 @@ article.actu p.date {
 
 /* FOOTER
 -------------------------------------------------- */
+a#back-to-top {
+  color: #000;
+  border:none;
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+
+i.angle-up {
+  cursor: pointer
+}
+
+.angle-up:before{
+  display: inline-block;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 0.5;
+  font-size: 48px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f106";
+}
+
 footer p {
   margin: 0;
 }
