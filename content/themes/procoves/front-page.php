@@ -15,7 +15,7 @@
 
 	$context = Timber::get_context();
 	$context['wp_title'] .= ' Industrie - ' . get_bloginfo( 'description' );
-	
+
 	$args = array(
 		'post_type' => 'produits', 
 		'post_status' => 'publish',
@@ -24,11 +24,11 @@
             array(
                 'taxonomy' => 'mots_cles',
                 'field' => 'slug',
-                'terms' => array( 'vedette' )
+                'terms' => array( 'vedette', 'nouveau')
             ),
         )
 	);
-	$context['produits'] = Timber::get_posts($args);
+	$context['produits']  = Timber::get_posts($args);
 
 	$context['actu'] = Timber::get_post('category_name=a-la-une');
 	$context['email'] = get_field('email', 'options');

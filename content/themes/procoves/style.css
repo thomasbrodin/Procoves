@@ -589,6 +589,43 @@ html[xmlns] .slides {display: block;}
   text-transform: uppercase;
 }
 
+.ribbon-wrapper-home {
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+}
+
+.ribbon-home {
+  font-family:'L Futura W01';
+  text-align: center;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform:    rotate(-45deg);
+  -ms-transform:     rotate(-45deg);
+  -o-transform:      rotate(-45deg);
+  position: relative;
+  padding: 7px 0;
+  left: -45px;
+  top: 25px;
+  width: 170px;
+  background-color: #ffcc33;
+  color: #fff;
+  font-weight: 700
+}
+
+.ribbon-home:before, .ribbon-home:after {
+  content: "";
+  position:absolute;
+}
+
+.ribbon-home:before {
+  left: 0;
+}
+.ribbon-home:after {
+  right: 0;
+}
+
 /* VEDETTE */
 #vedette .a-la-une{
   background-color:#666;
@@ -981,9 +1018,6 @@ h2.produit-title{
 
 .prod-desc-panel ul.activite {
   clear:both;
-}
-.prod-desc-panel ul.activite li img{
-  max-height:50px;
 }
 
 .prod-desc-panel ul.matieres img{

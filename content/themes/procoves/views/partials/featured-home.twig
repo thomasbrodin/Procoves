@@ -2,7 +2,6 @@
 <div id="thumbslider-wrap">
 	
 	<h2><span class="redline"></span>Nos Produits</h2>
-
 	<div class="container thumbslider">
 	      	<ul class="slides">
 	      		{% for produit in produits %}
@@ -11,6 +10,11 @@
 						<h4>{{produit.title}}</h4>	
 					</div>
 		      		<img src="{{TimberImage(produit.img_prod).get_src|resize(300,300)}}">
+		      		{% if produit.get_field('nouveau') %}
+		      			<div class="ribbon-wrapper-home">
+		      				<div class="ribbon-home">NOUVEAU</div>
+		      			</div>
+		      		{% endif %}
 			    </li>
 			    {% endfor %}
 		    </ul>

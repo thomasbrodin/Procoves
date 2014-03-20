@@ -21,9 +21,8 @@ $context['title'] = $post->title();
 $post_id = get_the_ID();
 $terms = wp_get_post_terms($post_id, 'gammes');
 $term_slugs = array_map(function($item) {
-    				return $item->slug;
-					}, 
-				$terms);
+    			return $item->slug;
+			}, $terms);
 $args = array(
 	'post_type' => 'produits', 
 	'post_status' => 'publish',
