@@ -982,11 +982,12 @@ h2.produit-title{
   position: absolute;
 }
 .prod-desc-heading span img.CE {
-  margin-top:5px;
+  margin-top:-5px;
+  max-width: 45px
 }
-.prod-desc-heading span img{
-  max-width: 150px;
-  padding-left:10px;
+.prod-desc-heading span img.pro {
+  max-width: 130px;
+  padding-left:5px;
 }
 
 .prod-desc-panel {
