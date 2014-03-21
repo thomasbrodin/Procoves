@@ -3,7 +3,7 @@
 Plugin Name: SearchWP
 Plugin URI: https://searchwp.com/
 Description: The best WordPress search you can find
-Version: 1.9.5
+Version: 1.9.10
 Author: Jonathan Christopher
 Author URI: https://searchwp.com/
 Text Domain: searchwp
@@ -27,7 +27,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SEARCHWP_VERSION', '1.9.5' );
+define( 'SEARCHWP_VERSION', '1.9.10' );
 define( 'SEARCHWP_PREFIX', 'searchwp_' );
 define( 'SEARCHWP_DBPREFIX', 'swp_' );
 define( 'EDD_SEARCHWP_STORE_URL', 'http://searchwp.com' );
@@ -43,6 +43,37 @@ if ( version_compare( $wp_version, '3.5', '<' ) ) {
 
 // includes
 include_once( 'includes/functions.php' );
+
+if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+	// load our custom updater
+	include( dirname( __FILE__ ) . '/vendor/EDD_SL_Plugin_Updater.php' );
+}
+
+// setup the updater
+function searchwp_update_check(){
+
+	global $pagenow;
+
+	// instead of triggering unnecessary latency by phoning home for updates on pages
+	// where updates would never take place, let's limit this request to those pages that do
+	$applicable_pages = array( 'plugins.php', 'plugin-install.php', 'update-core.php' );
+
+	if( ! in_array( $pagenow, $applicable_pages ) ) {
+		return;
+	}
+
+	// instantiate the updater to prep the environment
+	$license_key = trim( get_option( SEARCHWP_PREFIX . 'license_key' ) );
+	$edd_updater = new EDD_SL_Plugin_Updater( EDD_SEARCHWP_STORE_URL, __FILE__, array(
+			'version'   => SEARCHWP_VERSION,        // current version number
+			'license'   => $license_key,            // license key (used get_option above to retrieve from DB)
+			'item_name' => EDD_SEARCHWP_ITEM_NAME,  // name of this plugin
+			'author'    => 'Jonathan Christopher',  // author of this plugin
+			'full_hook' => false,                   // custom argument to allow a phone home to check for updates
+		)
+	);
+}
+add_action( 'admin_init', 'searchwp_update_check' );
 
 global $searchwp;
 
@@ -256,20 +287,28 @@ class SearchWP {
 	 */
 	private $term_pattern_whitelist = array(
 
-		// numbers
-		"/\\b\\d{1,}\\b/u",
+		// these should go from most strict to most loose
 
 		// functions
 		"/(\\w+?)?\\(|[\\s\\n]\\(/uiU",
 
 		// Date formats
-		"/[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}/ui",       // date: YYYY-MM-DD
-		"/[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}/ui",       // date: MM-DD-YYYY
-		"/[0-9]{4}\\/[0-9]{1,2}\\/[0-9]{1,2}/ui",   // date: YYYY/MM/DD
-		"/[0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4}/ui",   // date: MM/DD/YYYY
+		"/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})/u",       // date: YYYY-MM-DD
+		"/([0-9]{1,2}-[0-9]{1,2}-[0-9]{4})/u",       // date: MM-DD-YYYY
+		"/([0-9]{4}\\/[0-9]{1,2}\\/[0-9]{1,2})/u",   // date: YYYY/MM/DD
+		"/([0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4})/u",   // date: MM/DD/YYYY
 
 		// IP
-		"/\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/ui",    // IPv4
+		"/(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/u",    // IPv4
+
+		// initials
+		"/\\b((?:[A-Za-z]\\.\\s{0,1})+)/u",
+
+		// version numbers: 1.0 or 1.0.4 or 1.0.5b1
+		"/([a-z0-9]+(?:\\.[a-z0-9]+)+)/u",
+
+		// strings of digits
+		"/\\b(\\d{1,})\\b/u",
 
 	);
 
@@ -700,7 +739,7 @@ Results in this set:
 		);
 
 		// pause toggle
-		$toggleLabel = searchwp_get_setting( 'paused' ) ? __( 'Enable Indexer', 'searchwp' ) : __( 'Disable Indexer', 'searchwp' );
+		$toggleLabel = searchwp_get_option( 'paused' ) ? __( 'Enable Indexer', 'searchwp' ) : __( 'Disable Indexer', 'searchwp' );
 		$this->adminBarAddSubMenu(
 			$toggleLabel,
 			add_query_arg( 'nonce', wp_create_nonce( 'swppausenonce' ) ),
@@ -765,7 +804,7 @@ Results in this set:
 	 */
 	function indexerPause() {
 		do_action( 'searchwp_log', 'indexerPause()' );
-		searchwp_set_setting( 'paused', true );
+		searchwp_update_option( 'paused', true );
 		$this->paused = true;
 	}
 
@@ -777,7 +816,7 @@ Results in this set:
 	 */
 	function indexerUnpause() {
 		do_action( 'searchwp_log', 'indexerUnpause()' );
-		searchwp_set_setting( 'paused', false );
+		searchwp_update_option( 'paused', false );
 		$this->paused = false;
 		$this->triggerIndex();
 	}
@@ -789,7 +828,8 @@ Results in this set:
 	 * @since 1.4
 	 */
 	function checkIfPaused() {
-		$this->paused = searchwp_get_setting( 'paused' );
+		$paused = searchwp_get_option( 'paused' );
+		$this->paused = empty( $paused ) ? false : true;
 		if (
 				( ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'swpadvanced' ) ) &&
 				( isset( $_REQUEST['action'] ) && wp_verify_nonce( $_REQUEST['action'], 'swppauseindexer' ) )
@@ -1025,7 +1065,7 @@ Results in this set:
 		/**
 		 * Output whether the indexer is paused (disabled)
 		 */
-		$paused = searchwp_get_setting( 'paused' );
+		$paused = searchwp_get_option( 'paused' );
 		do_action( 'searchwp_log', '$paused = ' . var_export( $paused, true ) );
 		if( $paused ) {
 			?>
@@ -1034,6 +1074,48 @@ Results in this set:
 				</div>
 			<?php
 		}
+
+		/**
+		 * Erroneous posts excluded from index
+		 */
+		// check for erroneous posts that were not indexed after multiple attempts
+
+		// allow dev to forcefully omit posts from being indexed
+		$exclude_from_index = apply_filters( 'searchwp_prevent_indexing', array() );
+		if ( ! is_array( $exclude_from_index ) ) {
+			$exclude_from_index = array();
+		}
+		$exclude_from_index = array_map( 'absint', $exclude_from_index );
+
+		$args = array(
+			'posts_per_page'        => -1,
+			'post_type'             => 'any',
+			'post_status'           => array( 'publish', 'inherit' ),
+			'post__not_in'          => $exclude_from_index,
+			'fields'                => 'ids',
+			'meta_query'    => array(
+				'relation'          => 'AND',
+				array(
+					'key'           => '_' . SEARCHWP_PREFIX . 'indexed',
+					'value'         => '', // http://core.trac.wordpress.org/ticket/23268
+					'compare'       => 'NOT EXISTS',
+					'type'          => 'BINARY'
+				),
+				array( // only want media that hasn't failed indexing multiple times
+					'key'           => '_' . SEARCHWP_PREFIX . 'skip',
+					'compare'       => 'EXISTS',
+					'type'          => 'BINARY'
+				)
+			)
+		);
+
+		$erroneousPosts = get_posts( $args );
+
+		if( ! empty( $erroneousPosts ) ) : ?>
+			<div class="error" id="searchwp-index-errors-notice">
+				<p><?php _e( 'SearchWP failed to index', 'searchwp' ); ?> <strong><?php echo count( $erroneousPosts ); ?></strong> <?php if( count( $erroneousPosts ) == 1 ) { _e( 'post', 'searchwp' ); } else { _e( 'posts', 'searchwp' ); } ?>. <a href="options-general.php?page=searchwp&amp;nonce=<?php echo wp_create_nonce( 'swperroneous' ); ?>"><?php _e( 'View details', 'searchwp' ); ?> &raquo;</a></p>
+			</div>
+		<?php endif;
 	}
 
 
@@ -1491,15 +1573,6 @@ Results in this set:
 	 */
 	public function cleanTermString( $termString ) {
 
-		// we need front and back spaces so we can perform exact matches when whitelisting
-		$termString = ' ' . $termString . ' ';
-
-		// extract our whitelisted terms
-		$whitelisted_terms = $this->extract_terms_using_pattern_whitelist( $termString );
-
-		// remove matches so we don't have redundancy
-		$termString = str_replace( $whitelisted_terms, '', $termString );
-
 		$punctuation = array( "(", ")", "·", "'", "´", "’", "‘", "”", "“", "„", "—", "–", "×", "…", "€", "\n", ".", "," );
 
 		if ( ! is_string( $termString ) ) {
@@ -1516,11 +1589,6 @@ Results in this set:
 
 		// remove spaces
 		$termString = preg_replace( "/[[:space:]]/uiU", " ", $termString );
-
-		// prepend our whitelisted terms
-		if( ! empty( $whitelisted_terms ) && is_array( $whitelisted_terms ) ) {
-			$termString .= implode( ' ', $whitelisted_terms ) . ' ';
-		}
 
 		$termString = sanitize_text_field( $termString );
 
@@ -1542,33 +1610,98 @@ Results in this set:
 
 		// always going to be a string when a search query is performed
 		if ( is_string( $terms ) ) {
-			// preprocess the string to strip out unwanted punctuation
+
+			// extract terms based on regex whitelist before we sanitize
+			$terms = ' ' . $terms . ' ';  // we need front and back spaces so we can perform exact matches when whitelisting
+			$whitelisted_terms = $this->extract_terms_using_pattern_whitelist( $terms );
+
+			$terms = str_replace( ' ', '  ', $terms );
+
+			// maybe remove matches so we don't have redundancy, they were buffered with spaces to ensure whole word matching instead of partial matching
+			if( ! empty( $whitelisted_terms ) ) {
+				$terms = str_ireplace( $whitelisted_terms, '', $terms );
+			}
+
+			// clean up the double space flag we used
+			$terms = str_replace( '  ', ' ', $terms );
+
+			// process the (potentially stripped of whitelist matches) string to strip out unwanted punctuation
 			$terms = $this->cleanTermString( trim( $terms ) );
 
+			// put the terms in an array
 			$terms = ( strpos( $terms, ' ' ) !== false ) ? explode( ' ', $terms ) : array( $terms );
+
+			// maybe prepend our whitelisted terms to the final term array
+			if( ! empty( $whitelisted_terms ) && is_array( $whitelisted_terms ) ) {
+				$whitelisted_terms = array_map( 'trim', $whitelisted_terms );
+				$terms = array_merge( $whitelisted_terms, $terms );
+			}
 		}
 
 		if ( is_array( $terms ) ) {
-			foreach ( $terms as $key => $term ) {
-				// prep the term
-				$term = $this->cleanTermString( $term );
 
-				if ( strpos( $term, ' ' ) ) {
-					// append the new broken down terms
-					$terms = array_merge( $terms, explode( ' ', $term ) );
-				} else {
-					// proceed
-					$excludeCommon = apply_filters( 'searchwp_exclude_common', true );
-					if ( ! is_bool( $excludeCommon ) ) {
-						$excludeCommon = true;
-					}
-					if ( ( $excludeCommon && ! in_array( $term, $this->common ) ) || ! $excludeCommon ) {
-						$minLength = absint( apply_filters( 'searchwp_minimum_word_length', 3 ) );
-						if( $minLength <= strlen( $term ) ) {
-							$validTerms[$key] = sanitize_text_field( trim( $term ) );
+			// loop through each term, check it against the whitelist, and ensure it meets all criteria to be considered valid
+			foreach ( $terms as $key => $term ) {
+
+				$whitelist_match_check = ' ' . $term . ' ';
+
+				// first check the term for a whitelist match
+				$whitelist_matches = $this->extract_terms_using_pattern_whitelist( $term );
+
+				if( ! empty( $whitelist_matches ) ) {
+
+					// if there were matches (but it wasn't a complete match) append it to the array for further processing
+					$whitelist_extraction_result = str_ireplace( $whitelist_matches, '', $whitelist_match_check );
+
+					// remove the buffer used for full matching
+					$whitelist_matches = array_map( 'trim', $whitelist_matches );
+
+					if( strlen( $whitelist_extraction_result ) > 0 ) {
+						// it was not an exact match so we need to clean what did not match
+						$whitelist_extraction_result = $this->cleanTermString( $whitelist_extraction_result );
+
+						// check for spaces in what was left over
+						if( strpos( $whitelist_extraction_result, ' ' ) ) {
+							// append the (now separated) terms and the whitelist match(es) to the terms array and essentially short circuit this pass
+							$terms = array_merge( $terms, $whitelist_matches, explode( ' ', $whitelist_extraction_result ) );
+						} else {
+							// append the term and the whitelist match(es) to the terms array and essentially short circuit this pass
+							$terms = array_merge( $terms, $whitelist_matches, explode( ' ', $whitelist_extraction_result ) );
+						}
+					} else {
+						// it was an exact match to a pattern in the whitelist, so add the term(s) as-is
+						if( count( $whitelist_matches ) == 1 ) {
+							// it was a single match, add as-is to what are considered valid terms
+							$validTerms[$key] = sanitize_text_field( trim( $whitelist_matches[0] ) );
+						} else {
+							// append all the matches to this array; they should eventually match exactly
+							$terms = array_merge( $terms, $whitelist_matches );
 						}
 					}
+
+				} else {
+
+					// no whitelist match
+					$term = $this->cleanTermString( $term );
+					if ( strpos( $term, ' ' ) ) {
+						// append the new broken down terms
+						$terms = array_merge( $terms, explode( ' ', $term ) );
+					} else {
+						// proceed
+						$excludeCommon = apply_filters( 'searchwp_exclude_common', true );
+						if ( ! is_bool( $excludeCommon ) ) {
+							$excludeCommon = true;
+						}
+						if ( ( $excludeCommon && ! in_array( $term, $this->common ) ) || ! $excludeCommon ) {
+							$minLength = absint( apply_filters( 'searchwp_minimum_word_length', 3 ) );
+							if( $minLength <= strlen( $term ) ) {
+								$validTerms[$key] = sanitize_text_field( trim( $term ) );
+							}
+						}
+					}
+
 				}
+
 			}
 		}
 
@@ -1708,7 +1841,7 @@ Results in this set:
 		}
 
 		if( is_array( $terms ) ) {
-			$terms = array_merge( $terms, $whitelisted_terms );
+			$terms = array_unique( array_merge( $terms, $whitelisted_terms ) );
 		} else {
 			$terms .= ' ' . implode( ' ', $whitelisted_terms );
 		}
@@ -2643,22 +2776,48 @@ Results in this set:
 	 *
 	 * @since 1.3
 	 */
-	function showErroneousPosts( $erroneousPosts ) {
-		if( isset( $_GET['action'] ) && strtolower( $_GET['action'] ) == 'reintroduce' && isset( $_GET['swpid'] ) )
-		{
+	function showErroneousPosts() {
+		if( isset( $_GET['action'] ) && strtolower( $_GET['action'] ) == 'reintroduce' && isset( $_GET['swpid'] ) ) {
 			// remove the flags preventing the post from being indexed
-			delete_post_meta( absint( $_GET['swpid'] ), '_' . SEARCHWP_PREFIX . 'skip' );
-			delete_post_meta( absint( $_GET['swpid'] ), '_' . SEARCHWP_PREFIX . 'attempts' );
+			$post_id = absint( $_GET['swpid'] );
+			$this->purgePost( $post_id );
 			$this->triggerIndex();
 		}
+
+		$args = array(
+			'posts_per_page'        => -1,
+			'post_type'             => 'any',
+			'post_status'           => array( 'publish', 'inherit' ),
+			'fields'                => 'ids',
+			'meta_query'    => array(
+				'relation'          => 'AND',
+				array(
+					'key'           => '_' . SEARCHWP_PREFIX . 'indexed',
+					'value'         => '', // http://core.trac.wordpress.org/ticket/23268
+					'compare'       => 'NOT EXISTS',
+					'type'          => 'BINARY'
+				),
+				array( // only want media that hasn't failed indexing multiple times
+					'key'           => '_' . SEARCHWP_PREFIX . 'skip',
+					'compare'       => 'EXISTS',
+					'type'          => 'BINARY'
+				)
+			)
+		);
+
+		$erroneousPosts = get_posts( $args );
+
 		?>
+		<style type="text/css">
+			#searchwp-index-errors-notice { display:none; }
+		</style>
 		<div class="wrap">
 			<div id="icon-searchwp" class="icon32">
 				<img src="<?php echo trailingslashit( $this->url ); ?>assets/images/searchwp@2x.png" alt="SearchWP" width="21" height="32" />
 			</div>
 			<h2><?php echo $this->pluginName . ' ' . __( 'Outstanding Index Issues' ); ?></h2>
-			<?php if( count( $erroneousPosts ) == 1 ) : ?>
-				<p><?php _e( 'All applicable content has been indexed.', 'searchwp' ); ?></p>
+			<?php if( empty( $erroneousPosts ) ) : ?>
+				<p><?php _e( 'Nothing is currently exclude from the indexer.', 'searchwp' ); ?></p>
 			<?php else: ?>
 				<p><?php _e( 'SearchWP was unable to index the following content, and it is actively being excluded from subsequent index runs.', 'searchwp' ); ?></p>
 				<table class="swp-table swp-erroneous-posts">
@@ -2950,31 +3109,6 @@ Results in this set:
 	function optionsPage() {
 		global $wpdb;
 
-		// check for erroneous posts that were not indexed after multiple attempts
-		$args = array(
-			'posts_per_page'        => -1,
-			'post_type'             => 'any',
-			'post_status'           => array( 'publish', 'inherit' ),
-			'fields'                => 'ids',
-			'meta_query'    => array(
-				'relation'          => 'AND',
-				array(
-					'key'           => '_' . SEARCHWP_PREFIX . 'indexed',
-					'value'         => '', // http://core.trac.wordpress.org/ticket/23268
-					'compare'       => 'NOT EXISTS',
-					'type'          => 'BINARY'
-				),
-				array(
-					'key'           => '_' . SEARCHWP_PREFIX . 'skip',
-					'value'         => '', // only want media that hasn't failed indexing multiple times
-					'compare'       => 'EXISTS',
-					'type'          => 'BINARY'
-				)
-			)
-		);
-
-		$erroneousPosts = get_posts( $args );
-
 		// check to see if we need to display an extension settings page
 		if ( ! empty( $this->extensions ) && isset( $_GET['nonce'] ) && isset( $_GET['extension'] ) ) {
 			if ( wp_verify_nonce( $_GET['nonce'], 'swp_extension_' . $_GET['extension'] ) ) {
@@ -3009,7 +3143,7 @@ Results in this set:
 
 		// check to see if we should show posts that failed indexing
 		if ( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'swperroneous' ) && current_user_can( 'manage_options' ) ) {
-			$this->showErroneousPosts( $erroneousPosts );
+			$this->showErroneousPosts();
 			return;
 		}
 
@@ -3206,12 +3340,6 @@ Results in this set:
 				if ( false && ! $indexer_nag_dismissed ) : ?>
 					<div class="updated swp-progress-notes">
 						<p class="description"><?php echo sprintf( __( 'The SearchWP indexer runs as fast as it can without overloading your server; there are filters to customize it\'s aggressiveness. <a href="%s">Find out more &raquo;</a> <a class="swp-dismiss" href="options-general.php?page=searchwp&amp;inonce=%s">Dismiss</a>', 'searchwp' ), 'http://searchwp.com/?p=11818', wp_create_nonce( "swpindexernag" ) ); ?></p>
-					</div>
-				<?php endif; ?>
-
-				<?php if( ! empty( $erroneousPosts ) ) : ?>
-					<div class="updated">
-						<p><strong><?php echo count( $erroneousPosts ); ?></strong> <?php if( count( $erroneousPosts ) == 1 ) { _e( 'Posts failed to index', 'searchwp' ); } else { _e( 'Post failed to index', 'searchwp' ); } ?>. <a href="options-general.php?page=searchwp&amp;nonce=<?php echo wp_create_nonce( 'swperroneous' ); ?>"><?php _e( 'View details', 'searchwp' ); ?></a></p>
 					</div>
 				<?php endif; ?>
 
@@ -3486,11 +3614,6 @@ Results in this set:
 	 * Check to see if an update is available
 	 */
 	function update_check() {
-		if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-			// load our custom updater
-			include( dirname( __FILE__ ) . '/vendor/EDD_SL_Plugin_Updater.php' );
-		}
-
 		// retrieve our license key from the DB
 		$license_key = trim( get_option( SEARCHWP_PREFIX . 'license_key' ) );
 
@@ -3499,7 +3622,8 @@ Results in this set:
 				'version'   => SEARCHWP_VERSION,        // current version number
 				'license'   => $license_key,            // license key (used get_option above to retrieve from DB)
 				'item_name' => EDD_SEARCHWP_ITEM_NAME,  // name of this plugin
-				'author'    => 'Jonathan Christopher'   // author of this plugin
+				'author'    => 'Jonathan Christopher',  // author of this plugin
+				'full_hook' => true,                    // custom argument to allow a phone home to check for updates
 			)
 		);
 	}
@@ -3735,6 +3859,7 @@ Results in this set:
 		delete_post_meta( $post_id, '_' . SEARCHWP_PREFIX . 'attempts' );
 		delete_post_meta( $post_id, '_' . SEARCHWP_PREFIX . 'skip' );
 		delete_post_meta( $post_id, '_' . SEARCHWP_PREFIX . 'review' );
+		delete_post_meta( $post_id, '_' . SEARCHWP_PREFIX . 'terms' );
 
 		return true;
 	}
@@ -4008,8 +4133,15 @@ Results in this set:
 				preg_match_all( $term_pattern, $content, $pattern_matches );
 				if( ! empty( $pattern_matches ) ) {
 					foreach( $pattern_matches as $pattern_match ) {
-						if( ! empty( $pattern_match ) && isset( $pattern_match[0] ) ) {
+						if( is_array( $pattern_match ) && ! empty( $pattern_match ) && ! empty( $content ) ) {
 							$matches = array_merge( $matches, $pattern_match );
+							// extract the matches so as to prevent duplication/overrun with other less specific whitelist patterns
+							$content = ' ' . $content . ' ';
+							foreach( $matches as $matches_key => $match ) {
+								$matches[$matches_key] = ' ' . strtolower( trim( $match ) ) . ' '; // add a buffer for whole word matching
+							}
+							$content = str_ireplace( $matches, '', $content );
+							$content = trim( $content );
 						}
 					}
 				}
@@ -4019,8 +4151,10 @@ Results in this set:
 		// all matches are (usually) buffered with spaces to allow string replacement
 		$buffer = $buffer ? ' ' : '';
 		foreach( $matches as $match_key => $match ) {
-			$matches[$match_key] = $buffer . $match . $buffer;
+			$matches[$match_key] = $buffer . trim( $match ) . $buffer;
 		}
+
+		$matches = array_unique( $matches );
 
 		return $matches;
 	}

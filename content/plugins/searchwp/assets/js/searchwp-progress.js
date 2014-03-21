@@ -13,7 +13,7 @@ jQuery(document).ready(function($){
 			if(progress.length>12) {
 				var recentProgressUpdates = progress.slice(progress.length - 20);
 				var uniqueProgressPoints = _.uniq(recentProgressUpdates, false);
-				if(uniqueProgressPoints.length==1) {
+				if(uniqueProgressPoints.length==1&&uniqueProgressPoints[0]!==100) {
 					$.get('options-general.php?page=searchwp&swpjumpstart', function(data){});
 				}
 			}

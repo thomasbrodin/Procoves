@@ -159,6 +159,7 @@ class SearchWPIndexer
 			if ( ! is_array( $this->excludeFromIndex ) ) {
 				$this->excludeFromIndex = array();
 			}
+			$this->excludeFromIndex = array_map( 'absint', $this->excludeFromIndex );
 
 			// allow dev to forcefully omit post types that would normally be indexed
 			$this->postTypesToIndex = apply_filters( 'searchwp_indexed_post_types', $this->postTypesToIndex );
@@ -182,13 +183,13 @@ class SearchWPIndexer
 			// auto-throttle based on load
 			$waitTime = 1;
 
-			if( apply_filters( 'searchwp_indexer_load_monitoring', false ) && function_exists( 'sys_getloadavg' ) ) {
+			if( apply_filters( 'searchwp_indexer_load_monitoring', true ) && function_exists( 'sys_getloadavg' ) ) {
 				$load = sys_getloadavg();
-				$loadThreshold = abs( apply_filters( 'searchwp_load_maximum', 1 ) );
+				$loadThreshold = abs( apply_filters( 'searchwp_load_maximum', 2 ) );
 
 				// if the load has breached the threshold, scale the wait time
 				if( $load[0] > $loadThreshold ) {
-					$waitTime = 5 * ceil( $load[0] );
+					$waitTime = 4 * floor( $load[0] );
 					do_action( 'searchwp_log', 'Load threshold (' . $loadThreshold . ') has been breached! Current load: ' . $load[0] . '. Automatically injecting a wait time of ' . $waitTime );
 				}
 			}
@@ -360,6 +361,8 @@ class SearchWPIndexer
 				);
 			}
 		} else {
+			// if the last activity was null, reset the 'running' flag and update the timestamp
+			searchwp_set_setting( 'running', false );
 			searchwp_set_setting( 'last_activity', current_time( 'timestamp' ), 'stats' );
 		}
 	}
@@ -504,15 +507,13 @@ class SearchWPIndexer
 					'compare'     => 'NOT EXISTS',
 					'type'        => 'BINARY'
 				),
-				array(
+				array( // only want media that hasn't failed indexing multiple times
 					'key'         => '_' . SEARCHWP_PREFIX . 'skip',
-					'value'       => '',	// only want media that hasn't failed indexing multiple times
 					'compare'     => 'NOT EXISTS',
 					'type'        => 'BINARY'
 				),
 				array( // if a PDF was flagged during indexing, we don't want to keep trying
 					'key'         => '_' . SEARCHWP_PREFIX . 'review',
-					'value'       => '',
 					'compare'     => 'NOT EXISTS',
 					'type'        => 'BINARY'
 				)
@@ -537,9 +538,8 @@ class SearchWPIndexer
 						'compare'   => 'NOT EXISTS',
 						'type'      => 'BINARY'
 					),
-					array(
+					array( // only want media that hasn't failed indexing multiple times
 						'key'       => '_' . SEARCHWP_PREFIX . 'skip',
-						'value'     => '', // only want media that hasn't failed indexing multiple times
 						'compare'   => 'NOT EXISTS',
 						'type'      => 'BINARY'
 					)
@@ -584,15 +584,19 @@ class SearchWPIndexer
 			$index_table = $wpdb->prefix . SEARCHWP_DBPREFIX . 'index';
 			$ids_to_index_sql = "SELECT post_id  FROM {$index_table} WHERE post_id IN ({$ids_to_index_sql}) GROUP BY post_id LIMIT 100";
 			$already_indexed = $wpdb->get_col( $ids_to_index_sql );
+			$already_indexed = array_map( 'absint', $already_indexed );
 
 			// if it's in the index, force the indexed flag
 			if( is_array( $already_indexed ) && ! empty( $already_indexed ) ) {
-				foreach( $already_indexed as $already_indexed_id ) {
+				foreach( $already_indexed as $already_indexed_key => $already_indexed_id ) {
 					do_action( 'searchwp_log', (int) $already_indexed_id . ' is already in the index' );
 
 					// if we're not dealing with a term queue, mark this post as indexed
-					if( get_post_meta( (int) $already_indexed_id, '_' . SEARCHWP_PREFIX . 'terms', true ) ) {
+					if( ! get_post_meta( (int) $already_indexed_id, '_' . SEARCHWP_PREFIX . 'terms', true ) ) {
 						update_post_meta( (int) $already_indexed_id, '_' . SEARCHWP_PREFIX . 'indexed', true );
+					} else {
+						// this is a term chunk update, not a conflict
+						unset( $already_indexed[$already_indexed_key] );
 					}
 				}
 			}
@@ -709,8 +713,8 @@ class SearchWPIndexer
 											$pdfContent = '';
 
 											// flag it for further review
-											update_post_meta( $this->post->ID, '_' . SEARCHWP_PREFIX . 'review', 1 );
-											update_post_meta( $this->post->ID, '_' . SEARCHWP_PREFIX . 'skip', 1 );
+											update_post_meta( $this->post->ID, '_' . SEARCHWP_PREFIX . 'review', true );
+											update_post_meta( $this->post->ID, '_' . SEARCHWP_PREFIX . 'skip', true );
 										}
 									}
 
@@ -740,7 +744,10 @@ class SearchWPIndexer
 						$postTerms['slug']      = $this->indexSlug( str_replace( '/', ' ', $slug ) );
 						$postTerms['content']   = $this->indexContent();
 						$postTerms['excerpt']   = $this->indexExcerpt();
-						$postTerms['comments']  = $this->indexComments();
+
+						if( apply_filters( 'searchwp_index_comments', true ) ) {
+							$postTerms['comments'] = $this->indexComments();
+						}
 
 						// index taxonomies
 						$taxonomies = get_object_taxonomies( $this->post->post_type );
@@ -1136,11 +1143,36 @@ class SearchWPIndexer
 	 * @since 1.0
 	 */
 	function getTermCounts( $string = '' ) {
+		global $searchwp;
+
 		$wordArray = array();
 
-		if( is_string( $string ) && !empty( $string ) ) {
+		if( is_string( $string ) && ! empty( $string ) ) {
+
+			// extract whitelisted terms
+			$terms = ' ' . $string . ' ';  // we need front and back spaces so we can perform exact matches when whitelisting
+			$whitelisted_terms = $searchwp->extract_terms_using_pattern_whitelist( $terms );
+
+			// add the buffer so we can whole-word replace
+			$terms = str_replace( ' ', '  ', $string );
+
+			// maybe remove matches so we don't have redundancy, they were buffered with spaces to ensure whole word matching instead of partial matching
+			if( ! empty( $whitelisted_terms ) ) {
+				$terms = str_ireplace( $whitelisted_terms, ' ', $terms );
+			}
+
+			// clean up the double space flag we used
+			$string = str_replace( '  ', ' ', $terms );
+
+			// explode what was not a whitelist match
 			$string = strtolower( $string );
-			$exploded = explode( " ", $string );
+			$exploded = ( strpos( $string, ' ' ) !== false ) ? explode( ' ', $string ) : array( $string );
+
+			// maybe append our whitelist
+			if( is_array( $whitelisted_terms ) && ! empty( $whitelisted_terms ) ) {
+				$whitelisted_terms = array_map( 'trim', $whitelisted_terms );
+				$exploded = array_merge( $exploded, $whitelisted_terms );
+			}
 
 			// ensure word length obeys database schema
 			foreach ( $exploded as $term_key => $term_term ) {
@@ -1223,13 +1255,21 @@ class SearchWPIndexer
 		}
 
 		// we need front and back spaces so we can perform exact matches when whitelisting
-		$content = ' ' . $content . ' ';
+		$content = ' ' . $content . ' ';  // we need front and back spaces so we can perform exact matches when whitelisting
 
 		// extract terms based on whitelist pattern, allowing for approved indexing of terms with punctuation
 		$whitelisted_terms = $searchwp->extract_terms_using_pattern_whitelist( $content );
 
-		// we're not going to remove the matches here, we'll rely on the sanitization to give us more broad matches
-		// so as to still accommodate partial matches
+		// add the buffer so we can whole-word replace
+		$content = str_replace( ' ', '  ', $content );
+
+		// remove the matches
+		if( ! empty( $whitelisted_terms ) ) {
+			$content = str_ireplace( $whitelisted_terms, ' ', $content );
+		}
+
+		// clean up the double space flag we used
+		$content = str_replace( '  ', ' ', $content );
 
 		// buffer tags with spaces before removing them
 		$content = preg_replace( "/<[\w ]+>/", "\\0 ", $content );
@@ -1248,6 +1288,7 @@ class SearchWPIndexer
 
 		// append our whitelist
 		if( is_array( $whitelisted_terms ) && ! empty( $whitelisted_terms ) ) {
+			$whitelisted_terms = array_map( 'trim', $whitelisted_terms );
 			$content .= ' ' . implode( ' ' , $whitelisted_terms );
 		}
 

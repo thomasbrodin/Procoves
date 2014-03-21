@@ -43,6 +43,7 @@ if( !empty( $swp_nuke_on_delete ) || get_option( SEARCHWP_PREFIX . 'nuke_on_dele
 	delete_option( SEARCHWP_PREFIX . 'version' );
 	delete_option( SEARCHWP_PREFIX . 'progress' );
 	delete_option( SEARCHWP_PREFIX . 'license_key' );
+	delete_option( SEARCHWP_PREFIX . 'paused' );
 
 	// remove transients
 	delete_transient( 'searchwp' );

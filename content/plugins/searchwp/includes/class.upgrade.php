@@ -262,22 +262,22 @@ class SearchWPUpgrade {
 		if( version_compare( $this->last_version, '1.9', '<' ) ) {
 
 			$index_exists = $wpdb->get_results( "SHOW INDEX FROM `{$wpdb->prefix}swp_terms` WHERE Key_name = 'termindex'" , ARRAY_N );
-			if( !empty( $index_exists ) ) {
+			if( ! empty( $index_exists ) ) {
 				$wpdb->query("ALTER TABLE {$wpdb->prefix}swp_terms DROP INDEX termindex;");
 			}
 
 			$index_exists = $wpdb->get_results( "SHOW INDEX FROM `{$wpdb->prefix}swp_terms` WHERE Key_name = 'stemindex'" , ARRAY_N );
-			if( !empty( $index_exists ) ) {
+			if( ! empty( $index_exists ) ) {
 				$wpdb->query("ALTER TABLE {$wpdb->prefix}swp_terms DROP INDEX stemindex;");
 			}
 
 			$index_exists = $wpdb->get_results( "SHOW INDEX FROM `{$wpdb->prefix}swp_terms` WHERE Key_name = 'id'" , ARRAY_N );
-			if( !empty( $index_exists ) ) {
+			if( ! empty( $index_exists ) ) {
 				$wpdb->query("ALTER TABLE {$wpdb->prefix}swp_terms DROP INDEX id;");
 			}
 
 			$index_exists = $wpdb->get_results( "SHOW INDEX FROM `{$wpdb->prefix}swp_index` WHERE Key_name = 'id'" , ARRAY_N );
-			if( !empty( $index_exists ) ) {
+			if( ! empty( $index_exists ) ) {
 				$wpdb->query("ALTER TABLE {$wpdb->prefix}swp_index DROP INDEX id;");
 			}
 
@@ -339,17 +339,19 @@ class SearchWPUpgrade {
 			// clean up a potential useless settings save
 			$live_settings = searchwp_get_option( 'settings' );
 			$update_settings_record = false;
-			foreach( $live_settings as $live_setting_key => $live_setting_value ) {
-				// none of our keys should be numeric (specifically going after a rogue 'running' setting that
-				// may have been inadvertently set in 1.9.2, we just don't want it in there at all
-				if( is_numeric( $live_setting_key ) ) {
-					unset( $live_settings[$live_setting_key] );
-					$update_settings_record = true;
-				}
-				// also update 'nuke_on_delete' to be a boolean if necessary
-				if( 'nuke_on_delete' === $live_setting_key ) {
-					$live_settings['nuke_on_delete'] = empty( $live_setting_value ) ? false : true;
-					$update_settings_record = true;
+			if( is_array( $live_settings ) ) {
+				foreach( $live_settings as $live_setting_key => $live_setting_value ) {
+					// none of our keys should be numeric (specifically going after a rogue 'running' setting that
+					// may have been inadvertently set in 1.9.2, we just don't want it in there at all
+					if( is_numeric( $live_setting_key ) ) {
+						unset( $live_settings[$live_setting_key] );
+						$update_settings_record = true;
+					}
+					// also update 'nuke_on_delete' to be a boolean if necessary
+					if( 'nuke_on_delete' === $live_setting_key ) {
+						$live_settings['nuke_on_delete'] = empty( $live_setting_value ) ? false : true;
+						$update_settings_record = true;
+					}
 				}
 			}
 			if( $update_settings_record ) {
@@ -413,6 +415,14 @@ class SearchWPUpgrade {
 			searchwp_update_option( 'settings', $live_settings );
 			searchwp_add_option( 'indexer', $indexer_settings );
 
+		}
+
+		if( version_compare( $this->last_version, '1.9.6', '<' ) ) {
+			// wake up the indexer if necessary
+			$running = searchwp_get_setting( 'running' );
+			if( empty( $running ) ) {
+				searchwp_set_setting( 'running', false );
+			}
 		}
 
 	}

@@ -1,3 +1,25 @@
+### 1.9.10
+- **[Fix]** Fixed a regression in version 1.9.8 that prevented the installation of new plugins from .org
+
+
+### 1.9.9
+- **[Fix]** Fixed an issue where extended term-chunking of long posts may not have completed properly
+
+
+### 1.9.8
+- **[Fix]** Fixed an issue where the changelog would not be visible when clicking 'view version details' links
+- **[Change]** Automatic load monitoring is again enabled by default
+- **[Improvement]** The notice that outputs an indication of posts that failed to index now respects purposefully excluded post IDs via `searchwp_prevent_indexing` filter
+
+
+### 1.9.7
+- **[New]** New Filter: `searchwp_index_comments` allows you to prevent comments from being indexed
+- **[Improvement]** Prevented potential edge case where the indexer may stall after completing a delta update
+- **[Improvement]** More aggressive implementation of term regex whitelist (matches are now indexed fully in tact and not broken apart)
+- **[Fix]** Fixed an issue where problematic posts that failed to index were not properly called out in the WordPress admin
+- **[Fix]** Fixed an issue where 'Any' Custom Field may not have applied correctly
+
+
 ### 1.9.5
 - **[Fix]** Fixed an issue where `searchwp_in_admin` may not properly hijack search results in the WordPress admin as desired
 - **[Improvement]** Only return results from the post type being viewed when `searchwp_in_admin` is enabled and performing a search

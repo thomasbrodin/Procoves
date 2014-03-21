@@ -195,8 +195,7 @@ class SearchWPSearch
 		do_action( 'searchwp_log', '$args = ' . var_export( $args, true ) );
 
 		// if we have a valid engine, perform the query
-		if( $this->searchwp->isValidEngine( $args['engine'] ) )
-		{
+		if( $this->searchwp->isValidEngine( $args['engine'] ) ) {
 			// this filter is also applied in the SearchWP class search methods
 			// TODO: should this be applied in both places? which?
 			$sanitizeTerms = apply_filters( 'searchwp_sanitize_terms', true, $args['engine'] );
@@ -218,6 +217,11 @@ class SearchWPSearch
 				$terms = array_merge( $args['terms'], $whitelisted_terms );
 			} else {
 				$args['terms'] .= ' ' . implode( ' ', $whitelisted_terms );
+			}
+
+			// make sure the terms are unique, especially after whitelist matching
+			if( is_array( $terms ) ) {
+				$terms = array_unique( $terms );
 			}
 
 			$engine = $args['engine'];
@@ -1257,7 +1261,7 @@ class SearchWPSearch
 		// same weight together in the same LEFT JOIN
 		foreach( $optimized_weights as $weight_key => $meta_keys_for_weight ) {
 			$post_meta_clause = '';
-			if( !in_array( 'searchwpcfdefault', $meta_keys_for_weight ) ) {
+			if( ! in_array( 'searchwpcfdefault', str_ireplace( ' ', '', $meta_keys_for_weight ) ) ) {
 				$post_meta_clause = " AND " . $this->db_prefix . "cf.metakey IN ('" . implode( "','", $meta_keys_for_weight ) . "')";
 			}
 			$this->sql .= "
@@ -1571,8 +1575,13 @@ class SearchWPSearch
 					$titleWeight = isset( $postTypeWeights['weights']['title'] ) ? absint( $postTypeWeights['weights']['title'] ) : 0;
 					$slugWeight = isset( $postTypeWeights['weights']['slug'] ) ? absint( $postTypeWeights['weights']['slug'] ) : 0;
 					$contentWeight = isset( $postTypeWeights['weights']['content'] ) ? absint( $postTypeWeights['weights']['content'] ) : 0;
-					$commentWeight = isset( $postTypeWeights['weights']['comment'] ) ? absint( $postTypeWeights['weights']['comment'] ) : 0;
 					$excerptWeight = isset( $postTypeWeights['weights']['excerpt'] ) ? absint( $postTypeWeights['weights']['excerpt'] ) : 0;
+
+					if( apply_filters( 'searchwp_index_comments', true ) ) {
+						$commentWeight = isset( $postTypeWeights['weights']['comment'] ) ? absint( $postTypeWeights['weights']['comment'] ) : 0;
+					} else {
+						$commentWeight = 0;
+					}
 
 					// build the SQL to accommodate Custom Fields
 					$custom_field_weights = isset( $postTypeWeights['weights']['cf'] ) ? $postTypeWeights['weights']['cf'] : 0;

@@ -172,10 +172,12 @@ function searchwpEngineSettingsTemplate( $engine = 'default' ) {
 								</tr>
 							<?php endif; ?>
 							<?php if( post_type_supports( $post_type->name, 'comments' ) && $post_type->name != 'attachment' ) : ?>
-								<tr>
-									<td><label for="swp_engine_<?php echo $engine; ?>_<?php echo $post_type->name; ?>_weights_comment"><?php _e( 'Comments', 'searchwp' ); ?></label></td>
-									<td><input type="number" min="-1" step="0.1" class="small-text" name="<?php echo SEARCHWP_PREFIX; ?>settings[engines][<?php echo $engine; ?>][<?php echo $post_type->name; ?>][weights][comment]" id="swp_engine_<?php echo $engine; ?>_<?php echo $post_type->name; ?>_weights_comment" value="<?php echo searchwpGetEngineWeight( $weights, 'comment' ); ?>" /></td>
-								</tr>
+								<?php if( apply_filters( 'searchwp_index_comments', true ) ) : ?>
+									<tr>
+										<td><label for="swp_engine_<?php echo $engine; ?>_<?php echo $post_type->name; ?>_weights_comment"><?php _e( 'Comments', 'searchwp' ); ?></label></td>
+										<td><input type="number" min="-1" step="0.1" class="small-text" name="<?php echo SEARCHWP_PREFIX; ?>settings[engines][<?php echo $engine; ?>][<?php echo $post_type->name; ?>][weights][comment]" id="swp_engine_<?php echo $engine; ?>_<?php echo $post_type->name; ?>_weights_comment" value="<?php echo searchwpGetEngineWeight( $weights, 'comment' ); ?>" /></td>
+									</tr>
+								<?php endif; ?>
 							<?php endif; ?>
 
 							<?php if( 'attachment' == $post_type->name ) : ?>
