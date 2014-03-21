@@ -4,6 +4,9 @@
 		 
 		 <ul class="bclist">
 			<li><a href="{{site.url}}" rel="home">{{site.title}}</a>&nbsp;</li>
+			{% if prod_title %}
+				<li>/&nbsp;<a href="{{prod_url}}" rel="home">{{prod_title}}</a>&nbsp;</li>
+			{% endif %}
 			{% if breadcrumbs %}
 				{% for bc in breadcrumbs %}
 					<li>/&nbsp;<a href="?{{bc.taxonomy}}={{bc.slug}}">{{bc.name}}</a></li>

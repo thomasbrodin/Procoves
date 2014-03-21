@@ -14,12 +14,10 @@
 	$context = Timber::get_context();
 
 	$context['title'] = 'Resultats de recherche : '. get_search_query();
-
+	
 	$context['produits'] = Timber::get_posts();
 	
 	$context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
 	$context['normes'] = Timber::get_terms('normes', array('parent' => 0));
-	// $context['activite'] = Timber::get_terms('activite');
-	// $context['matieres'] = Timber::get_terms('matieres');
 
 	Timber::render($templates, $context);

@@ -1049,6 +1049,12 @@ h2.produit-title{
 .prod-desc-panel ul.activite {
   clear:both;
 }
+.prod-desc-panel ul.activite li {
+  text-transform: none;
+}
+.prod-desc-panel ul.activite li:first-child{
+  padding-right:2px;
+}
 
 .prod-desc-panel ul.matieres img{
    max-height: 50px;

@@ -27,7 +27,7 @@
 		$settings['title'] = 'Options';
 		return $settings;
 	}
- 	
+	
 	function add_to_context($data){
 		/* IMAGES */
 		$main_logo_id = get_field('main_logo', 'options');

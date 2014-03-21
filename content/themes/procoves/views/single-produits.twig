@@ -56,6 +56,7 @@
 							</ul>
 							
 							<ul class="activite">
+								<li>Secteur d’activité :</li>
 							    {% for activite in post.terms('activite') %}
 							    		<li><a href="{{activite.link}}">{{activite.name}}</a></li>
 							    {% endfor %}

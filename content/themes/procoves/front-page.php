@@ -20,6 +20,9 @@
 		'post_type' => 'produits', 
 		'post_status' => 'publish',
 		'numberposts' => 12,
+		'orderby' => 'menu_order',
+		'order'         => 'ASC',
+		'suppress_filters' => false,
 		'tax_query' => array(
             array(
                 'taxonomy' => 'mots_cles',
