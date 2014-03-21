@@ -1066,7 +1066,9 @@ h2.produit-title{
 .produit-desc .infos {
   position: absolute;
   right: 25px;
+  bottom: 0;
 }
+
 
 .produit-desc .infos span i{
   border:1px solid #ccc;
