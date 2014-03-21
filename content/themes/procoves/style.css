@@ -1015,6 +1015,7 @@ h2.produit-title{
 }
 .prod-desc-panel ul.normes {
   margin-top:15px;
+  margin-bottom: 40px;
 }
 .prod-desc-panel ul.normes li a{
   font-size: 12px;
