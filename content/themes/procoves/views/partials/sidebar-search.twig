@@ -1,18 +1,24 @@
 
 <div class="searchside">
 	<h2><span class="redline"></span>
-	RECHERCHE</h2>
-        <form action="/" method="get" role="search"> 
-			<input type="text" class="form-control sidebar" name="s" value="Nom" onfocus="if (this.value=='Nom') this.value='';">
+	RECHERCHE</h2> 
+		<!-- Nom -->
+        <form action="" method="get" role="search"> 
+        	<input name="post_type" type="hidden" value="produits" />
+			<input type="text" class="form-control sidebar" name="s" value="Nom" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
 		</form>
-		 <form action="/" method="get" role="search"> 
-			<input type="text" class="form-control sidebar" name="s" value="Refs" onfocus="if (this.value=='Refs') this.value='';">
+		<!-- Ref -->
+		 <form action="" method="get" role="search"> 
+		 	<input name="post_type" type="hidden" value="produits" />
+			<input type="text" class="form-control sidebar" name="s" value="Refs" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
 		</form>
-		 <form action="/" method="get" role="search"> 
-			<input type="text" class="form-control sidebar" name="s" value="Matieres" onfocus="if (this.value=='Matieres') this.value='';">
+		<!-- Matieres -->
+		 <form action="" method="get" role="search"> 
+			<input type="text" class="form-control sidebar" name="s" value="Matieres" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
 		</form>
-		 <form action="/" method="get" role="search"> 
-			<input type="text" class="form-control sidebar" name="s" value="Secteur" onfocus="if (this.value=='Secteur') this.value='';">
+		<!-- secteur -->
+		 <form action="" method="get" role="search"> 
+			<input type="text" class="form-control sidebar" name="s" value="Secteur" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
 		</form>
 
 	</div>

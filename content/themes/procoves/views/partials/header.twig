@@ -45,8 +45,9 @@
 
         <div id="block-lang-search">
           
-          <form action="/" method="get" role="search">
-            <input type="text" class="form-control sidebar-top" value="Rechercher" name="s" onfocus="if (this.value=='Rechercher') this.value='';">
+          <form action="{{site.url}}" method="get" role="search">
+            <input name="post_type" type="hidden" value="produits" />
+            <input type="text" class="form-control sidebar-top" value="Rechercher" name="s" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
           </form>
             
             <ul class="lang-switch">
