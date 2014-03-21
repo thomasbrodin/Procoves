@@ -29,7 +29,7 @@
 							<h2 class="produit-title">{{post.title}}</h2>
 							<span>
 								<img class="CE" src="{{CE}}">
-								<img src="{{logo_pro_noir}}">
+								<img class="pro" src="{{logo_pro_noir}}">
 							</span>
 							<p>REF : {{ post.ref }}</p>
 						</div>
@@ -55,13 +55,6 @@
 							    {% endfor %}
 							</ul>
 							
-							<ul class="activite">
-								<li>Secteur d’activité :</li>
-							    {% for activite in post.terms('activite') %}
-							    		<li><a href="{{activite.link}}">{{activite.name}}</a></li>
-							    {% endfor %}
-							</ul>
-							
 							<h4>{% if post.use_prod_title %}
 									{{ post.use_prod_title }}
 								{% else %}
@@ -69,6 +62,14 @@
 								{% endif %}
 							</h4>
 							<p class="use_prod">{{ post.use_prod }}</p>
+							{% if post.terms('activite') %}
+								<ul class="activite">
+									<li>Secteur d’activité :</li>
+								    {% for activite in post.terms('activite') %}
+								    	<li><a href="{{activite.link}}">{{activite.name}}</a></li>
+								    {% endfor %}
+								</ul>
+							{% endif %}
 							<h4>{% if post.desc_tech_title %}
 									{{ post.desc_tech_title }}
 								{% else %}
