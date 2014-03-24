@@ -1242,7 +1242,7 @@ i.angle-down {
 
 /* SEARCH PAGE
 -------------------------------------------------- */
-.search h2 {
+.search article h2 {
   font-weight: 700;
   text-align: left;
   font-size:18px;
