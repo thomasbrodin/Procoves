@@ -15,7 +15,7 @@
 
 	$context['title'] = 'Resultats de recherche : '. get_search_query();
 	$args = array(
-  		'post_type'=> 'post',
+  		'post_type'=> array('post', 'page'),
   		'numberposts' => -1,
   		's' => $s
 	);
