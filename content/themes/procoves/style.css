@@ -33,7 +33,7 @@ section#content .taxonomy,
 section#content .collection, 
 section#content .produits, 
 section#content .search {
-  min-height: 830px
+  min-height: 835px
 }
 
 footer {
@@ -877,11 +877,9 @@ html[xmlns] .slides {display: block;}
   margin-bottom: 8px
 }
 
-.row.collections {
-  margin-top: 25px;
-}
+.row.collections,
 .row.thumbs {
-  margin-top: 25px;
+  margin-top: 30px;
 }
 
 .produit-thumb {
