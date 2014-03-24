@@ -14,7 +14,7 @@
 	$context = Timber::get_context();
 
 	$context['title'] = 'Resultats de recherche : '. get_search_query();
-	
+
 	$context['produits'] = Timber::get_posts();
 	
 	$context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));

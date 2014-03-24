@@ -48,7 +48,7 @@ if (is_tax('gammes')){
 	$context['wp_title'] .= ' - Secteur d\'activité:'.$termname;
 } else if (is_tax('matieres')){
 	$context['title'] = 'Matieres:'.$termname;
-	$context['wp_title'] .= ' - Matieres:'.$termname;
+	$context['wp_title'] .= ' - Matieres: '.$termname;
 } 
 $context['link'] = get_term_link( $qobj );
 
