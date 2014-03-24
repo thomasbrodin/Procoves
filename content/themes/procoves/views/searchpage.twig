@@ -6,20 +6,10 @@
 	 		{% include ['partials/sidebar-search.twig'] %}
 		</div>
 		<div class="col-md-9 search pull-right" role="main">
-			{% if post %}
-				{% for post in post %}
-						<article id="post-{{post.ID}}">
-							<h2>{{ post.title }}</h2>
-							<p class="date">
-								<span>{{ post.display_date }}</span>
-							</p>
-							<p>{{post.get_preview(80, true,'En savoir Plus',false)}}</P>
-						</article>
-				{% endfor %}
-			{% elseif produits %}
+			{% if produits %}
 				{% include ['partials/produits-loop.twig'] %}
 			{% else %}
-				<h4>Votre recherche n'a donné aucun resultat</h4>
+				<h4>Aucun Produits Trouvés...</h4>
 				<p>Vérifiez si votre orthographe est correcte et reduisez les expressions pour rechercher chaque terme individuellement.</p>
 			{% endif %}
 		</div>
