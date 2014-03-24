@@ -23,7 +23,7 @@ jQuery(document).ready(function($) {
 
 		$('.navlist li a').on('click', function() {
 			var scrollAnchor = $(this).attr('data-scroll'),
-				scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 267;
+				scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 235;
 			$('body,html').animate({
 				scrollTop: scrollPoint
 			}, 500);   
