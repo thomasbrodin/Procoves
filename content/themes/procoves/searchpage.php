@@ -14,25 +14,30 @@ Template Name: Page de Recherche
 
 	if (!empty ($q_nom) && empty ($q_ref) && empty ($q_mat) && empty ($q_act)){
     	$produits = $engine->search( 'nom', $q_nom );
+    	$title = esc_attr( $_GET['nom'] );
 	}
    
 	elseif (empty ($q_nom) && !empty ($q_ref) && empty ($q_mat) && empty ($q_act)) {
  	   	$produits = $engine->search( 'ref', $q_ref);
+ 	   	$title = esc_attr( $_GET['ref'] );
 	}
 
 	elseif (empty ($q_nom) && empty ($q_ref) && !empty ($q_mat) && empty ($q_act)) {
  	    $produits = $engine->search( 'mat', $q_mat);
+ 	    $title = esc_attr( $_GET['mat'] );
 	}
 
 	elseif (empty ($q_nom) && empty ($q_ref) && empty ($q_mat) && !empty ($q_act)) {
  	    $produits = $engine->search( 'act', $q_act);
+ 	    $title = esc_attr( $_GET['act'] );
 	}
      
     if (( !empty ($q_nom) || !empty ($q_ref) || !empty ($q_mat) || !empty ($q_act))
     	&&  class_exists ( 'SearchWP' )) {
 		$context['produits'] = Timber::get_posts($produits);
 	}
-	$context['title'] = 'Resultats de recherche : '. get_search_query();
+
+	$context['title'] = 'Resultats de recherche : ' . $title  ;
 
 	$context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
 	$context['normes'] = Timber::get_terms('normes', array('parent' => 0));

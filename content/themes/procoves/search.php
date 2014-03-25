@@ -13,7 +13,7 @@
 	$templates = array('search.twig', 'archive.twig', 'index.twig');
 	$context = Timber::get_context();
 
-	$context['title'] = 'Resultats de recherche : '. get_search_query();
+	$context['title'] = 'Resultats de recherche : '. esc_attr( $_GET['s'] );;
 	$args = array(
   		'post_type'=> array('post', 'page'),
   		'numberposts' => -1,
