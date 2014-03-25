@@ -27,7 +27,7 @@
             array(
                 'taxonomy' => 'mots_cles',
                 'field' => 'slug',
-                'terms' => array( 'vedette', 'nouveau')
+                'terms' => array( 'vedette')
             ),
         )
 	);
