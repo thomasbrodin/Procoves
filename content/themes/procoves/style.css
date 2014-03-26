@@ -810,7 +810,6 @@ html[xmlns] .slides {display: block;}
 
 /* GAMMES
 -------------------------------------------------- */
-
 .collection .gamme-thumb {
   border:4px solid;
   border-color:#f0f0f0;
@@ -876,7 +875,6 @@ html[xmlns] .slides {display: block;}
   margin-bottom: 8px
 }
 
-.row.collections,
 .row.thumbs {
   margin-top: 30px;
 }
@@ -1115,6 +1113,11 @@ h2.produit-title{
 #navside ul {
   padding-left:0px
 }
+
+#navside .searchside {
+  margin-bottom: 30px
+}
+
 #navside .searchside.last{
   margin-bottom: 121px
 }
@@ -1133,12 +1136,11 @@ h2.produit-title{
 /* SIDEBAR SEARCH */
 
 input.sidebar {
-  margin-bottom: 10px;
   border-radius: 0;
   text-transform: uppercase;
   font-size: 12px;
   height: 36px;
-  background-image: url('img/search.png');
+  background-image: url(img/search.png);
   background-repeat:no-repeat;
   background-position:right center;
 }
@@ -1152,44 +1154,37 @@ input.sidebar {
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
 }
 
-#navside .searchside a, #navside .searchside a img {
-  border:none;
-  color:#333;
+.facetwp-template { 
+  display: none; 
+}
+
+.facetwp-facet {
+    margin-bottom: 10px!important;
+    min-height:36px;
+}
+
+.facetwp-type-hierarchy {
+    overflow: visible;
+    max-height: 500px!important
+}
+
+.facetwp-loading {
+  margin-left: 5px;
+  background: url(img/spinner.gif) !important;
+  background-repeat: no-repeat;
+}
+
+/* Hierarchy facets */
+
+.facetwp-depth .facetwp-depth {
+    margin-left: 12px;
+}
+
+.facetwp-link {
+  cursor: pointer;
+  color: #333;
   font-weight: 500;
-}
-
-#navside .searchside ul {
-  padding-left: 0
-}
-
-#navside .searchside {
-  margin-bottom: 30px
-}
-
-#navside .normes-list li {
-  display: inline-block;
-  padding: 0 5px
-}
-#navside .normes-list li:first-child {
-  padding-left: 0
-}
-#navside .normes-list li img {
-  max-height: 40px;
-  max-width: 34px;
-}
-
-#navside .normes-list li.cat-1 {
-  margin-top: 8px;
-  border: 1px solid #333;
-  padding:3px 6px;
-  text-align: center
-}
-#navside .normes-list li.cat-1 a {
-  text-transform: uppercase;
-  font-size: 10px;
-}
-
-#navside .gammes-list li {
+  font-family:'L Futura W01';
   display: block;
   text-transform: uppercase;
   font-size: 14px;
@@ -1198,48 +1193,35 @@ input.sidebar {
   padding: 6px 12px;
 }
 
-#navside .gammes-list li:hover {
-  background-color: #000;
+.facetwp-link:hover{
+  color: #fff;
+  background-color: #000!important
 }
 
-#navside .gammes-list li:hover a{
-  color: #fff!important
+.facetwp-link.checked {
+    color: #fff;
+    background-color: #000!important;
+    cursor: pointer;
 }
 
-#navside .gamme-list-children li {
-  display: block;
-  text-transform: uppercase;
-  font-size: 12px;
-  margin-bottom: 0;
-  padding: 6px 4px;
-  border:none;
-}
-#navside .gamme-list-children li a:hover{
-  color:rgb(240,70,70)!important;;
-}
-#navside .gammes-list li:hover > i.angle-down{
-   color: #fff!important;
+.facetwp-toggle {
+    cursor: pointer;
 }
 
-i.angle-down {
-  float:right;
-  cursor: pointer
-}
-
-.angle-down:before{
-  display: inline-block;
-  font-family: 'FontAwesome';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-  font-size: 18px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  content: "\f107";
+.facetwp-hidden {
+    display: none;
 }
 
 /* SEARCH PAGE
 -------------------------------------------------- */
+.search h3{
+  text-transform: uppercase;
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  padding: 0 0 12px 0;
+  color: #333;
+}
+
 .search article h2 {
   font-weight: 700;
   text-align: left;

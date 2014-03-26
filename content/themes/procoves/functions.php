@@ -3,16 +3,20 @@
 	include_once('inc/advanced-custom-fields/acf.php' );
 	include_once('inc/acf-options-page/acf-options-page.php');
 	include_once('inc/acf-gallery/acf-gallery.php');
-
+	
 	add_theme_support('post-thumbnails');
 	add_theme_support('menus');
 
 	add_filter('get_twig', 'add_to_twig');
 	add_filter('timber_context', 'add_to_context');
 	add_filter('acf/options_page/settings', 'options_page_settings');
+
 	add_filter( 'searchwp_admin_bar', '__return_false' );
 
-	add_action('wp_enqueue_scripts', 'load_scripts');
+	// add_filter( 'facetwp_template_html', 'my_facetwp_template_html', 10, 2 );
+	add_filter( 'facetwp_facet_html', 'my_facetwp_facet_html', 10, 2 );
+
+	add_action('wp_enqueue_scripts', 'load_scripts');	
 	add_action('wp_enqueue_scripts', 'load_styles');
 
 	add_action( 'widgets_init', 'hex_widgets_init' );
@@ -27,7 +31,7 @@
 		$settings['title'] = 'Options';
 		return $settings;
 	}
-	
+
 	function add_to_context($data){
 		/* IMAGES */
 		$main_logo_id = get_field('main_logo', 'options');
@@ -89,4 +93,36 @@
     	remove_action('wp_head', 'rsd_link');
     	remove_action('wp_head', 'wlwmanifest_link');
     }
-   
+    function my_facetwp_facet_html( $output, $params ) {
+    if ( 'nom' == $params['facet']['name'] ) {
+        $output = '';
+        $value = $params['selected_values'];
+        $value = is_array( $value ) ? $value[0] : $value;
+        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Noms' ) . '" />';
+    }
+    if ( 'refs' == $params['facet']['name'] ) {
+        $output = '';
+        $value = $params['selected_values'];
+        $value = is_array( $value ) ? $value[0] : $value;
+        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'refs' ) . '" />';
+    }
+    if ( 'matieres' == $params['facet']['name'] ) {
+        $output = '';
+        $value = $params['selected_values'];
+        $value = is_array( $value ) ? $value[0] : $value;
+        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Matières' ) . '" />';
+    }
+    if ( 'activites' == $params['facet']['name'] ) {
+        $output = '';
+        $value = $params['selected_values'];
+        $value = is_array( $value ) ? $value[0] : $value;
+        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Secteurs' ) . '" />';
+    }
+    return $output;
+	}
+
+    function my_facetwp_template_html( $output, $class ) {
+    // Retrieve the args using $class->query_args
+   	 $query_args = $class->query_args;
+   	 return '<div>This is the template HTML</div>';
+	}   

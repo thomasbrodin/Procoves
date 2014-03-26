@@ -1,58 +1,30 @@
-
 <div class="searchside">
 	<h2><span class="redline"></span>
 	RECHERCHE</h2> 
-		<!-- Nom -->
-         <form action="{{site.url}}/recherche/" method="get" role="search"> 
-			<input type="text" class="form-control sidebar" name="nom" value="Nom" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
-		</form>
-		<!-- Ref -->
-		 <form action="{{site.url}}/recherche/" method="get" role="search"> 
-			<input type="text" class="form-control sidebar" name="ref" value="Refs" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
-		</form>
-		<!-- Matieres -->
-		 <form action="{{site.url}}/recherche/" method="get" role="search"> 
-			<input type="text" class="form-control sidebar" name="mat" value="Matieres" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
-		</form>
-		<!-- secteur -->
-		 <form action="{{site.url}}/recherche/" method="get" role="search"> 
-			<input type="text" class="form-control sidebar" name="act" value="Secteurs" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;">
-		</form>
-
-	</div>
+	{% filter shortcodes %}
+		[facetwp facet="nom"]
+	{% endfilter %}
+	{% filter shortcodes %}
+		[facetwp facet="refs"]
+	{% endfilter %}
+	{% filter shortcodes %}
+		[facetwp facet="matieres"]
+	{% endfilter %}
+	{% filter shortcodes %}
+		[facetwp facet="activites"]
+	{% endfilter %}
+</div>
 <div class="searchside">
 	<h2><span class="redline"></span>
 	NIVEAU DE PERFORMANCE</h2>
-	<ul class="normes-list">
-	{% for norme in normes %}
-		{% if norme.tax_img %} 
-			<li><a href="{{norme.link}}"><img src="{{TimberImage(norme.tax_img)}}"></a></li>
-		{% elseif norme.description %}<!-- Categorie 1 -->
-			<li class="cat-1"><a href="{{norme.link}}">{{norme.description}}</a></li>
-		{% else %}	
-    		<!-- Do nothing  -->
-    	{% endif %}
-	{% endfor %}
-</ul>
+	{% filter shortcodes %}
+		[facetwp facet="niveau_de_performance"]
+	{% endfilter %}
 </div>
-<div class="searchside last">
+<div class="searchside">
 	<h2><span class="redline"></span>
 	GAMMES</h2>
-	<ul class="gammes-list">
-	{% for gamme in gammes %}
-	    <li><a href="{{gamme.link}}">{{gamme.name}}</a>
-	    	{% if gamme.children %}
-					<i data-toggle="collapse" data-target="#subgammes" class="angle-down"></i>
-				    <ul id="subgammes" class="collapse gamme-list-children">
-				        {% for child in gamme.children %}
-				            <li><a href="{{child.link}}">{{child.name}}</a></li>
-				        {% endfor %}
-				    </ul>
-				</li>
-			{% else %}
-			</li>
-	    	{% endif %}
-	{% endfor %}
-</ul>
+	{% filter shortcodes %}
+		[facetwp facet="gammes"]
+	{% endfilter %}
 </div>
-

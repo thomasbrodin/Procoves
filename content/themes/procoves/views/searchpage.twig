@@ -6,12 +6,11 @@
 	 		{% include ['partials/sidebar-search.twig'] %}
 		</div>
 		<div class="col-md-9 search pull-right" role="main">
-			{% if produits %}
-				{% include ['partials/produits-loop.twig'] %}
-			{% else %}
-				<h4>Aucun Produits Trouvés...</h4>
-				<p>Vérifiez si votre orthographe est correcte et reduisez les expressions pour rechercher chaque terme individuellement.</p>
-			{% endif %}
+			<div class="row thumbs">
+				{% filter shortcodes %}
+					[facetwp template="produits"]
+				{% endfilter %}
+			</div>
 		</div>
     </div>             
 {% endblock %}

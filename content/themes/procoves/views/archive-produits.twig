@@ -6,33 +6,37 @@
 			{% include ['partials/sidebar-search.twig'] %}
 		</div>
 		<div class="col-md-9 collection pull-right" role="main">
-			<div class="row collections">
-			 
-			 {% for gamme in gammes %}   	
-            	<div class="col-md-4">
-            		<div class="gamme-thumb" onclick="window.location='{{gamme.link}}'">
-	            		
-	                 	<div class="caption_overlay">
-							{% if gamme.children %}
-								<ul>
-									<li class="parent">{{gamme.name}}</li>
-							       		{% for child in gamme.children %}
-							       		<li><a href="{{child.link}}">{{child.name}}</a></li>
-						        		{% endfor %}
-						    	</ul>
-						    {% else %}
-						   	<h4>{{gamme.name}}</h4>
-				        	{% endif %}
+			<div class="row thumbs">
+				<div class="gammes">
+					{% for gamme in gammes %}   	
+		            	<div class="col-md-4">
+		            		<div class="gamme-thumb" onclick="window.location='{{gamme.link}}'">
+			            		
+			                 	<div class="caption_overlay">
+									{% if gamme.children %}
+										<ul>
+											<li class="parent">{{gamme.name}}</li>
+									       		{% for child in gamme.children %}
+									       		<li><a href="{{child.link}}">{{child.name}}</a></li>
+								        		{% endfor %}
+								    	</ul>
+								    {% else %}
+								   	<h4>{{gamme.name}}</h4>
+						        	{% endif %}
+								</div>
+								{% if gamme.tax_img %}
+			                 		<img src="{{gamme.tax_img}}">
+			                 	{% else %}
+									<img src="{{theme.uri}}/img/blank.jpg">
+			                 	{% endif %}
+							
+							</div>
 						</div>
-						{% if gamme.tax_img %}
-	                 		<img src="{{gamme.tax_img}}">
-	                 	{% else %}
-							<img src="{{theme.uri}}/img/blank.jpg">
-	                 	{% endif %}
-					
-					</div>
+				    {% endfor %}
 				</div>
-		    {% endfor %}
+			{% filter shortcodes %}
+				[facetwp template="produits"]
+			{% endfilter %}
 
 		</div>
     </div>             

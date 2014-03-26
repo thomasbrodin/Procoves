@@ -6,7 +6,11 @@
 	 		{% include ['partials/sidebar-search.twig'] %}
 		</div>
 		<div class="col-md-9 taxonomy pull-right" role="main">
-			{% include ['partials/produits-loop.twig'] %}
+			<div class="row thumbs">
+				{% filter shortcodes %}
+					[facetwp template="taxonomy"]
+				{% endfilter %}	
+			</div>
 		</div>
     </div>             
 {% endblock %}

@@ -28,7 +28,5 @@
 	);
 	$context['produits'] = Timber::get_posts($args2);
 	
-	$context['gammes'] = Timber::get_terms('gammes', array('parent' => 0));
-	$context['normes'] = Timber::get_terms('normes', array('parent' => 0));
+	Timber::render('search.twig', $context);
 
-	Timber::render($templates, $context);

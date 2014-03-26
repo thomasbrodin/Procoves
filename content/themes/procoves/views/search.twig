@@ -2,19 +2,46 @@
 
 {% block content %}
 	<div class="row">
-		<div id="navside" class="col-md-3">
-	 		{% include ['partials/sidebar-search.twig'] %}
-		</div>
-		<div class="col-md-9 search pull-right" role="main">
-			{% if post %}
-				{% for post in post %}
-						<article id="post-{{post.ID}}">
-							<h2>{{ post.title }}</h2>
-							<p>{{post.get_preview(80, true,'En savoir Plus',false)}}</P>
-						</article>
-				{% endfor %}
-			{% elseif produits %}
-				{% include ['partials/produits-loop.twig'] %}
+	
+	<div class="col-md-12 search pull-right" role="main">
+		<h4>Pour une recherche avancée dans notre catalogue de produits, veuillez visiter la <a href="/recherche">page de recherche</a></h4>
+			{% if post or produits %}
+				{% if produits %}
+					<h3>Nos Produits</h3>
+					<div class="row thumbs">
+						{% for produit in produits %}
+					      <div class="col-md-3">
+					      	<div class="produit-thumb">
+						      	<a href="{{produit.link}}">	
+						      		{% if produit.img_prod %}
+							      		<img src="{{TimberImage(produit.img_prod).get_src|resize(300,300)}}">
+									{% else %}
+										<img src="{{theme.uri}}/img/blank.jpg">
+									{% endif %}
+							    </a>
+						      	<div class="produit-info">
+						      		<h4><a href="{{produit.link}}">{{produit.title}}</a></h4>
+						      		<ul class="gammes">
+								    {% for gamme in produit.terms('gammes') %}
+								        	 <li><a href="{{gamme.link}}">{{gamme.name}}</a></li>	  
+								    {% endfor %}
+									</ul>
+						      	</div>
+						    </div>
+					      </div>
+				      {% endfor %}
+				    </div>
+					<hr>
+				{% endif %}
+				{% if post %}
+					<h3>Pages et Actualites</h3>
+					{% for post in post %}
+							<article id="post-{{post.ID}}">
+								<h2>{{ post.title }}</h2>
+								<p>{{post.get_preview(80, true,'En savoir Plus',false)}}</P>
+							</article>
+					{% endfor %}
+				{% endif %}
 			{% else %}
 				<h4>Votre recherche n'a donné aucun resultat</h4>
 				<p>Vérifiez si votre orthographe est correcte et reduisez les expressions pour rechercher chaque terme individuellement.</p>

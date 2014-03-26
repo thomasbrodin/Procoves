@@ -40,6 +40,7 @@ function hex_cpt() {
         'show_in_admin_bar' => true,
         'menu_position' => 0,
         'has_archive' => true,
+        'exclude_from_search' => false,
         'supports' => array( 'title', 'revisions',),
         'rewrite' => array(
                         'slug' => 'produits'
