@@ -1118,9 +1118,10 @@ h2.produit-title{
   margin-bottom: 30px
 }
 
-#navside .searchside.last{
-  margin-bottom: 121px
+#navside .searchside.gammes{
+  margin-bottom: 32px
 }
+
 #navside h2 {
   font-weight: 700;
   text-align: left;
