@@ -1185,12 +1185,21 @@ input.sidebar {
   color: #333;
   font-weight: 500;
   font-family:'L Futura W01';
-  display: block;
   text-transform: uppercase;
-  font-size: 14px;
   margin-bottom: 6px;
   border: 1px solid #ccc;
   padding: 6px 12px;
+}
+
+.searchside.normes .facetwp-link{
+  font-size: 12px;
+  display: inline-block;
+  min-width:48%;
+  margin-right:2%;
+}
+
+.searchside.gammes .facetwp-link{
+  display: block;
 }
 
 .facetwp-link:hover{
