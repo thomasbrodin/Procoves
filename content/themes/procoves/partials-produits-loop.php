@@ -28,6 +28,12 @@
 		<p>Vérifiez si votre orthographe est correcte et/ou reduisez les expressions pour rechercher chaque terme individuellement.</p>
 <?php endif; ?>
 <script>
+	var pathArray = window.location.href.split('/');
+	if (pathArray.length > 5) {
+	  $('.facetwp-template').show();
+	} else {
+		$('.facetwp-template').hide();
+	}
 	(function($) {
 	    $(document).on('facetwp-refresh', function() {
 	        if (FWP.loaded) {

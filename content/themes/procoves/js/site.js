@@ -20,7 +20,6 @@ $(window).load(function() {
 });
 
 jQuery(document).ready(function($) {
-
 		$('.navlist li a').on('click', function() {
 			var scrollAnchor = $(this).attr('data-scroll'),
 				scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 235;
