@@ -41,5 +41,9 @@
 	            $('.collection .gammes').hide();
 	        }
 	    });
+	    $(document).on('facetwp-loaded', function() {
+	        $('html, body').animate({ scrollTop: 0 }, 200);
+	        $( '[data-value=""]' ).addClass( "button" );
+     	});
 	})(jQuery);
 </script>

@@ -1187,11 +1187,14 @@ input.sidebar {
   border: 1px solid #ccc;
   padding: 6px 12px;
 }
+.facetwp-depth .facetwp-depth {
+margin-left: 0!important;
+}
 
 .searchside.normes .facetwp-link{
   font-size: 12px;
   display: inline-block;
-  min-width:48%;
+  width:48%;
   margin-right:2%;
 }
 
@@ -1204,10 +1207,33 @@ input.sidebar {
   background-color: #000!important
 }
 
-.facetwp-link.checked {
+.searchside.normes .facetwp-link.checked,
+.searchside.gammes .facetwp-link.checked {
     color: #fff;
     background-color: #000!important;
     cursor: pointer;
+    border: none;
+    display: block;
+    width: 100%
+}
+
+.searchside.normes .facetwp-link.button, 
+.searchside.gammes .facetwp-link.button{
+  text-indent:-999px;
+  display: block;
+  width:15px;
+  height:15px;
+  border:none;
+  margin: 0;
+  padding:0;
+  background-image: url(img/check.png);
+  background-repeat:no-repeat;
+  background-position:center center;
+}
+.searchside.normes .facetwp-link.button:hover, 
+.searchside.gammes .facetwp-link.button:hover {
+  background:transparent;
+  opacity:0.7;
 }
 
 .facetwp-toggle {
