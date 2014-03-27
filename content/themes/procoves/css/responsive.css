@@ -135,6 +135,9 @@
   #navside .normes-list li.cat-1 a {
   font-size: 12px
   }
+  .collection .gamme-thumb img{
+  min-width: 255px;
+  }
 }
 
 @media screen and (max-width: 860px) {
