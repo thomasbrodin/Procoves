@@ -33,7 +33,7 @@ section#content .taxonomy,
 section#content .collection, 
 section#content .produits, 
 section#content .search {
-  min-height: 835px
+  min-height: 795px
 }
 
 footer {
@@ -1155,9 +1155,9 @@ input.sidebar {
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
 }
 
-.facetwp-template { 
+/*.facetwp-template { 
   display: none; 
-}
+}*/
 
 .facetwp-facet {
     margin-bottom: 10px!important;
