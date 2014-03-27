@@ -255,11 +255,11 @@ function searchwpEngineSettingsTemplate( $engine = 'default' ) {
 								</td>
 								<td>
 									<?php
-										if( !empty( $options['exclude'] ) && false === strpos( $options['exclude'], ',' ) && !is_numeric( $options['exclude'] ) ) {
+										if( ! empty( $options['exclude'] ) && false === strpos( $options['exclude'], ',' ) && ! is_numeric( $options['exclude'] ) ) {
 											$options['exclude'] = '';
 										}
 									?>
-									<input type="text" name="<?php echo SEARCHWP_PREFIX; ?>settings[engines][<?php echo $engine; ?>][<?php echo $post_type->name; ?>][options][exclude]" id="swp_engine_<?php echo $engine; ?>_<?php echo $post_type->name; ?>_exclude" placeholder="<?php _e( 'Comma separated IDs', 'searchwp' ); ?>" value="<?php if( !empty( $options['exclude'] ) ) echo $options['exclude']; ?>" /> <a class="swp-tooltip" href="#swp-tooltip-exclude-<?php echo $engine; ?>_<?php echo $post_type->name; ?>">?</a>
+									<input type="text" name="<?php echo SEARCHWP_PREFIX; ?>settings[engines][<?php echo $engine; ?>][<?php echo $post_type->name; ?>][options][exclude]" id="swp_engine_<?php echo $engine; ?>_<?php echo $post_type->name; ?>_exclude" placeholder="<?php _e( 'Comma separated IDs', 'searchwp' ); ?>" value="<?php if( ! empty( $options['exclude'] ) ) echo $options['exclude']; ?>" /> <a class="swp-tooltip" href="#swp-tooltip-exclude-<?php echo $engine; ?>_<?php echo $post_type->name; ?>">?</a>
 									<div class="swp-tooltip-content" id="swp-tooltip-exclude-<?php echo $engine; ?>_<?php echo $post_type->name; ?>">
 										<?php _e( 'Comma separated post IDs. Will be excluded entirely, even if attributed to.', 'searchwp' ); ?>
 									</div>
@@ -268,11 +268,13 @@ function searchwpEngineSettingsTemplate( $engine = 'default' ) {
 							<?php
 							$taxonomies = get_object_taxonomies( $post_type->name );
 							if( is_array( $taxonomies ) && count( $taxonomies ) ) :
-								foreach( $taxonomies as $taxonomy )
-								{
+								foreach( $taxonomies as $taxonomy ) {
 									$taxonomy = get_taxonomy( $taxonomy );
-									$terms = get_terms( $taxonomy->name );
-									if( !empty( $terms ) ) :
+									$taxonomy_args = array(
+										'hide_empty' => false,
+									);
+									$terms = get_terms( $taxonomy->name, $taxonomy_args );
+									if( ! empty( $terms ) ) :
 									?>
 									<tr>
 										<td>

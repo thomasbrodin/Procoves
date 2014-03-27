@@ -213,7 +213,12 @@ class SearchWPSearch
 				do_action( 'searchwp_log', 'Opted out of internal sanitization' );
 			}
 
+			if( is_array( $whitelisted_terms ) ) {
+				$whitelisted_terms = array_filter( array_map( 'trim', $whitelisted_terms ), 'strlen' );
+			}
+
 			if( is_array( $args['terms'] ) ) {
+				$args['terms'] = array_filter( array_map( 'trim', $args['terms'] ), 'strlen' );
 				$terms = array_merge( $args['terms'], $whitelisted_terms );
 			} else {
 				$args['terms'] .= ' ' . implode( ' ', $whitelisted_terms );
@@ -222,6 +227,7 @@ class SearchWPSearch
 			// make sure the terms are unique, especially after whitelist matching
 			if( is_array( $terms ) ) {
 				$terms = array_unique( $terms );
+				$terms = array_filter( $terms, 'strlen' );
 			}
 
 			$engine = $args['engine'];
@@ -381,12 +387,19 @@ class SearchWPSearch
 				$postTypeExcludeIDs = array();
 			}
 
-			if( !empty( $postTypeExcludeIDs ) ) {
+			if( ! empty( $postTypeExcludeIDs ) && is_array( $postTypeExcludeIDs ) ) {
 				foreach( $postTypeExcludeIDs as $postTypeExcludeID ) {
-					$excludeIDs[] = intval( $postTypeExcludeID );
+					$excludeIDs[] = absint( $postTypeExcludeID );
 				}
 			}
 		}
+
+		if( ! is_array( $excludeIDs ) ) {
+			$excludeIDs = array();
+		} else {
+			$excludeIDs = array_map( 'absint', $excludeIDs );
+		}
+
 		do_action( 'searchwp_log', '$excludeIDs = ' . var_export( $excludeIDs, true ) );
 		$this->excluded = $excludeIDs;
 	}
@@ -626,7 +639,6 @@ class SearchWPSearch
 						$applicableExclusion = false;
 
 						// determine whether we want a term match or stem match
-						$andTerm = $wpdb->prepare( '%s', $andTerm );
 						if( !isset( $postTypeWeights['options']['stem'] ) || empty( $postTypeWeights['options']['stem'] ) ) {
 							$relavantTermWhere = " {$this->db_prefix}terms.term = " . strtolower( $wpdb->prepare( '%s', $andTerm ) );
 						} else {
@@ -883,7 +895,7 @@ class SearchWPSearch
 			if( isset( $postTypeWeights['enabled'] ) && $postTypeWeights['enabled'] == true && !empty( $postTypeWeights['options']['attribute_to'] ) ) {
 				$attributedTo = intval( $postTypeWeights['options']['attribute_to'] );
 				// make sure we're not excluding the attributed post id
-				if( !in_array( $attributedTo, $this->excluded ) ) {
+				if( ! in_array( $attributedTo, $this->excluded ) ) {
 					$this->sql .= ", COALESCE(`{$postType}attr`,0) as `{$postType}attr` ";
 				}
 			}
@@ -915,7 +927,7 @@ class SearchWPSearch
 			if( isset( $postTypeWeights['enabled'] ) && $postTypeWeights['enabled'] == true && !empty( $postTypeWeights['options']['attribute_to'] ) ) {
 				$attributedTo = intval( $postTypeWeights['options']['attribute_to'] );
 				// make sure we're not excluding the attributed post id
-				if( !in_array( $attributedTo, $this->excluded ) ) {
+				if( ! in_array( $attributedTo, $this->excluded ) ) {
 					$this->sql .= " COALESCE(`{$postType}attr`,0) +";
 				}
 			}
@@ -1401,7 +1413,7 @@ class SearchWPSearch
 			if( isset( $postTypeWeights['enabled'] ) && $postTypeWeights['enabled'] == true && !empty( $postTypeWeights['options']['attribute_to'] ) ) {
 				$attributedTo = intval( $postTypeWeights['options']['attribute_to'] );
 				// make sure we're not excluding the attributed post id
-				if( !in_array( $attributedTo, $this->excluded ) ) {
+				if( ! in_array( $attributedTo, $this->excluded ) ) {
 					$this->sql .= " COALESCE(`{$postType}attr`,0) +";
 				}
 			}
@@ -1744,8 +1756,7 @@ class SearchWPSearch
 	 *
 	 * @return string
 	 */
-	private function postStatusLimiterSQL( $engineSettings )
-	{
+	private function postStatusLimiterSQL( $engineSettings ) {
 		global $wpdb;
 
 		$prefix = $wpdb->prefix;
@@ -1792,8 +1803,7 @@ class SearchWPSearch
 	 * @return int The total number of pages
 	 * @since 1.0.5
 	 */
-	function getMaxNumPages()
-	{
+	function getMaxNumPages() {
 		return $this->maxNumPages;
 	}
 
@@ -1804,8 +1814,7 @@ class SearchWPSearch
 	 * @return int The total number of posts
 	 * @since 1.0.5
 	 */
-	function getFoundPosts()
-	{
+	function getFoundPosts() {
 		return $this->foundPosts;
 	}
 
@@ -1816,8 +1825,7 @@ class SearchWPSearch
 	 * @return int The current page
 	 * @since 1.0.5
 	 */
-	function getPage()
-	{
+	function getPage() {
 		return $this->page;
 	}
 

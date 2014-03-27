@@ -258,7 +258,7 @@ if( ! function_exists( 'searchwp_wake_up_indexer' ) ) {
 if( ! function_exists( 'searchwp_get_indexer_progress' ) ) {
 	function searchwp_get_indexer_progress() {
 		$progress = searchwp_get_option( 'progress' );
-		echo ( ! empty( $progress ) ) ? floatval( $progress ) : '-1';
+		echo ( ! empty( $progress ) ) ? floatval( $progress ) : '100';
 		die();
 	}
 }

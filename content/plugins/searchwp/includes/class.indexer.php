@@ -379,6 +379,21 @@ class SearchWPIndexer
 
 		// append Custom Field data
 		$this->post->custom = get_post_custom( $post->ID );
+
+		// allow dev the option to parse Shortcodes
+		if( apply_filters( 'searchwp_do_shortcode', false, $post, 'post_content' ) ) {
+			$this->post->post_content = do_shortcode( $this->post->post_content );
+		}
+		if( ! empty( $this->post->custom ) ) {
+			foreach( $this->post->custom as $post_custom_key => $post_custom_value ) {
+				if( apply_filters( 'searchwp_do_shortcode', false, $post, 'custom_field', $post_custom_key ) ) {
+					$this->post->custom[$post_custom_key] = do_shortcode( $post_custom_value );
+				}
+			}
+		}
+
+		// allow developer the abilitiy to manually manipulate the post content or Custom Field data
+		$this->post = apply_filters( 'searchwp_set_post', $this->post );
 	}
 
 
@@ -768,23 +783,45 @@ class SearchWPIndexer
 							while ( ( $customFieldValue = current( $customFields ) ) !== false ) {
 								$customFieldName = key( $customFields );
 
-								$excludedCustomFieldKeys = apply_filters( 'searchwp_excluded_custom_fields', array(
+								// there are a few useless (when it comes to search) WordPress core custom fields, so let's exclude them by default
+								$omitWpMetadata = apply_filters( 'searchwp_omit_wp_metadata', array(
 										'_edit_lock',
 										'_wp_page_template',
 										'_edit_last',
 										'_wp_old_slug',
-										'_searchwp_indexed',
-										'_searchwp_last_index',
 									) );
 
-								$omitWpMetadata = apply_filters( 'searchwp_omit_wp_metadata', true );
-								if( !$omitWpMetadata || ( $omitWpMetadata && !in_array( $customFieldName, $excludedCustomFieldKeys ) ) ) {
+								$excludedCustomFieldKeys = apply_filters( 'searchwp_excluded_custom_fields', array(
+										'_' . SEARCHWP_PREFIX . 'indexed',
+										'_' . SEARCHWP_PREFIX . 'attempts',
+										'_' . SEARCHWP_PREFIX . 'terms',
+										'_' . SEARCHWP_PREFIX . 'last_index',
+										'_' . SEARCHWP_PREFIX . 'skip',
+										'_' . SEARCHWP_PREFIX . 'skip_doc_processing',
+										'_' . SEARCHWP_PREFIX . 'review',
+									) );
+
+								// merge the two arrays of keys if possible
+								if( is_array( $omitWpMetadata ) && is_array( $excludedCustomFieldKeys ) ) {
+									$excluded_meta_keys = array_merge( $omitWpMetadata, $excludedCustomFieldKeys );
+								} elseif( is_array( $omitWpMetadata ) ) {
+									$excluded_meta_keys = $omitWpMetadata;
+								} else {
+									$excluded_meta_keys = $excludedCustomFieldKeys;
+								}
+								$excluded_meta_keys = ( is_array( $excluded_meta_keys ) ) ? array_unique( $excluded_meta_keys ) : array();
+
+								// allow developers to conditionally omit custom fields
+								$omit_this_custom_field = apply_filters( "searchwp_omit_meta_key_{$customFieldName}", false, $this->post );
+
+								if( ! in_array( $customFieldName, $excluded_meta_keys ) && ! $omit_this_custom_field ) {
 									// allow devs to swap out their own content
 									// e.g. parsing ACF Relationship fields (that store only post IDs) to actually retrieve that content at runtime
 									$customFieldValue = apply_filters( 'searchwp_custom_fields', $customFieldValue, $customFieldName, $this->post );
 									$customFieldValue = apply_filters( "searchwp_custom_field_{$customFieldName}", $customFieldValue, $this->post );
 									$postTerms['customfield'][$customFieldName] = $this->indexCustomField( $customFieldName, $customFieldValue );
 								}
+
 								next( $customFields );
 							}
 							reset( $customFields );
@@ -958,7 +995,7 @@ class SearchWPIndexer
 		$attemptCount = 1;
 		$maxAttempts = absint( apply_filters( 'searchwp_indexer_max_attempts', 4 ) ) + 1;  // try to recover 5 times
 		$insert_result = $wpdb->query(
-		                      $wpdb->prepare( "INSERT IGNORE INTO {$termsTable} (term,reverse,stem) VALUES " . implode( ',', $newTermsSQL ), $newTerms )
+			$wpdb->prepare( "INSERT IGNORE INTO {$termsTable} (term,reverse,stem) VALUES " . implode( ',', $newTermsSQL ), $newTerms )
 		);
 		while( ( is_wp_error( $insert_result ) || false === $insert_result ) && $attemptCount < $maxAttempts ) {
 			// sometimes a deadlock can happen, wait a second then try again
@@ -972,7 +1009,8 @@ class SearchWPIndexer
 		}
 
 		// retrieve IDs for all terms
-		$termIDs = $wpdb->get_results( "SELECT id, term FROM {$termsTable} WHERE term IN( " . implode( ',', $terms ) . " )", 'OBJECT_K');
+		$terms_sql = "SELECT id, term FROM {$termsTable} WHERE term IN( " . implode( ',', $terms ) . " )";  // already prepared
+		$termIDs = $wpdb->get_results( $terms_sql, 'OBJECT_K');
 
 		// match term IDs to original terms with counts
 		if( is_array( $termIDs ) ) {
@@ -980,11 +1018,12 @@ class SearchWPIndexer
 				$termID = key( $termIDs );
 
 				// append the term ID to the original $termsArray
-
 				while ( ( $counts = current( $termsArray ) ) !== false ) {
-					$termsArrayTerm = key( $termsArray );
+					$termsArrayTerm = (string) key( $termsArray );
 					if( $termsArrayTerm == $termIDMeta->term ) {
-						$termsArray[$termsArrayTerm]['id'] = $termIDMeta->id;
+						if( isset( $termIDMeta->id ) ) {
+							$termsArray[$termsArrayTerm]['id'] = absint( $termIDMeta->id );
+						}
 						break;
 					}
 					next( $termsArray );
@@ -1149,52 +1188,36 @@ class SearchWPIndexer
 
 		if( is_string( $string ) && ! empty( $string ) ) {
 
-			// extract whitelisted terms
-			$terms = ' ' . $string . ' ';  // we need front and back spaces so we can perform exact matches when whitelisting
-			$whitelisted_terms = $searchwp->extract_terms_using_pattern_whitelist( $terms );
-
-			// add the buffer so we can whole-word replace
-			$terms = str_replace( ' ', '  ', $string );
-
-			// maybe remove matches so we don't have redundancy, they were buffered with spaces to ensure whole word matching instead of partial matching
-			if( ! empty( $whitelisted_terms ) ) {
-				$terms = str_ireplace( $whitelisted_terms, ' ', $terms );
-			}
-
-			// clean up the double space flag we used
-			$string = str_replace( '  ', ' ', $terms );
-
-			// explode what was not a whitelist match
 			$string = strtolower( $string );
-			$exploded = ( strpos( $string, ' ' ) !== false ) ? explode( ' ', $string ) : array( $string );
 
-			// maybe append our whitelist
-			if( is_array( $whitelisted_terms ) && ! empty( $whitelisted_terms ) ) {
-				$whitelisted_terms = array_map( 'trim', $whitelisted_terms );
-				$exploded = array_merge( $exploded, $whitelisted_terms );
+			if( false !== strpos( $string, ' ' ) ) {
+				$exploded = explode( ' ', $string );
+			} else {
+				$exploded = array( $string );
 			}
 
 			// ensure word length obeys database schema
-			foreach ( $exploded as $term_key => $term_term ) {
-				$exploded[$term_key] = trim( $term_term );
-				if( strlen( $term_term ) > $this->max_term_length ) {
-					// just drop it, it's useless anyway
-					unset( $exploded[$term_key] );
-				} else {
-					// accommodate accent-less searches (e.g. allow accented search results with non-accented search terms)
-					// this happens with WordPress taxonomy terms (WP strips them out)
-					if( $this->leinant_accents ) {
-						$without_accent = $this->remove_accents( $term_term );
-						if( $without_accent != $term_term ) {
-							// "duplicate" the term with this accent-less version
-							$exploded[] = $without_accent;
+			if( is_array( $exploded ) && ! empty( $exploded ) ) {
+				foreach ( $exploded as $term_key => $term_term ) {
+					$exploded[$term_key] = trim( $term_term );
+					if( strlen( $term_term ) > $this->max_term_length ) {
+						// just drop it, it's useless anyway
+						unset( $exploded[$term_key] );
+					} else {
+						// accommodate accent-less searches (e.g. allow accented search results with non-accented search terms)
+						// this happens with WordPress taxonomy terms (WP strips them out)
+						if( $this->leinant_accents ) {
+							$without_accent = $this->remove_accents( $term_term );
+							if( $without_accent != $term_term ) {
+								// "duplicate" the term with this accent-less version
+								$exploded[] = $without_accent;
+							}
 						}
 					}
 				}
+				$exploded = array_values( $exploded );
+				$wordArray = $this->getWordCountFromArray( $exploded );
 			}
-			$exploded = array_values( $exploded );
-
-			$wordArray = $this->getWordCountFromArray( $exploded );
 		}
 
 		return $wordArray;
@@ -1260,16 +1283,23 @@ class SearchWPIndexer
 		// extract terms based on whitelist pattern, allowing for approved indexing of terms with punctuation
 		$whitelisted_terms = $searchwp->extract_terms_using_pattern_whitelist( $content );
 
-		// add the buffer so we can whole-word replace
-		$content = str_replace( ' ', '  ', $content );
+		// when indexing we do not want to remove the matches; we're going to run everything through
+		// the regular sanitization so as to open the possibility for better partial matching (especially
+		// when taking into consideration the use of LIKE Terms or another extension)
 
-		// remove the matches
-		if( ! empty( $whitelisted_terms ) ) {
-			$content = str_ireplace( $whitelisted_terms, ' ', $content );
+		// there may be times however, that the developer does in fact want matches to be exclusively kept together
+		if( apply_filters( 'searchwp_exclusive_regex_matches', false ) ) {
+			// add the buffer so we can whole-word replace
+			$content = str_replace( ' ', '  ', $content );
+
+			// remove the matches
+			if( ! empty( $whitelisted_terms ) ) {
+				$content = str_ireplace( $whitelisted_terms, ' ', $content );
+			}
+
+			// clean up the double space flag we used
+			$content = str_replace( '  ', ' ', $content );
 		}
-
-		// clean up the double space flag we used
-		$content = str_replace( '  ', ' ', $content );
 
 		// buffer tags with spaces before removing them
 		$content = preg_replace( "/<[\w ]+>/", "\\0 ", $content );
@@ -1289,6 +1319,7 @@ class SearchWPIndexer
 		// append our whitelist
 		if( is_array( $whitelisted_terms ) && ! empty( $whitelisted_terms ) ) {
 			$whitelisted_terms = array_map( 'trim', $whitelisted_terms );
+			$whitelisted_terms = array_filter( $whitelisted_terms, 'strlen' );
 			$content .= ' ' . implode( ' ' , $whitelisted_terms );
 		}
 

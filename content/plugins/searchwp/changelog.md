@@ -1,3 +1,31 @@
+### 2.0
+- **[New]** Shortcode processing: SearchWP can now process your Shortcodes in a number of ways
+- **[New]** New Filter: `searchwp_do_shortcode` allows you to conditionally tell SearchWP to process all Shortcodes
+- **[New]** New Filter: `searchwp_set_post` allows you to modify each post object prior to indexing, allowing for conditional processing of Shortcodes and more
+- **[New]** New Filter: `searchwp_nuke_on_delete` to trigger Nuke on Delete (*overrides setting!*)
+- **[New]** New Filter: `searchwp_exclusive_regex_matches` to force the indexer to prevent indexing exploded regex matches
+- **[New]** New Filter: `searchwp_omit_meta_key_{custom_field_key}` allowing for per-key conditional exclusion of post meta when indexing
+- **[Improvement]** Refined regex whitelist pattern for matching hyphen-separated-strings
+- **[Improvement]** The indexer no longer strips regex matches but instead retains them to better facilitate partial matches
+- **[Improvement]** Better language for action/conflict notices
+- **[Improvement]** You can now restore dismissed action/conflict notices in case you want to view them again
+- **[Improvement]** Slight update to the settings UI (better active tab contrast, lessened border radii)
+- **[Improvement]** Better exposure of Statistics feature
+- **[Improvement]** Uninstallation routine now better respects multisite environment
+- **[Improvement]** You can now exclude by terms that have not been used yet
+- **[Improvement]** Better default exclusion of internal metadata when indexing
+- **[Fix]** Fixed an issue where regex whitelist matches were not extracted from supplemental search queries during sanitization
+- **[Fix]** Fixed an issue that might result in duplication of terms that are integers in the index
+- **[Fix]** Fixed a potential issue (during updates) where Supplemental search engine labels would inadvertently have their first letter converted to an 'A'
+- **[Fix]** Redundant preparation of search terms when checking for exclusions by weight of -1
+- **[Fix]** PHP Warning cleanup
+
+
+### 1.9.11
+- **[Improvement]** Added a regex whitelist pattern for hyphen-separated strings often used for serial numbers
+- **[Improvement]** Reduced the overhead of term extraction when processing the regex whitelist which might cause long posts with many regex matches to stall the indexer
+
+
 ### 1.9.10
 - **[Fix]** Fixed a regression in version 1.9.8 that prevented the installation of new plugins from .org
 

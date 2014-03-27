@@ -1,10 +1,13 @@
 {% extends "base.twig" %}
 
 {% block content %}
-	<div class="row">
-	
-	<div class="col-md-12 search pull-right" role="main">
-		<h4>Pour une recherche avancée dans notre catalogue de produits, veuillez visiter la <a href="/recherche">page de recherche</a></h4>
+		<!-- RECHERCHE  -->
+		<div class="jumbotron">
+				<h4>Pour une recherche avancée dans notre catalogue de produits, veuillez visiter la <a href="/recherche">page de recherche</a></h4>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12 search pull-right" role="main">
 			{% if post or produits %}
 				{% if produits %}
 					<h3>Nos Produits</h3>

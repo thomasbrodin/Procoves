@@ -183,7 +183,7 @@ class FacetWP_Facet
      * @return array An array of post IDs
      */
     function get_filtered_post_ids() {
-        global $wpdb;
+        global $wpdb, $facetwp;
 
         // Only get relevant post IDs
         $args = $this->query_args;
@@ -200,6 +200,13 @@ class FacetWP_Facet
         // Exit stage left
         if ( empty( $post_ids ) ) {
             return array( 0 );
+        }
+
+        // See if an "OR" checkbox facet exists
+        // If not, then we can save memory by not storing extra post IDs
+        $or_exists = $this->helper->facet_setting_exists( 'operator', 'or', $this->facets );
+        if ( $or_exists ) {
+            $facetwp->unfiltered_post_ids = $post_ids;
         }
 
         foreach ( $this->facets as $the_facet ) {
@@ -227,6 +234,11 @@ class FacetWP_Facet
             // Skip this facet
             if ( 'continue' == $matches ) {
                 continue;
+            }
+
+            // If "OR" checkbox facets exist, separate post IDs by facet
+            if ( $or_exists ) {
+                $facetwp->or_values[ $the_facet['name'] ] = $matches;
             }
 
             // Preserve post ID order for search facets
@@ -278,6 +290,7 @@ class FacetWP_Facet
             $output = ob_get_clean();
         }
 
+        $output = preg_replace( "/\xC2\xA0/", ' ', $output );
         return $output;
     }
 
@@ -325,7 +338,7 @@ class FacetWP_Facet
 
         // Generate the labels array
         foreach ( $this->facets as $the_facet ) {
-            if ( !empty( $facet['selected_values'] ) ) {
+            if ( !empty( $the_facet['selected_values'] ) ) {
 
                 $facet_name = $the_facet['name'];
                 $facet_type = $the_facet['type'];

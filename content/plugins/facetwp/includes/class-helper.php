@@ -184,4 +184,19 @@ final class FacetWP_Helper
 
         return $output;
     }
+
+
+    /**
+     * Does a facet with the specified setting exist?
+     * @return boolean
+     * @since 1.4.0
+     */
+    function facet_setting_exists( $setting_name, $setting_value, $facets = array() ) {
+        foreach ( $facets as $facet ) {
+            if ( isset( $facet[ $setting_name ] ) && $facet[ $setting_name ] == $setting_value ) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

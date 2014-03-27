@@ -3,7 +3,7 @@
 Plugin Name: SearchWP
 Plugin URI: https://searchwp.com/
 Description: The best WordPress search you can find
-Version: 1.9.10
+Version: 2.0
 Author: Jonathan Christopher
 Author URI: https://searchwp.com/
 Text Domain: searchwp
@@ -27,7 +27,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SEARCHWP_VERSION', '1.9.10' );
+define( 'SEARCHWP_VERSION', '2.0' );
 define( 'SEARCHWP_PREFIX', 'searchwp_' );
 define( 'SEARCHWP_DBPREFIX', 'swp_' );
 define( 'EDD_SEARCHWP_STORE_URL', 'http://searchwp.com' );
@@ -290,25 +290,28 @@ class SearchWP {
 		// these should go from most strict to most loose
 
 		// functions
-		"/(\\w+?)?\\(|[\\s\\n]\\(/uiU",
+		"/(\\w+?)?\\(|[\\s\\n]\\(/is",
 
 		// Date formats
-		"/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})/u",       // date: YYYY-MM-DD
-		"/([0-9]{1,2}-[0-9]{1,2}-[0-9]{4})/u",       // date: MM-DD-YYYY
-		"/([0-9]{4}\\/[0-9]{1,2}\\/[0-9]{1,2})/u",   // date: YYYY/MM/DD
-		"/([0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4})/u",   // date: MM/DD/YYYY
+		"/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})/is",       // date: YYYY-MM-DD
+		"/([0-9]{1,2}-[0-9]{1,2}-[0-9]{4})/is",       // date: MM-DD-YYYY
+		"/([0-9]{4}\\/[0-9]{1,2}\\/[0-9]{1,2})/is",   // date: YYYY/MM/DD
+		"/([0-9]{1,2}\\/[0-9]{1,2}\\/[0-9]{4})/is",   // date: MM/DD/YYYY
 
 		// IP
-		"/(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/u",    // IPv4
+		"/(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})/is",    // IPv4
 
 		// initials
-		"/\\b((?:[A-Za-z]\\.\\s{0,1})+)/u",
+		"/\\b((?:[A-Za-z]\\.\\s{0,1})+)/is",
 
 		// version numbers: 1.0 or 1.0.4 or 1.0.5b1
-		"/([a-z0-9]+(?:\\.[a-z0-9]+)+)/u",
+		"/([a-z0-9]+(?:\\.[a-z0-9]+)+)/is",
+
+		// serial numbers
+		"/(\\b[-_]?[0-9a-zA-Z]+(?:[-_]+[0-9a-zA-Z]+)+[-_]?)/is",  // hyphen/underscore separator
 
 		// strings of digits
-		"/\\b(\\d{1,})\\b/u",
+		"/\\b(\\d{1,})\\b/is",
 
 	);
 
@@ -747,6 +750,7 @@ Results in this set:
 			$this->textDomain . '_toggle_pause'
 		);
 
+		// last indexed
 		switch( $pagenow ) {
 			case 'post.php':
 				do_action( 'searchwp_log', 'Current page is post.php' );
@@ -793,6 +797,14 @@ Results in this set:
 				}
 				break;
 		}
+
+		// link to stats
+		$this->adminBarAddSubMenu(
+		     __( 'Statistics', 'searchwp' ),
+		     get_admin_url() . 'index.php?page=searchwp-stats',
+		     $this->textDomain,
+		     $this->textDomain . '_stats'
+		);
 
 	}
 
@@ -1032,9 +1044,10 @@ Results in this set:
 									}
 									?>
 									<div class="updated">
-										<p><?php echo sprintf( __( 'SearchWP has detected a potential <strong>action/filter conflict</strong> with <code>%s</code> caused by an active plugin or the active theme.', 'searchwp' ), $filter_name ); ?> <a class="swp-conflict-toggle swp-filter-conflict-show" href="#searchwp-conflict-<?php echo $filter_name; ?>"><?php _e( 'More info &raquo;', 'searchwp' ); ?></a></p>
+										<p><?php echo sprintf( __( 'SearchWP has detected a <strong>potential (<em>not guaranteed</em>)</strong> action/filter conflict with <code>%s</code> caused by an active plugin or the active theme.', 'searchwp' ), $filter_name ); ?> <a class="swp-conflict-toggle swp-filter-conflict-show" href="#searchwp-conflict-<?php echo $filter_name; ?>"><?php _e( 'More info &raquo;', 'searchwp' ); ?></a></p>
 										<div id="searchwp-conflict-<?php echo $filter_name; ?>" style="background:#fafafa;border:1px solid #eaeaea;padding:0.6em 1.2em;border-radius:2px;margin-bottom:1em;display:none;">
-											<p><?php _e( '<strong>If you are experiencing issues with search results not changing or not appearing</strong>, the following Hooks (put in place by other plugins or your active theme) are likely contributing to the problem:', 'searchwp' ); ?></p>
+											<p><?php _e( '<strong>This is simply a <em>preliminary</em> detection of a <em>possible</em> conflict.</strong> Many times these detections can be <strong>safely dismissed</strong>', 'searchwp' ); ?></p>
+											<p><?php _e( '<em>If (and only if) you are experiencing issues</em> with search results not changing or not appearing, the following Hooks (put in place by other plugins or your active theme) <em>may be</em> contributing to the problem:', 'searchwp' ); ?></p>
 											<ol>
 												<?php foreach( $potential_conflict as $conflict ) : ?>
 													<?php
@@ -1049,7 +1062,7 @@ Results in this set:
 													<li><?php echo $conflict; ?></li>
 												<?php endforeach; ?>
 											</ol>
-											<p><?php echo sprintf( __( 'Using this information you can determine how to best disable this interference. For more information please see <a href="%s">this Knowledge Base article</a>.', 'searchwp' ), $filter_resolution_url ); ?></p>
+											<p><?php echo sprintf( __( '<strong>If you believe there to be a conflict (e.g. search results not showing up):</strong> use this information you can determine how to best disable this interference. For more information please see <a href="%s">this Knowledge Base article</a>.', 'searchwp' ), $filter_resolution_url ); ?></p>
 											<p><a class="button swp-dismiss-conflict" href="#" data-hash="<?php echo esc_attr( $conflict_hash ); ?>" data-nonce="<?php echo esc_attr( $conflict_nonce ); ?>" data-filter="<?php echo esc_attr( $filter_name ); ?>"><?php _e( 'Dismiss this message', 'searchwp' ); ?></a></p>
 										</div>
 									</div>
@@ -1444,26 +1457,41 @@ Results in this set:
 		// at the very least, our terms are the search query
 		$terms = $originalQuery = is_array( $terms ) ? trim( implode( ' ', $terms ) ) : trim( (string) $terms );
 
-		// this filter is also applied in the SearchWPSearch class constructor
-		// TODO: should this be applied in both places? which?
+		// facilitate filtering the actual terms
+		$terms = apply_filters( 'searchwp_terms', $terms, $engine );
+		do_action( 'searchwp_log', '$terms after searchwp_terms = ' . var_export( $terms, true ) );
+
+		// handle sanitization — this filter is also applied in the SearchWPSearch class constructor
 		$sanitizeTerms = apply_filters( 'searchwp_sanitize_terms', true, $engine );
 		if ( ! is_bool( $sanitizeTerms ) ) {
 			$sanitizeTerms = true;
 		}
 
-		do_action( 'searchwp_log', '$sanitizeTerms = ' . print_r( $sanitizeTerms, true ) );
-
-		// facilitate filtering the actual terms
-		$terms = apply_filters( 'searchwp_terms', $terms, $engine );
-
-		do_action( 'searchwp_log', '$terms = ' . print_r( $terms, true ) );
+		// whitelist search terms
+		$pre_whitelist_terms = is_array( $terms ) ? implode( ' ', $terms ) : ' ' . $terms . ' ';
+		$whitelisted_terms = $this->extract_terms_using_pattern_whitelist( $pre_whitelist_terms, false );
 
 		// if we should still sanitize our terms, do it
 		if ( $sanitizeTerms ) {
 			$terms = $this->sanitizeTerms( $terms );
-		} else {
-			do_action( 'searchwp_log', 'Opted out of internal sanitization' );
 		}
+
+		if( is_array( $whitelisted_terms ) ) {
+			$whitelisted_terms = array_filter( array_map( 'trim', $whitelisted_terms ), 'strlen' );
+		}
+
+		if( is_array( $terms ) ) {
+			$terms = array_filter( array_map( 'trim', $terms ), 'strlen' );
+			$terms = array_unique( array_merge( $terms, $whitelisted_terms ) );
+		} else {
+			$terms .= ' ' . implode( ' ', $whitelisted_terms );
+		}
+
+
+		do_action( 'searchwp_log', '$sanitizeTerms = ' . print_r( $sanitizeTerms, true ) );
+
+		do_action( 'searchwp_log', '$terms = ' . print_r( $terms, true ) );
+
 
 		// set up our engine name
 		$engine = $this->isValidEngine( $engine ) ? $engine : '';
@@ -1634,6 +1662,7 @@ Results in this set:
 			// maybe prepend our whitelisted terms to the final term array
 			if( ! empty( $whitelisted_terms ) && is_array( $whitelisted_terms ) ) {
 				$whitelisted_terms = array_map( 'trim', $whitelisted_terms );
+				$whitelisted_terms = array_filter( $whitelisted_terms, 'strlen' );
 				$terms = array_merge( $whitelisted_terms, $terms );
 			}
 		}
@@ -1654,7 +1683,10 @@ Results in this set:
 					$whitelist_extraction_result = str_ireplace( $whitelist_matches, '', $whitelist_match_check );
 
 					// remove the buffer used for full matching
-					$whitelist_matches = array_map( 'trim', $whitelist_matches );
+					if( is_array( $whitelist_matches ) ) {
+						$whitelist_matches = array_map( 'trim', $whitelist_matches );
+						$whitelist_matches = array_filter( $whitelist_matches, 'strlen' );
+					}
 
 					if( strlen( $whitelist_extraction_result ) > 0 ) {
 						// it was not an exact match so we need to clean what did not match
@@ -1840,7 +1872,12 @@ Results in this set:
 			$terms = $this->sanitizeTerms( $terms );
 		}
 
+		if( is_array( $whitelisted_terms ) ) {
+			$whitelisted_terms = array_filter( array_map( 'trim', $whitelisted_terms ), 'strlen' );
+		}
+
 		if( is_array( $terms ) ) {
+			$terms = array_filter( array_map( 'trim', $terms ), 'strlen' );
 			$terms = array_unique( array_merge( $terms, $whitelisted_terms ) );
 		} else {
 			$terms .= ' ' . implode( ' ', $whitelisted_terms );
@@ -1979,9 +2016,9 @@ Results in this set:
 			wp_enqueue_script( 'jquery-ui-tooltip' );
 			wp_enqueue_script( 'select2' );
 
-			wp_enqueue_script( 'swp_admin_js' );
+			// wp_enqueue_script( 'swp_admin_js' );
 
-			if( !isset( $_GET['nonce'] ) ) {
+			if( ! isset( $_GET['nonce'] ) ) {
 				// if a nonce was set we're dealing with advanced settings which might be purging the index
 				// if this script were included the background process would be invoked, we don't want that right now
 				wp_enqueue_script( 'swp_progress' );
@@ -2054,7 +2091,7 @@ Results in this set:
 	 */
 	function heartbeat_received( $response, $data ) {
 		// maybe retrieve our last indexed time
-		if( $data['searchwp_heartbeat_action'] == 'last_indexed' ) {
+		if( isset( $data['searchwp_heartbeat_action'] ) && $data['searchwp_heartbeat_action'] == 'last_indexed' ) {
 
 			$object_id = absint( $data['searchwp_heartbeat_object'] );
 
@@ -2072,444 +2109,7 @@ Results in this set:
 	 * @since 1.0
 	 */
 	function statsPage() {
-		global $wpdb;
-
-		?>
-		<div class="wrap">
-
-		<div id="icon-searchwp" class="icon32">
-			<img src="<?php echo trailingslashit( $this->url ); ?>assets/images/searchwp@2x.png" alt="SearchWP" width="21" height="32" />
-		</div>
-
-		<h2><?php _e( 'Searches' ); ?></h2>
-
-		<br />
-
-		<div class="swp-searches-chart-wrapper">
-			<div id="swp-searches-chart" style="width:100%;height:300px;"></div>
-		</div>
-
-		<script type="text/javascript">
-			jQuery(document).ready(function ($) {
-
-				<?php
-					// generate stats for the past 30 days for each search engine
-					$prefix = $wpdb->prefix;
-					if( isset( $this->settings['engines'] ) && is_array( $this->settings['engines'] ) && count( $this->settings['engines'] ) )
-					{
-						$engineLabels = array();
-						$searchCounts = array();
-						$engineCount = 1;
-						foreach( $this->settings['engines'] as $engine => $engineSettings )
-						{
-							$sql = $wpdb->prepare( "
-								SELECT DAY({$prefix}swp_log.tstamp) AS day, MONTH({$prefix}swp_log.tstamp) AS month, count({$prefix}swp_log.tstamp) AS searches
-								FROM {$prefix}swp_log
-								WHERE tstamp > DATE_SUB(NOW(), INTERVAL 30 day)
-								AND {$prefix}swp_log.event = 'search'
-								AND {$prefix}swp_log.engine = %s
-								AND {$prefix}swp_log.query <> ''
-								GROUP BY TO_DAYS({$prefix}swp_log.tstamp)
-								ORDER BY {$prefix}swp_log.tstamp DESC
-								", $engine );
-
-							$searchCounts = $wpdb->get_results(
-								$sql, 'OBJECT_K'
-							);
-
-							// key our array
-							$searchesPerDay = array();
-							for($i = 0; $i < 30; $i++)
-								{$searchesPerDay[strtoupper(date( 'Md', strtotime( '-'. ( $i ) .' days' ) ))] = 0;
-}
-
-							if( is_array( $searchCounts ) && count( $searchCounts ) )
-							{
-								foreach( $searchCounts as $searchCount )
-								{
-									$count 		= intval( $searchCount->searches );
-									$day 		= ( intval( $searchCount->day ) ) < 10 ? 0 . $searchCount->day : $searchCount->day;
-									$month 		= ( intval( $searchCount->month ) ) < 10 ? 0 . $searchCount->month : $searchCount->month;
-									$refdate 	= $month . '/01/' . date( 'Y' );
-									$month 		= date( 'M', strtotime( $refdate ) );
-									$key 		= strtoupper( $month . $day );
-
-									$searchesPerDay[$key] = $count;
-								}
-							}
-
-							$searchesPerDay = array_reverse( $searchesPerDay );
-
-							echo 'var s' . $engineCount . ' = [';
-							echo implode( ',', $searchesPerDay );
-							echo '];';
-
-							$engineLabel = "'";
-							$engineLabel .= isset( $engineSettings['label'] ) ? $engineSettings['label'] : esc_attr__( 'Default', 'searchwp' );
-							$engineLabel .= "'";
-							$engineLabels[] = $engineLabel;
-
-							$engineCount++;
-						}
-						$engineCount = 1;
-						$engines = array();
-						foreach( $this->settings['engines'] as $engine => $engineSettings )
-						{
-							$engines[] = 's' . $engineCount;
-							$engineCount++;
-						}
-					?>
-				plot = $.jqplot('swp-searches-chart', [<?php echo implode( ',', $engines ); ?>], {
-					title            : '<?php esc_attr_e( 'Searches Performed in the Past 30 Days', 'searchwp' ); ?>',
-					stackSeries      : false,
-					captureRightClick: true,
-					seriesDefaults   : {
-						renderer       : $.jqplot.BarRenderer,
-						rendererOptions: {
-							barMargin         : 20,
-							highlightMouseDown: false,
-							shadowOffset      : 0,
-							shadowDepth       : 0,
-							shadowAlpha       : 0
-						},
-						pointLabels    : {show: true},
-						lineWidth      : 2,
-						shadow         : false
-					},
-					grid             : {
-						drawGridlines: true,
-						gridLineColor: '#f1f1f1',
-						gridLineWidth: 1,
-						borderWidth  : 1,
-						shadow       : false,
-						background   : '#fafafa',
-						borderColor  : '#ffffff'
-					},
-					axes             : {
-						xaxis: {
-							renderer: $.jqplot.CategoryAxisRenderer
-						},
-						yaxis: {
-							padMin: 0
-						}
-					},
-					legend           : {
-						show     : true,
-						location : 'nw',
-						placement: 'inside',
-						labels   : [ <?php echo implode( ',', $engineLabels ); ?> ]
-					}
-				});
-
-				<?php } ?>
-			});
-		</script>
-
-		<div class="swp-group swp-stats swp-stats-4">
-
-			<?php
-
-				$ignored_queries = searchwp_get_setting( 'ignored_queries' );
-				if ( ! is_array( $ignored_queries ) ) {
-					$ignored_queries = array();
-				}
-
-				// check to see if we need to ignore something
-				if( isset( $_GET['nonce'] ) && isset( $_GET['ignore'] ) && wp_verify_nonce( $_GET['nonce'], 'swpstatsignore' ) ) {
-					// retrieve the original query
-					$query_hash = sanitize_text_field( $_GET['ignore'] );
-					$ignore_sql = $wpdb->prepare( "SELECT {$prefix}swp_log.query  FROM {$prefix}swp_log  WHERE md5( {$prefix}swp_log.query ) = %s", $query_hash );
-					$query_to_ignore = $wpdb->get_var( $ignore_sql );
-					if( ! empty( $query_to_ignore ) ) {
-						$ignored_queries[$query_hash] = $query_to_ignore;
-					}
-					searchwp_update_option( 'ignored_queries', $ignored_queries );
-				}
-
-				$ignored_queries_sql = "'" . implode( "','", $ignored_queries ) . "'";
-				$ignored_queries_sql_where = empty( $ignored_queries ) ? "AND {$prefix}swp_log.query <> ''" : "AND {$prefix}swp_log.query NOT IN ({$ignored_queries_sql})";
-
-				// reset the nonce
-				$ignore_nonce = wp_create_nonce( 'swpstatsignore' );
-
-			?>
-
-			<h2><?php _e( 'Popular Searches', 'searchwp' ); ?></h2>
-
-			<script type="text/javascript">
-				jQuery(document).ready(function($){
-					var searchwp_resize_columns = function() {
-						var searchwp_stat_width = $('.swp-stat:first').width();
-						$('.swp-stats td div').css('max-width',Math.floor(searchwp_stat_width/2) - 10 );
-					};
-					searchwp_resize_columns();
-					jQuery(window).resize(function(){
-						searchwp_resize_columns();
-					})
-				});
-			</script>
-
-			<div class="swp-stat postbox swp-meta-box metabox-holder">
-				<h3 class="hndle"><span><?php _e( 'Today', 'searchwp' ); ?></span></h3>
-
-				<div class="inside">
-					<?php
-					$sql = "
-							SELECT {$prefix}swp_log.query, count({$prefix}swp_log.query) AS searchcount
-							FROM {$prefix}swp_log
-							WHERE tstamp > DATE_SUB(NOW(), INTERVAL 1 DAY)
-							AND {$prefix}swp_log.event = 'search'
-							{$ignored_queries_sql_where}
-							GROUP BY {$prefix}swp_log.query
-							ORDER BY searchcount DESC
-							LIMIT 10
-						";
-
-					$searchCounts = $wpdb->get_results( $sql );
-					?>
-					<?php if ( is_array( $searchCounts ) && ! empty( $searchCounts ) ) : ?>
-						<table>
-							<thead>
-							<tr>
-								<th><?php _e( 'Query', 'searchwp' ); ?></th>
-								<th><?php _e( 'Searches', 'searchwp' ); ?></th>
-							</tr>
-							</thead>
-							<tbody>
-							<?php foreach ( $searchCounts as $searchCount ) : ?>
-								<tr>
-									<td>
-										<div title="<?php echo esc_attr( $searchCount->query ); ?>">
-											<a class="swp-delete" href="index.php?page=searchwp-stats&nonce=<?php echo $ignore_nonce; ?>&ignore=<?php echo md5( esc_attr( $searchCount->query ) ); ?>">x</a>
-											<?php echo esc_html( $searchCount->query ); ?>
-										</div>
-									</td>
-									<td><?php echo $searchCount->searchcount; ?></td>
-								</tr>
-							<?php endforeach; ?>
-							</tbody>
-						</table>
-					<?php else: ?>
-						<p><?php _e( 'There have been no searches today.', 'searchwp' ); ?></p>
-					<?php endif; ?>
-				</div>
-			</div>
-
-			<div class="swp-stat postbox swp-meta-box metabox-holder">
-				<h3 class="hndle"><span><?php _e( 'Week', 'searchwp' ); ?></span></h3>
-
-				<div class="inside">
-					<?php
-					$sql = "
-							SELECT {$prefix}swp_log.query, count({$prefix}swp_log.query) AS searchcount
-							FROM {$prefix}swp_log
-							WHERE tstamp > DATE_SUB(NOW(), INTERVAL 7 DAY)
-							AND {$prefix}swp_log.event = 'search'
-							{$ignored_queries_sql_where}
-							GROUP BY {$prefix}swp_log.query
-							ORDER BY searchcount DESC
-							LIMIT 10
-						";
-
-					$searchCounts = $wpdb->get_results( $sql );
-					?>
-					<?php if ( is_array( $searchCounts ) && ! empty( $searchCounts ) ) : ?>
-						<table>
-							<thead>
-							<tr>
-								<th><?php _e( 'Query', 'searchwp' ); ?></th>
-								<th><?php _e( 'Searches', 'searchwp' ); ?></th>
-							</tr>
-							</thead>
-							<tbody>
-							<?php foreach ( $searchCounts as $searchCount ) : ?>
-								<tr>
-									<td>
-										<div title="<?php echo esc_attr( $searchCount->query ); ?>">
-											<a class="swp-delete" href="index.php?page=searchwp-stats&nonce=<?php echo $ignore_nonce; ?>&ignore=<?php echo md5( esc_attr( $searchCount->query ) ); ?>">x</a>
-											<?php echo esc_html( $searchCount->query ); ?>
-										</div>
-									</td>
-									<td><?php echo $searchCount->searchcount; ?></td>
-								</tr>
-							<?php endforeach; ?>
-							</tbody>
-						</table>
-					<?php else: ?>
-						<p><?php _e( 'There have been no searches within the past 7 days.', 'searchwp' ); ?></p>
-					<?php endif; ?>
-				</div>
-			</div>
-
-			<div class="swp-stat postbox swp-meta-box metabox-holder">
-				<h3 class="hndle"><span><?php _e( 'Month', 'searchwp' ); ?></span></h3>
-
-				<div class="inside">
-					<?php
-					$sql = "
-							SELECT {$prefix}swp_log.query, count({$prefix}swp_log.query) AS searchcount
-							FROM {$prefix}swp_log
-							WHERE tstamp > DATE_SUB(NOW(), INTERVAL 30 DAY)
-							AND {$prefix}swp_log.event = 'search'
-							{$ignored_queries_sql_where}
-							GROUP BY {$prefix}swp_log.query
-							ORDER BY searchcount DESC
-							LIMIT 10
-						";
-
-					$searchCounts = $wpdb->get_results( $sql );
-					?>
-					<?php if ( is_array( $searchCounts ) && ! empty( $searchCounts ) ) : ?>
-						<table>
-							<thead>
-							<tr>
-								<th><?php _e( 'Query', 'searchwp' ); ?></th>
-								<th><?php _e( 'Searches', 'searchwp' ); ?></th>
-							</tr>
-							</thead>
-							<tbody>
-							<?php foreach ( $searchCounts as $searchCount ) : ?>
-								<tr>
-									<td>
-										<div title="<?php echo esc_attr( $searchCount->query ); ?>">
-											<a class="swp-delete" href="index.php?page=searchwp-stats&nonce=<?php echo $ignore_nonce; ?>&ignore=<?php echo md5( esc_attr( $searchCount->query ) ); ?>">x</a>
-											<?php echo esc_html( $searchCount->query ); ?>
-										</div>
-									</td>
-									<td><?php echo $searchCount->searchcount; ?></td>
-								</tr>
-							<?php endforeach; ?>
-							</tbody>
-						</table>
-					<?php else: ?>
-						<p><?php _e( 'There have been no searches within the past 30 days.', 'searchwp' ); ?></p>
-					<?php endif; ?>
-				</div>
-			</div>
-
-			<div class="swp-stat postbox swp-meta-box metabox-holder">
-				<h3 class="hndle"><span><?php _e( 'Year', 'searchwp' ); ?></span></h3>
-
-				<div class="inside">
-					<?php
-					$sql = "
-							SELECT {$prefix}swp_log.query, count({$prefix}swp_log.query) AS searchcount
-							FROM {$prefix}swp_log
-							WHERE tstamp > DATE_SUB(NOW(), INTERVAL 365 DAY)
-							AND {$prefix}swp_log.event = 'search'
-							{$ignored_queries_sql_where}
-							GROUP BY {$prefix}swp_log.query
-							ORDER BY searchcount DESC
-							LIMIT 10
-						";
-
-					$searchCounts = $wpdb->get_results( $sql );
-					?>
-					<?php if ( is_array( $searchCounts ) && ! empty( $searchCounts ) ) : ?>
-						<table>
-							<thead>
-							<tr>
-								<th><?php _e( 'Query', 'searchwp' ); ?></th>
-								<th><?php _e( 'Searches', 'searchwp' ); ?></th>
-							</tr>
-							</thead>
-							<tbody>
-							<?php foreach ( $searchCounts as $searchCount ) : ?>
-								<tr>
-									<td>
-										<div title="<?php echo esc_attr( $searchCount->query ); ?>">
-											<a class="swp-delete" href="index.php?page=searchwp-stats&nonce=<?php echo $ignore_nonce; ?>&ignore=<?php echo md5( esc_attr( $searchCount->query ) ); ?>">x</a>
-											<?php echo esc_html( $searchCount->query ); ?>
-										</div>
-									</td>
-									<td><?php echo $searchCount->searchcount; ?></td>
-								</tr>
-							<?php endforeach; ?>
-							</tbody>
-						</table>
-					<?php else: ?>
-						<p><?php _e( 'There have been no searches within the past year.', 'searchwp' ); ?></p>
-					<?php endif; ?>
-				</div>
-			</div>
-
-		</div>
-
-		<div class="swp-group swp-stats swp-stats-4">
-
-			<h2><?php _e( 'Failed Searches', 'searchwp' ); ?></h2>
-
-			<div class="swp-stat postbox swp-meta-box metabox-holder">
-				<h3 class="hndle"><span><?php _e( 'Past 30 Days', 'searchwp' ); ?></span></h3>
-
-				<div class="inside">
-					<?php
-					$sql = "
-							SELECT {$prefix}swp_log.query, count({$prefix}swp_log.query) AS searchcount
-							FROM {$prefix}swp_log
-							WHERE tstamp > DATE_SUB(NOW(), INTERVAL 30 DAY)
-							AND {$prefix}swp_log.event = 'search'
-							{$ignored_queries_sql_where}
-							AND {$prefix}swp_log.hits = 0
-							GROUP BY {$prefix}swp_log.query
-							ORDER BY searchcount DESC
-							LIMIT 10
-						";
-
-					$searchCounts = $wpdb->get_results( $sql );
-					?>
-					<?php if ( is_array( $searchCounts ) && ! empty( $searchCounts ) ) : ?>
-						<table>
-							<thead>
-							<tr>
-								<th><?php _e( 'Query', 'searchwp' ); ?></th>
-								<th><?php _e( 'Searches', 'searchwp' ); ?></th>
-							</tr>
-							</thead>
-							<tbody>
-							<?php foreach ( $searchCounts as $searchCount ) : ?>
-								<tr>
-									<td>
-										<div title="<?php echo esc_attr( $searchCount->query ); ?>">
-											<a class="swp-delete" href="index.php?page=searchwp-stats&nonce=<?php echo $ignore_nonce; ?>&ignore=<?php echo md5( esc_attr( $searchCount->query ) ); ?>">x</a>
-											<?php echo esc_html( $searchCount->query ); ?>
-										</div>
-									</td>
-									<td><?php echo $searchCount->searchcount; ?></td>
-								</tr>
-							<?php endforeach; ?>
-							</tbody>
-						</table>
-					<?php else: ?>
-						<p><?php _e( 'There have been no failed searches within the past 30 days.', 'searchwp' ); ?></p>
-					<?php endif; ?>
-				</div>
-			</div>
-
-		</div>
-
-		<script type="text/javascript">
-			jQuery(document).ready(function ($) {
-				$('.swp-stats').each(function () {
-					var tallest = 0;
-					$(this).find('.swp-stat > .inside').each(function () {
-						if ($(this).height() > tallest) {
-							tallest = $(this).height();
-						}
-					}).height(tallest);
-				});
-				$('a.swp-delete').click(function(){
-					if (confirm('<?php _e( "Are you sure you want to ignore this search from all statistics?", 'searchwp' ); ?>')) {
-						return true;
-					}else{
-						return false;
-					}
-				});
-			});
-		</script>
-
-		</div>
-	<?php
+		include( dirname( __FILE__ ) . '/admin/stats.php' );
 	}
 
 
@@ -2817,7 +2417,7 @@ Results in this set:
 			</div>
 			<h2><?php echo $this->pluginName . ' ' . __( 'Outstanding Index Issues' ); ?></h2>
 			<?php if( empty( $erroneousPosts ) ) : ?>
-				<p><?php _e( 'Nothing is currently exclude from the indexer.', 'searchwp' ); ?></p>
+				<p><?php _e( 'Nothing is currently excluded from the indexer.', 'searchwp' ); ?></p>
 			<?php else: ?>
 				<p><?php _e( 'SearchWP was unable to index the following content, and it is actively being excluded from subsequent index runs.', 'searchwp' ); ?></p>
 				<table class="swp-table swp-erroneous-posts">
@@ -2986,6 +2586,20 @@ Results in this set:
 			}
 		}
 
+		// do we need to restore our notices?
+		$reset_conflict_nags = false;
+		if (
+			( isset( $_REQUEST['nonce'] ) && wp_verify_nonce( $_REQUEST['nonce'], 'swpadvanced' ) ) &&
+			( isset( $_REQUEST['action'] ) && wp_verify_nonce( $_REQUEST['action'], 'swpresetconflictnags' ) )
+			&& current_user_can( 'manage_options' )
+		) {
+			do_action( 'searchwp_log', 'Passed nonce, reset conflict nags' );
+			$existing_dismissals = searchwp_get_setting( 'dismissed' );
+			$existing_dismissals['filter_conflicts'] = array();
+			searchwp_set_setting( 'dismissed', $existing_dismissals );
+			$reset_conflict_nags = true;
+		}
+
 		$nonce = isset( $_REQUEST['nonce'] ) ? $_REQUEST['nonce'] : '0';
 
 		?>
@@ -2998,34 +2612,40 @@ Results in this set:
 			<h2><?php echo $this->pluginName . ' ' . __( 'Advanced Settings' ); ?></h2>
 
 			<?php if ( $purged ) : ?>
-				<div id="setting-error-settings_updated" class="updated settings-error">
+				<div id="setting-error-settings_updated" class="updated">
 					<p><strong><?php _e( 'Index purged. <strong>The index will not be rebuilt until you initiate a reindex</strong>.', 'searchwp' ); ?></strong>
 						<a href="options-general.php?page=searchwp"><?php _e( 'Initiate reindex', 'searchwp' ); ?></a></p>
 				</div>
 			<?php endif; ?>
 
 			<?php if ( $resetStats ) : ?>
-				<div id="setting-error-settings_updated" class="updated settings-error">
+				<div id="setting-error-settings_updated" class="updated">
 					<p><strong><?php _e( 'Search Stats have been reset', 'searchwp' ); ?></strong></p>
 				</div>
 			<?php endif; ?>
 
 			<?php if ( $wokenUp ) : ?>
-				<div id="setting-error-settings_updated" class="updated settings-error">
+				<div id="setting-error-settings_updated" class="updated">
 					<p><strong><?php _e( 'Attempted to wake up the indexer.', 'searchwp' ); ?></strong>
 						<a href="options-general.php?page=searchwp"><?php _e( 'View indexer progress', 'searchwp' ); ?></a></p>
 				</div>
 			<?php endif; ?>
 
 			<?php if ( $remoteDebug ) : ?>
-				<div id="setting-error-settings_updated" class="updated settings-error">
+				<div id="setting-error-settings_updated" class="updated">
 					<p><?php _e( 'Remote Debugging is <strong>enabled</strong> with key', 'searchwp' ); ?> <code><?php echo $remoteDebug; ?></code></p>
 				</div>
 			<?php endif; ?>
 
 			<?php if ( $nuke_on_delete ) : ?>
-				<div id="setting-error-settings_updated" class="updated settings-error">
+				<div id="setting-error-settings_updated" class="updated">
 					<p><?php _e( 'Nuke on Delete is <strong>enabled</strong>', 'searchwp' ); ?></p>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( $reset_conflict_nags ) : ?>
+				<div id="setting-error-settings_updated" class="updated">
+					<p><strong><?php _e( 'Conflict notifications have been restored, they will be visible on the <a href="options-general.php?page=searchwp">settings screen</a>', 'searchwp' ); ?></strong></p>
 				</div>
 			<?php endif; ?>
 
@@ -3041,6 +2661,12 @@ Results in this set:
 				<?php _e( 'If you would like to <strong>completely reset your Search Stats</strong>, you can do so.', 'searchwp' ); ?>
 				<span class="description"><?php _e( 'Existing index will be left as is', 'searchwp' ); ?></span>
 				<a style="margin-left:13px;" class="button" id="swp-reset-stats" href="options-general.php?page=searchwp&amp;nonce=<?php echo $nonce; ?>&amp;action=<?php echo wp_create_nonce( 'swppurgestats' ); ?>"><?php _e( 'Reset Stats', 'searchwp' ); ?></a>
+			</p>
+
+			<h3><?php _e( 'Restore conflict notifications', 'searchwp' ); ?></h3>
+			<p style="padding-bottom:23px;">
+				<?php _e( 'If you would like to reset all conflict notifications, you can restore them all at once.', 'searchwp' ); ?>
+				<a style="margin-left:13px;" class="button" id="swp-reset-conflict-nags" href="options-general.php?page=searchwp&amp;nonce=<?php echo $nonce; ?>&amp;action=<?php echo wp_create_nonce( 'swpresetconflictnags' ); ?>"><?php _e( 'Restore Conflict Notices', 'searchwp' ); ?></a>
 			</p>
 
 			<h3><?php _e( 'Disable Indexer', 'searchwp' ); ?></h3>
@@ -3107,6 +2733,7 @@ Results in this set:
 	 * @since 1.0
 	 */
 	function optionsPage() {
+
 		global $wpdb;
 
 		// check to see if we need to display an extension settings page
@@ -3153,287 +2780,175 @@ Results in this set:
 			return;
 		}
 
-		// retrieve custom field keys to include in the Custom Fields weight table select
-		$this->keys = $wpdb->get_col( "
-				SELECT meta_key
-				FROM $wpdb->postmeta
-				WHERE meta_key != '_" . SEARCHWP_PREFIX . "indexed'
-				AND meta_key != '" . SEARCHWP_PREFIX . "content'
-				AND meta_key != '_" . SEARCHWP_PREFIX . "needs_remote'
-				AND meta_key NOT LIKE '_oembed_%'
-				GROUP BY meta_key
-			" );
+		$licenseNonceUrl = 'options-general.php?page=searchwp&amp;activate=' . wp_create_nonce( 'swpactivate' );
 
-		// allow devs to filter this list
-		$this->keys = array_unique( apply_filters( 'searchwp_custom_field_keys', $this->keys ) );
+		// progress of indexer
+		$remainingPostsToIndex = searchwp_get_setting( 'remaining', 'stats' );
+		$progress = searchwp_get_option( 'progress' );
+		if( ! is_bool( $remainingPostsToIndex ) || ( is_numeric ( $progress ) && $progress > 0 && $progress < 100 ) ) {
+			$remainingPostsToIndex = absint( $remainingPostsToIndex );
+			?>
+			<div class="updated settings-error swp-in-progress<?php if ( $remainingPostsToIndex === 0 ) : ?> swp-in-progress-done<?php endif; ?>">
+				<div class="swp-progress-wrapper">
+					<p class="swp-label"><?php _e( 'Indexing is', 'searchwp' ); ?>
+						<span><?php _e( 'almost', 'searchwp' ); ?></span> <?php _e( 'complete', 'searchwp' ); ?>
+						<a class="swp-tooltip" href="#swp-tooltip-progress">?</a></p>
 
-		// sort the keys alphabetically
-		if ( $this->keys ) {
-			natcasesort( $this->keys );
-		} else {
-			$this->keys = array();
+					<div class="swp-tooltip-content" id="swp-tooltip-progress">
+						<?php _e( 'This process is running in the background. You can leave this page and the index will continue to be built until completion.', 'searchwp' ); ?>
+					</div>
+					<div class="swp-progress-track">
+						<div class="swp-progress-bar"></div>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
+
+		<?php
+		if ( isset( $_REQUEST['inonce'] ) && wp_verify_nonce( $_REQUEST['inonce'], 'swpindexernag' ) && current_user_can( 'manage_options' ) ) {
+			$dismissed = searchwp_get_setting( 'dismissed' );
+			if( is_array( $dismissed ) ) {
+				if( isset( $dismissed['nags'] ) && is_array( $dismissed['nags'] ) ) {
+					$dismissed['nags'][] = 'indexer';
+				} else {
+					$dismissed['nags'] = array( 'indexer' );
+				}
+			} else {
+				$dismissed = array(
+					'nags' => array( 'indexer' )
+				);
+			}
+			searchwp_set_setting( 'dismissed', $dismissed );
 		}
 
-		$licenseNonceUrl = 'options-general.php?page=searchwp&amp;activate=' . wp_create_nonce( 'swpactivate' );
-		?>
-		<div class="wrap">
-			<div id="icon-searchwp" class="icon32">
-				<img src="<?php echo trailingslashit( $this->url ); ?>assets/images/searchwp@2x.png" alt="SearchWP" width="21" height="32" />
+		$nags = searchwp_get_setting( 'nags', 'dismissed' );
+		$indexer_nag_dismissed = is_array( $nags ) && in_array( 'indexer', $nags );
+
+		if ( false && ! $indexer_nag_dismissed ) : ?>
+			<div class="updated swp-progress-notes">
+				<p class="description"><?php echo sprintf( __( 'The SearchWP indexer runs as fast as it can without overloading your server; there are filters to customize it\'s aggressiveness. <a href="%s">Find out more &raquo;</a> <a class="swp-dismiss" href="options-general.php?page=searchwp&amp;inonce=%s">Dismiss</a>', 'searchwp' ), 'http://searchwp.com/?p=11818', wp_create_nonce( "swpindexernag" ) ); ?></p>
 			</div>
-			<h2>
-				<?php echo $this->pluginName . ' ' . __( 'Settings' ); ?>
-				<?php if ( false == $this->license ) { ?>
-					<a class="button button-primary swp-activate-license" href="<?php echo $licenseNonceUrl; ?>"><?php _e( 'Activate License', 'searchwp' ); ?></a>
-				<?php }
-				else { ?>
-					<a class="button swp-manage-license" href="<?php echo $licenseNonceUrl; ?>"><?php _e( 'Manage License', 'searchwp' ); ?></a>
-				<?php } ?>
-				<?php if ( ! empty( $this->extensions ) ) : ?>
-					<div class="swp-menu-extensions swp-btn-group">
-						<a class="button swp-btn swp-dropdown-toggle" data-toggle="dropdown" href="#">
-							<?php _e( 'Extensions', 'searchwp' ); ?>
-							<span class="swp-caret"></span>
-						</a>
-						<ul class="swp-dropdown-menu">
-							<?php foreach ( $this->extensions as $extension ) : ?>
-								<?php if ( !empty( $extension->public ) && isset( $extension->slug ) && isset( $extension->name ) ) : ?>
-									<?php $nonce = wp_create_nonce( 'swp_extension_' . $extension->slug ); ?>
-									<li><a href="options-general.php?page=searchwp&amp;extension=<?php echo $extension->slug; ?>&amp;nonce=<?php echo $nonce; ?>"><?php echo $extension->name; ?></a></li>
-								<?php endif; ?>
-							<?php endforeach; ?>
-						</ul>
-					</div>
-				<?php endif; ?>
-			</h2>
+		<?php endif; ?>
 
-			<?php
-			/**
-			 * LICENSE CHECK
-			 */
-			if ( ( $this->license !== false && $this->license !== '' ) && $this->status !== 'valid' ) : ?>
-				<div id="setting-error-settings_updated" class="error settings-error">
-					<p><?php _e( 'A license key was found, but it is <strong>inactive</strong>. Automatic updates <em>will not be available</em> until your license is activated.', 'searchwp' ); ?> <a href="<?php echo $licenseNonceUrl; ?>"><?php _e( 'Manage License', 'searchwp' ); ?></a></p>
-				</div>
-			<?php endif; ?>
-
-			<?php
-				$notices = searchwp_get_setting( 'notices' );
-				$initial_notified = ( is_array( $notices ) && in_array( 'initial', $notices ) ) ? true : false;
-				if ( searchwp_get_setting( 'initial_index_built' ) && ! $initial_notified ) : ?>
-				<div class="updated">
-					<p><?php _e( 'Initial index has been built', 'searchwp' ); ?></p>
-				</div>
-				<?php
-					if( is_array( $notices ) ) {
-						$notices[] = 'initial';
-					} else {
-						$notices = array( 'initial' );
-					}
-					searchwp_set_setting( 'notices', $notices );
-				?>
-			<?php endif; ?>
-
-			<?php
-			if ( isset( $_REQUEST['nnonce'] ) && wp_verify_nonce( $_REQUEST['nnonce'], 'swplicensenag' ) && current_user_can( 'manage_options' ) ) {
-				$dismissed = searchwp_get_setting( 'dismissed' );
-				if( is_array( $dismissed ) ) {
-					if( isset( $dismissed['nags'] ) && is_array( $dismissed['nags'] ) ) {
-						$dismissed['nags'][] = 'license';
-					} else {
-						$dismissed['nags'] = array( 'license' );
-					}
-				} else {
-					$dismissed = array(
-						'nags' => array( 'license' )
-					);
-				}
-				searchwp_set_setting( 'dismissed', $dismissed );
-			}
-
-			$nags = searchwp_get_setting( 'nags', 'dismissed' );
-			$license_nag_dismissed = is_array( $nags ) && in_array( 'license', $nags );
-
-			if ( $initial_notified && $this->license == false && ! $license_nag_dismissed && apply_filters( 'searchwp_initial_license_nag', true ) ) : ?>
-				<div id="setting-error-settings_updated" class="updated settings-error swp-license-nag">
-					<p><?php _e( 'In order to receive updates and support, you must have an active license.', 'searchwp' ); ?> <a href="<?php echo $licenseNonceUrl; ?>"><?php _e( 'Manage License', 'searchwp' ); ?></a> <a href="<?php echo EDD_SEARCHWP_STORE_URL; ?>"><?php _e( 'Purchase License', 'searchwp' ); ?></a> <a href="options-general.php?page=searchwp&amp;nnonce=<?php echo wp_create_nonce( 'swplicensenag' ); ?>"><?php _e( 'Dismiss', 'searchwp' ); ?></a></p>
-				</div>
-			<?php endif; ?>
-
-			<?php
-			/**
-			 * MYSQL CHECK
-			 */
-			if ( isset( $_REQUEST['vnonce'] ) && wp_verify_nonce( $_REQUEST['vnonce'], 'swpmysqlnag' ) && current_user_can( 'manage_options' ) ) {
-				$dismissed = searchwp_get_setting( 'dismissed' );
-				if( is_array( $dismissed ) ) {
-					if( isset( $dismissed['nags'] ) && is_array( $dismissed['nags'] ) ) {
-						$dismissed['nags'][] = 'mysql_version';
-					} else {
-						$dismissed['nags'] = array( 'mysql_version' );
-					}
-				} else {
-					$dismissed = array(
-						'nags' => array( 'mysql_version' )
-					);
-				}
-				searchwp_set_setting( 'dismissed', $dismissed );
-			}
-
-			$nags = searchwp_get_setting( 'nags', 'dismissed' );
-			$mysql_version_nag_dismissed = is_array( $nags ) && in_array( 'mysql_version', $nags );
-
-			if ( ! version_compare( '5.1', $wpdb->db_version(), '<' )  && ! $mysql_version_nag_dismissed ) : ?>
-				<div class="updated settings-error">
-					<p><?php echo sprintf( __( 'Your server is running MySQL version %1$s which may prevent search results from appearing due to <a href="http://bugs.mysql.com/bug.php?id=41156">bug 41156</a>. Please update MySQL to a more recent version (at least 5.1).', 'searchwp' ), $wpdb->db_version() ); ?> <a href="options-general.php?page=searchwp&amp;vnonce=<?php echo wp_create_nonce( 'swpmysqlnag' ); ?>"><?php _e( 'Dismiss', 'searchwp' ); ?></a></p>
-				</div>
-			<?php endif; ?>
-
-			<form action="options.php" method="post">
-
-				<div class="swp-wp-settings-api">
-					<?php do_settings_sections( $this->textDomain ); ?>
-					<?php settings_fields( SEARCHWP_PREFIX . 'settings' ); ?>
-				</div>
-
-				<?php
-				$remainingPostsToIndex = searchwp_get_setting( 'remaining', 'stats' );
-				$progress = searchwp_get_option( 'progress' );
-				if( ! is_bool( $remainingPostsToIndex ) || ( is_numeric ( $progress ) && $progress > 0 && $progress < 100 ) ) {
-					$remainingPostsToIndex = absint( $remainingPostsToIndex );
-					?>
-					<div class="updated settings-error swp-in-progress<?php if ( $remainingPostsToIndex === 0 ) : ?> swp-in-progress-done<?php endif; ?>">
-						<div class="swp-progress-wrapper">
-							<p class="swp-label"><?php _e( 'Indexing is', 'searchwp' ); ?>
-								<span><?php _e( 'almost', 'searchwp' ); ?></span> <?php _e( 'complete', 'searchwp' ); ?>
-								<a class="swp-tooltip" href="#swp-tooltip-progress">?</a></p>
-
-							<div class="swp-tooltip-content" id="swp-tooltip-progress">
-								<?php _e( 'This process is running in the background. You can leave this page and the index will continue to be built until completion.', 'searchwp' ); ?>
-							</div>
-							<div class="swp-progress-track">
-								<div class="swp-progress-bar"></div>
-							</div>
-						</div>
-					</div>
-				<?php } ?>
-
-				<?php
-				if ( isset( $_REQUEST['inonce'] ) && wp_verify_nonce( $_REQUEST['inonce'], 'swpindexernag' ) && current_user_can( 'manage_options' ) ) {
-					$dismissed = searchwp_get_setting( 'dismissed' );
-					if( is_array( $dismissed ) ) {
-						if( isset( $dismissed['nags'] ) && is_array( $dismissed['nags'] ) ) {
-							$dismissed['nags'][] = 'indexer';
-						} else {
-							$dismissed['nags'] = array( 'indexer' );
-						}
-					} else {
-						$dismissed = array(
-							'nags' => array( 'indexer' )
-						);
-					}
-					searchwp_set_setting( 'dismissed', $dismissed );
-				}
-
-				$nags = searchwp_get_setting( 'nags', 'dismissed' );
-				$indexer_nag_dismissed = is_array( $nags ) && in_array( 'indexer', $nags );
-
-				if ( false && ! $indexer_nag_dismissed ) : ?>
-					<div class="updated swp-progress-notes">
-						<p class="description"><?php echo sprintf( __( 'The SearchWP indexer runs as fast as it can without overloading your server; there are filters to customize it\'s aggressiveness. <a href="%s">Find out more &raquo;</a> <a class="swp-dismiss" href="options-general.php?page=searchwp&amp;inonce=%s">Dismiss</a>', 'searchwp' ), 'http://searchwp.com/?p=11818', wp_create_nonce( "swpindexernag" ) ); ?></p>
-					</div>
-				<?php endif; ?>
-
-				<script type="text/html" id="tmpl-swp-custom-fields">
-					<tr class="swp-custom-field">
-						<td class="swp-custom-field-select">
-							<select name="<?php echo SEARCHWP_PREFIX; ?>settings[engines][{{ swp.engine }}][{{ swp.postType }}][weights][cf][{{ swp.arrayFlag }}][metakey]" style="width:80%;">
-								<option value="searchwp cf default"><?php _e( 'Any', 'searchwp' ); ?></option>
-								<?php if ( ! empty( $this->keys ) ) : foreach ( $this->keys as $key ) : ?>
-									<option value="<?php echo $key; ?>"><?php echo $key; ?></option>
-								<?php endforeach; endif; ?>
-							</select>
-							<a class="swp-delete" href="#">X</a>
-						</td>
-						<td>
-							<input type="number" min="-1" step="1" class="small-text" name="<?php echo SEARCHWP_PREFIX; ?>settings[engines][{{ swp.engine }}][{{ swp.postType }}][weights][cf][{{ swp.arrayFlag }}][weight]" value="1" />
-						</td>
-					</tr>
-				</script>
-
-				<div class="postbox swp-meta-box swp-default-engine metabox-holder swp-jqueryui">
-
-					<h3 class="hndle"><span><?php _e( 'Default Search Engine', 'searchwp' ); ?></span></h3>
-
-					<div class="inside">
-
-						<p><?php _e( 'These settings will override WordPress default searches. You can customize which post types are included in search results, attributing specific weights to various content types within each post type.', 'searchwp' ); ?>
-							<a class="swp-tooltip" href="#swp-tooltip-overview">?</a></p>
-
-						<div class="swp-tooltip-content" id="swp-tooltip-overview">
-							<?php _e( "Only checked post types will be included in search results. If a post type isn't displayed, ensure <code>exclude_from_search</code> is set to false when registering it.", 'searchwp' ); ?>
-						</div>
-						<?php searchwpEngineSettingsTemplate( 'default' ); ?>
-
-					</div>
-
-				</div>
-
-				<div class="postbox swp-meta-box metabox-holder swp-jqueryui">
-
-					<h3 class="hndle"><span><?php _e( 'Supplemental Search Engines', 'searchwp' ); ?></span></h3>
-
-					<div class="inside">
-
-						<p><?php _e( 'Here you can build supplemental search engines to use in specific sections of your site. When used, the default search engine settings are completely ignored.', 'searchwp' ); ?>
-							<a class="swp-tooltip" href="#swp-tooltip-supplemental">?</a></p>
-
-						<div class="swp-tooltip-content" id="swp-tooltip-supplemental">
-							<?php _e( "Only checked post types will be included in search results. If a post type isn't displayed, ensure <code>exclude_from_search</code> is set to false when registering it.", 'searchwp' ); ?>
-						</div>
-
-						<script type="text/html" id="tmpl-swp-engine">
-							<?php searchwpEngineSettingsTemplate( '{{swp.engine}}' ); ?>
-						</script>
-
-						<script type="text/html" id="tmpl-swp-supplemental-engine">
-							<?php searchwpSupplementalEngineSettingsTemplate( '{{swp.engine}}' ); ?>
-						</script>
-
-						<div class="swp-supplemental-engines-wrapper">
-							<ul class="swp-supplemental-engines">
-								<?php if ( isset( $this->settings['engines'] ) && is_array( $this->settings['engines'] ) && count( $this->settings['engines'] ) ) : ?>
-									<?php foreach ( $this->settings['engines'] as $engineFlag => $engine ) : if ( isset( $engine['label'] ) && ! empty( $engine['label'] ) ) : ?>
-										<?php searchwpSupplementalEngineSettingsTemplate( $engineFlag, $engine['label'] ); ?>
-									<?php endif; endforeach; ?>
-								<?php endif; ?>
-							</ul>
-							<p>
-								<a href="#" class="button swp-add-supplemental-engine"><?php _e( 'Add New Supplemental Engine', 'searchwp' ); ?></a>
-							</p>
-						</div>
-
-					</div>
-
-				</div>
-
-				<div class="swp-settings-footer swp-group">
-					<?php if ( current_user_can( 'manage_options' ) ) : ?>
-						<p class="swp-settings-advanced">
-							<a href="options-general.php?page=searchwp&amp;nonce=<?php echo wp_create_nonce( 'swpadvanced' ); ?>"><?php _e( 'Advanced', 'searchwp' ); ?></a>
-						</p>
-					<?php endif; ?>
-					<?php submit_button(); ?>
-				</div>
-
-			</form>
-			<?php
-			if ( ! $this->indexing && isset( $_GET['page'] ) && $_GET['page'] == 'searchwp' && false == searchwp_get_setting( 'running' ) ) {
-				$this->indexing = true;
-				$this->triggerIndex();
-			}
-			?>
+		<div class="wrap">
+		<div id="icon-searchwp" class="icon32">
+			<img src="<?php echo trailingslashit( $this->url ); ?>assets/images/searchwp@2x.png" alt="SearchWP" width="21" height="32" />
 		</div>
-	<?php
+		<h2>
+			<?php echo $this->pluginName . ' ' . __( 'Settings' ); ?>
+			<?php if ( false == $this->license ) { ?>
+				<a class="button button-primary swp-activate-license" href="<?php echo $licenseNonceUrl; ?>"><?php _e( 'Activate License', 'searchwp' ); ?></a>
+			<?php }
+			else { ?>
+				<a class="button swp-manage-license" href="<?php echo $licenseNonceUrl; ?>"><?php _e( 'Manage License', 'searchwp' ); ?></a>
+			<?php } ?>
+			<?php if ( ! empty( $this->extensions ) ) : ?>
+				<div class="swp-menu-extensions swp-btn-group">
+					<a class="button swp-btn swp-dropdown-toggle" data-toggle="dropdown" href="#">
+						<?php _e( 'Extensions', 'searchwp' ); ?>
+						<span class="swp-caret"></span>
+					</a>
+					<ul class="swp-dropdown-menu">
+						<?php foreach ( $this->extensions as $extension ) : ?>
+							<?php if ( !empty( $extension->public ) && isset( $extension->slug ) && isset( $extension->name ) ) : ?>
+								<?php $nonce = wp_create_nonce( 'swp_extension_' . $extension->slug ); ?>
+								<li><a href="options-general.php?page=searchwp&amp;extension=<?php echo $extension->slug; ?>&amp;nonce=<?php echo $nonce; ?>"><?php echo $extension->name; ?></a></li>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			<?php endif; ?>
+		</h2>
+
+		<?php
+		/**
+		 * LICENSE CHECK
+		 */
+		if ( ( $this->license !== false && $this->license !== '' ) && $this->status !== 'valid' ) : ?>
+			<div id="setting-error-settings_updated" class="error settings-error">
+				<p><?php _e( 'A license key was found, but it is <strong>inactive</strong>. Automatic updates <em>will not be available</em> until your license is activated.', 'searchwp' ); ?> <a href="<?php echo $licenseNonceUrl; ?>"><?php _e( 'Manage License', 'searchwp' ); ?></a></p>
+			</div>
+		<?php endif; ?>
+
+		<?php
+		$notices = searchwp_get_setting( 'notices' );
+		$initial_notified = ( is_array( $notices ) && in_array( 'initial', $notices ) ) ? true : false;
+		if ( searchwp_get_setting( 'initial_index_built' ) && ! $initial_notified ) : ?>
+			<div class="updated">
+				<p><?php _e( 'Initial index has been built', 'searchwp' ); ?></p>
+			</div>
+			<?php
+			if( is_array( $notices ) ) {
+				$notices[] = 'initial';
+			} else {
+				$notices = array( 'initial' );
+			}
+			searchwp_set_setting( 'notices', $notices );
+			?>
+		<?php endif; ?>
+
+		<?php
+		if ( isset( $_REQUEST['nnonce'] ) && wp_verify_nonce( $_REQUEST['nnonce'], 'swplicensenag' ) && current_user_can( 'manage_options' ) ) {
+			$dismissed = searchwp_get_setting( 'dismissed' );
+			if( is_array( $dismissed ) ) {
+				if( isset( $dismissed['nags'] ) && is_array( $dismissed['nags'] ) ) {
+					$dismissed['nags'][] = 'license';
+				} else {
+					$dismissed['nags'] = array( 'license' );
+				}
+			} else {
+				$dismissed = array(
+					'nags' => array( 'license' )
+				);
+			}
+			searchwp_set_setting( 'dismissed', $dismissed );
+		}
+
+		$nags = searchwp_get_setting( 'nags', 'dismissed' );
+		$license_nag_dismissed = is_array( $nags ) && in_array( 'license', $nags );
+
+		if ( $initial_notified && $this->license == false && ! $license_nag_dismissed && apply_filters( 'searchwp_initial_license_nag', true ) ) : ?>
+			<div id="setting-error-settings_updated" class="updated settings-error swp-license-nag">
+				<p><?php _e( 'In order to receive updates and support, you must have an active license.', 'searchwp' ); ?> <a href="<?php echo $licenseNonceUrl; ?>"><?php _e( 'Manage License', 'searchwp' ); ?></a> <a href="<?php echo EDD_SEARCHWP_STORE_URL; ?>"><?php _e( 'Purchase License', 'searchwp' ); ?></a> <a href="options-general.php?page=searchwp&amp;nnonce=<?php echo wp_create_nonce( 'swplicensenag' ); ?>"><?php _e( 'Dismiss', 'searchwp' ); ?></a></p>
+			</div>
+		<?php endif; ?>
+
+		<?php
+		/**
+		 * MYSQL CHECK
+		 */
+		if ( isset( $_REQUEST['vnonce'] ) && wp_verify_nonce( $_REQUEST['vnonce'], 'swpmysqlnag' ) && current_user_can( 'manage_options' ) ) {
+			$dismissed = searchwp_get_setting( 'dismissed' );
+			if( is_array( $dismissed ) ) {
+				if( isset( $dismissed['nags'] ) && is_array( $dismissed['nags'] ) ) {
+					$dismissed['nags'][] = 'mysql_version';
+				} else {
+					$dismissed['nags'] = array( 'mysql_version' );
+				}
+			} else {
+				$dismissed = array(
+					'nags' => array( 'mysql_version' )
+				);
+			}
+			searchwp_set_setting( 'dismissed', $dismissed );
+		}
+
+		$nags = searchwp_get_setting( 'nags', 'dismissed' );
+		$mysql_version_nag_dismissed = is_array( $nags ) && in_array( 'mysql_version', $nags );
+
+		if ( ! version_compare( '5.1', $wpdb->db_version(), '<' )  && ! $mysql_version_nag_dismissed ) : ?>
+			<div class="updated settings-error">
+				<p><?php echo sprintf( __( 'Your server is running MySQL version %1$s which may prevent search results from appearing due to <a href="http://bugs.mysql.com/bug.php?id=41156">bug 41156</a>. Please update MySQL to a more recent version (at least 5.1).', 'searchwp' ), $wpdb->db_version() ); ?> <a href="options-general.php?page=searchwp&amp;vnonce=<?php echo wp_create_nonce( 'swpmysqlnag' ); ?>"><?php _e( 'Dismiss', 'searchwp' ); ?></a></p>
+			</div>
+		<?php endif;
+
+		include( dirname( __FILE__ ) . '/admin/settings.php' );
+
+		if ( ! $this->indexing && isset( $_GET['page'] ) && $_GET['page'] == 'searchwp' && false == searchwp_get_setting( 'running' ) ) {
+			$this->indexing = true;
+			$this->triggerIndex();
+		}
+
 		do_action( 'searchwp_log', 'Shutting down after displaying settings screen' );
 		$this->shutdown();
 	}
@@ -3858,6 +3373,7 @@ Results in this set:
 		delete_post_meta( $post_id, '_' . SEARCHWP_PREFIX . 'last_index' );
 		delete_post_meta( $post_id, '_' . SEARCHWP_PREFIX . 'attempts' );
 		delete_post_meta( $post_id, '_' . SEARCHWP_PREFIX . 'skip' );
+		delete_post_meta( $post_id, '_' . SEARCHWP_PREFIX . 'skip_doc_processing' );
 		delete_post_meta( $post_id, '_' . SEARCHWP_PREFIX . 'review' );
 		delete_post_meta( $post_id, '_' . SEARCHWP_PREFIX . 'terms' );
 
@@ -4128,7 +3644,7 @@ Results in this set:
 
 		$matches = array();
 		$term_pattern_whitelist = apply_filters( 'searchwp_term_pattern_whitelist', $this->term_pattern_whitelist );
-		if( is_array( $term_pattern_whitelist ) ) {
+		if( is_array( $term_pattern_whitelist ) && ! empty( $term_pattern_whitelist ) ) {
 			foreach( $term_pattern_whitelist as $term_pattern ) {
 				preg_match_all( $term_pattern, $content, $pattern_matches );
 				if( ! empty( $pattern_matches ) ) {
@@ -4140,7 +3656,6 @@ Results in this set:
 							foreach( $matches as $matches_key => $match ) {
 								$matches[$matches_key] = ' ' . strtolower( trim( $match ) ) . ' '; // add a buffer for whole word matching
 							}
-							$content = str_ireplace( $matches, '', $content );
 							$content = trim( $content );
 						}
 					}
@@ -4155,6 +3670,7 @@ Results in this set:
 		}
 
 		$matches = array_unique( $matches );
+		$matches = array_filter( array_map( 'trim', $matches ), 'strlen' );
 
 		return $matches;
 	}

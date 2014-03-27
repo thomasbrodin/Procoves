@@ -245,7 +245,7 @@ class SearchWPUpgrade {
 				// make sure additional array keys are present and defined
 				foreach( $settings['engines'] as $engine_key => $engine_setting ) {
 					foreach( $settings['engines'][$engine_key] as $post_type => $post_type_settings ) {
-						if( !is_array( $settings['engines'][$engine_key][$post_type]['options'] ) ) {
+						if( is_array( $settings['engines'][$engine_key][$post_type] ) && ! is_array( $settings['engines'][$engine_key][$post_type]['options'] ) ) {
 							$settings['engines'][$engine_key][$post_type]['options'] = array(
 								'exclude' 		=> false,
 								'attribute_to' 	=> false,

@@ -425,7 +425,12 @@ html[xmlns] .slides {display: block;}
   color: #fff;
   background-color: rgb(240,70,70);
   text-transform: uppercase;
+  border-radius: 0
 }
+.container .jumbotron {
+  border-radius: 0
+}
+
 .jumbotron h2{
   font-family:'L Futura W01';
   font-size: 18px;
@@ -436,7 +441,16 @@ html[xmlns] .slides {display: block;}
 .jumbotron span img{
   max-width:120px;
 }
-
+.jumbotron a {
+  color: rgb(240,70,70);
+  background-color: #fff;
+  border:none;
+  padding: 6px 8px;
+}
+.jumbotron a:hover {
+  color: #fff;
+  background-color: rgb(85,185,75);
+}
 .marketing {
   padding-right: 15px;
   padding-left: 15px;

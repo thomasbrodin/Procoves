@@ -12,7 +12,7 @@ class FacetWP_Facet_Checkboxes
      * Load the available choices
      */
     function load_values( $params ) {
-        global $wpdb;
+        global $wpdb, $facetwp;
 
         $facet = $params['facet'];
         $where_clause = $params['where_clause'];
@@ -28,6 +28,22 @@ class FacetWP_Facet_Checkboxes
 
         // Limit
         $limit = ctype_digit( $facet['count'] ) ? $facet['count'] : 10;
+
+        // Properly handle "OR" facets
+        if ( 'or' == $facet['operator'] ) {
+            if ( isset( $facetwp->or_values ) && ( 1 < count( $facetwp->or_values ) || !isset( $facetwp->or_values[ $facet['name'] ] ) ) ) {
+                $post_ids = array();
+                unset( $facetwp->or_values[ $facet['name'] ] );
+                foreach ( $facetwp->or_values as $key => $vals ) {
+                    $post_ids = ( 0 == $key ) ? $vals : array_intersect( $post_ids, $vals );
+                }
+            }
+            else {
+                $post_ids = $facetwp->unfiltered_post_ids;
+            }
+
+            $where_clause = ' AND post_id IN (' . implode( ',', $post_ids ) . ')';
+        }
 
         $sql = "
         SELECT f.facet_value, f.facet_display_value, COUNT(*) AS counter
@@ -149,6 +165,7 @@ class FacetWP_Facet_Checkboxes
             $(this).toggleClass('checked');
             var $facet = $(this).closest('.facetwp-facet');
 
+            /*
             // Static facet (the current facet uses the "or" operator)
             if ('or' == $facet.attr('data-operator')) {
 
@@ -157,6 +174,7 @@ class FacetWP_Facet_Checkboxes
                     FWP.static_facet = $facet.attr('data-name');
                 }
             }
+            */
 
             FWP.refresh();
         });
