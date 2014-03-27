@@ -120,9 +120,3 @@
     }
     return $output;
 	}
-
-    function my_facetwp_template_html( $output, $class ) {
-    // Retrieve the args using $class->query_args
-   	 $query_args = $class->query_args;
-   	 return '<div>This is the template HTML</div>';
-	}   
