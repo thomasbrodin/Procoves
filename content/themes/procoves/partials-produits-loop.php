@@ -46,4 +46,7 @@
 	        $( '[data-value=""]' ).addClass( "button" );
      	});
 	})(jQuery);
+	$(function() {
+ 		$('input, textarea').placeholder();
+	});
 </script>

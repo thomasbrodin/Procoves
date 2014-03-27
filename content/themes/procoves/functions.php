@@ -79,6 +79,7 @@
 		wp_enqueue_script('jquery');
 		wp_enqueue_script( 'bootstrap-js', THEME_URL . '/js/bootstrap.min.js', array('jquery'), '3.1.0',true);
 		wp_enqueue_script( 'flexslider', THEME_URL . '/js/jquery.flexslider-min.js', array('jquery'), '2.2',true);
+		wp_enqueue_script( 'placeholder', THEME_URL . '/js/jquery.placeholder.js', array('jquery'), '',true);
 		wp_enqueue_script( 'site', THEME_URL . '/js/site.js', array('jquery'), '1.0', true);
 	}
 
