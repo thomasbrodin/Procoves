@@ -1229,7 +1229,7 @@ margin-left: 0!important;
   padding:0;
   background-image: url(img/check.png);
   background-repeat:no-repeat;
-  background-position:top center;
+  background-position:top center
 }
 .searchside.normes .facetwp-link.button:hover, 
 .searchside.gammes .facetwp-link.button:hover {
