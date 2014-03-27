@@ -11,6 +11,15 @@
 		    </a>
 	      	<div class="produit-info">
 	      		<h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
+	      		<ul class="gammes">
+                    <?php 
+                    $terms = get_the_terms(get_the_id(), 'gammes');
+                    foreach ($terms as $term): ?>
+                    <li>
+                        <a href="<?php echo get_term_link($term->slug, 'gammes'); ?>"><?php echo $term->name; ?></a>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
 	      	</div>
 	    </div>
 	</div>
