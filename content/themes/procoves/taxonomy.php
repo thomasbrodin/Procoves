@@ -13,7 +13,7 @@ $context = Timber::get_context();
 
 $templates = array('taxonomy.twig', 'archive.twig', 'index.twig');
 
-$context['prod_title'] = "Nos produits";
+$context['prod_title'] = __('Nos produits');
 $context['prod_url'] = "/produits"; 
 
 $qobj = $wp_query->get_queried_object();
@@ -22,14 +22,14 @@ if (is_tax('gammes')){
 	$context['title'] = $termname;
 	$context['wp_title'] .= ' - '.$termname;
 } else if (is_tax('normes')){
-	$context['title'] = 'Normes: '.$termname;
-	$context['wp_title'] .= ' - Normes'.$termname;
+	$context['title'] = __( 'Normes: ' ) .$termname;
+	$context['wp_title'] .= __( ' - Normes' ) .$termname;
 } else if (is_tax('activite')){
-	$context['title'] = 'Secteur d\'activité: '.$termname;
-	$context['wp_title'] .= ' - Secteur d\'activité:'.$termname;
+	$context['title'] = __( 'Secteur d\'activité: ' ) .$termname;
+	$context['wp_title'] .= __( ' - Secteur d\'activité:' ) . $termname;
 } else if (is_tax('matieres')){
-	$context['title'] = 'Matieres:'.$termname;
-	$context['wp_title'] .= ' - Matieres: '.$termname;
+	$context['title'] = __( 'Matieres:' ) . $termname;
+	$context['wp_title'] .= __( ' - Matieres: ' ) . $termname;
 } 
 $context['link'] = get_term_link( $qobj );
 

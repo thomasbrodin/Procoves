@@ -1,7 +1,7 @@
 {% extends "base.twig" %}
 
 {% block content %}
-	<h1>Erreur 404</h4>
-	<p>Malheureusement la page que vous recherchez n'existe pas ou plus, retour a notre <a href="/">page d'accueil</a>.</p>
+	<h1>{{__('Erreur 404', 'procoves')}}</h4>
+	<p>{{__('Malheureusement la page que vous recherchez n\'existe pas ou plus, retour a notre ', 'procoves')}}<a href="/">{{__('page d\'accueil', 'procoves')}}</a>.</p>
 
 {% endblock %}

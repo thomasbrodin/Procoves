@@ -4,6 +4,8 @@
 	include_once('inc/acf-options-page/acf-options-page.php');
 	include_once('inc/acf-gallery/acf-gallery.php');
 	
+	load_theme_textdomain('procoves', content_url() . '/languages/themes');
+
 	add_theme_support('post-thumbnails');
 	add_theme_support('menus');
 
@@ -105,7 +107,7 @@
         $output = '';
         $value = $params['selected_values'];
         $value = is_array( $value ) ? $value[0] : $value;
-        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'refs' ) . '" />';
+        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Refs' ) . '" />';
     }
     if ( 'matieres' == $params['facet']['name'] ) {
         $output = '';

@@ -1260,8 +1260,8 @@ margin-left: 0!important;
 
 /* SEARCH PAGE
 -------------------------------------------------- */
-.facetwp-template h4 {
-  margin-top:-30px;
+.facetwp-template h4.none {
+  margin-top:-14px;
   padding-left: 15px;
   padding-right: 15px;
 }

@@ -3,7 +3,7 @@
 {% block content %}
 		<!-- RECHERCHE  -->
 		<div class="jumbotron">
-				<h4>Pour une recherche avancée dans notre catalogue de produits, veuillez visiter la <a href="/recherche">page de recherche</a></h4>
+				<h4>{{__('Pour une recherche avancée dans notre catalogue de produits, veuillez visiter la ', 'procoves')}}<a href="/recherche">{{__('page de recherche', 'procoves')}}</a></h4>
 		</div>
 
 		<div class="row">
@@ -37,7 +37,7 @@
 					<hr>
 				{% endif %}
 				{% if post %}
-					<h3>Pages et Actualites</h3>
+					<h3>{{__('Pages et Actualites', 'procoves')}}</h3>
 					{% for post in post %}
 							<article id="post-{{post.ID}}">
 								<h2>{{ post.title }}</h2>
@@ -46,8 +46,8 @@
 					{% endfor %}
 				{% endif %}
 			{% else %}
-				<h4>Votre recherche n'a donné aucun resultat</h4>
-				<p>Vérifiez si votre orthographe est correcte et reduisez les expressions pour rechercher chaque terme individuellement.</p>
+				<h4>{{__('Votre recherche n\'a donné aucun resultat','procoves')}}</h4>
+				<p>{{__('Vérifiez si votre orthographe est correcte et reduisez les expressions pour rechercher chaque terme individuellement.','procoves')}}</p>
 			{% endif %}
 		</div>
     </div>             

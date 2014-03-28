@@ -17,7 +17,7 @@ if (isset($post->img_prod) && strlen($post->img_prod)){
 $context['post'] = $post;
 
 $context['wp_title'] .= ' - ' . $post->title();
-$context['prod_title'] = "Nos ".get_post_type();
+$context['prod_title'] = __('Nos produits');
 $context['prod_url'] = get_post_type_archive_link( 'produits'); 
 $context['breadcrumbs'] = wp_get_object_terms($post->ID, 'gammes');
 $context['title'] = $post->title();

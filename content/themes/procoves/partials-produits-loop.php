@@ -24,7 +24,7 @@
 	    </div>
 	</div>
 <?php endwhile; else: ?>
-		<h4>Aucun Produits Trouvés... Veuillez recommencez votre <a href="/produits">recherche</a></h4>
+		<h4 class="none"><?php _e('Aucun Produits Trouvés... Veuillez recommencez votre ', 'procoves')?><a href="/produits"><?php _e('recherche')?></a></h4>
 <?php endif; ?>
 <script>
 	var pathArray = window.location.href.split('/');
