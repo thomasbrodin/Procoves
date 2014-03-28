@@ -26,9 +26,9 @@ if (is_tax('gammes')){
 	$context['wp_title'] .= __( ' - Normes' ) .$termname;
 } else if (is_tax('activite')){
 	$context['title'] = __( 'Secteur d\'activité: ' ) .$termname;
-	$context['wp_title'] .= __( ' - Secteur d\'activité:' ) . $termname;
+	$context['wp_title'] .= __( ' - Secteur d\'activité: ' ) . $termname;
 } else if (is_tax('matieres')){
-	$context['title'] = __( 'Matieres:' ) . $termname;
+	$context['title'] = __( 'Matieres: ' ) . $termname;
 	$context['wp_title'] .= __( ' - Matieres: ' ) . $termname;
 } 
 $context['link'] = get_term_link( $qobj );
