@@ -24,8 +24,7 @@
 	    </div>
 	</div>
 <?php endwhile; else: ?>
-		<h4>Aucun Produits Trouvés...</h4>
-		<p>Vérifiez si votre orthographe est correcte et/ou reduisez les expressions pour rechercher chaque terme individuellement.</p>
+		<h4>Aucun Produits Trouvés... Veuillez recommencez votre <a href="/produits">recherche</a></h4>
 <?php endif; ?>
 <script>
 	var pathArray = window.location.href.split('/');
