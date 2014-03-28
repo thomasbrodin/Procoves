@@ -1126,7 +1126,7 @@ h2.produit-title{
 }
 
 #navside ul {
-  padding-left:0px
+  padding-left:0px;
 }
 
 #navside .searchside {
@@ -1420,15 +1420,25 @@ article.actu p.date {
 /* FOOTER
 -------------------------------------------------- */
 a#back-to-top {
-  color: #000;
+  color: #333;
   border:none;
-  width: 100%;
   display: block;
-  text-align: center;
+  padding: 10px 7px 10px 0;
+  margin-top: 15px;
 }
 
+a#back-to-top span{
+  font-weight: 300;
+  text-align: left;
+  font-size: 16px;
+  font-family: 'L Futura W01';
+}
+a#back-to-top:hover{
+  color:rgb(240,70,70);
+}
 i.angle-up {
-  cursor: pointer
+  cursor: pointer;
+  float: right
 }
 
 .angle-up:before{
@@ -1437,7 +1447,7 @@ i.angle-up {
   font-style: normal;
   font-weight: normal;
   line-height: 0.5;
-  font-size: 48px;
+  font-size: 36px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   content: "\f106";

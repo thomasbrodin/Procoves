@@ -13,8 +13,8 @@ $context = Timber::get_context();
 
 $templates = array('taxonomy.twig', 'archive.twig', 'index.twig');
 
-$context['prod_title'] = "Nos ".get_post_type();
-$context['prod_url'] = get_post_type_archive_link( 'produits'); 
+$context['prod_title'] = "Nos produits";
+$context['prod_url'] = "/produits"; 
 
 $qobj = $wp_query->get_queried_object();
 $termname = $qobj->name;
