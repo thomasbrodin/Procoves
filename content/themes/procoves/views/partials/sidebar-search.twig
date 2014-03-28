@@ -1,6 +1,6 @@
 <div class="searchside">
 	<h2><span class="redline"></span>
-	RECHERCHE</h2> 
+	{{__('RECHERCHE')}}</h2> 
 	{% filter shortcodes %}
 		[facetwp facet="nom"]
 	{% endfilter %}
@@ -16,14 +16,14 @@
 </div>
 <div class="searchside normes">
 	<h2><span class="redline"></span>
-	NIVEAU DE PERFORMANCE</h2>
+	{{__('NIVEAU DE PROTECTION')}}</h2>
 	{% filter shortcodes %}
 		[facetwp facet="niveau_de_performance"]
 	{% endfilter %}
 </div>
 <div class="searchside gammes">
 	<h2><span class="redline"></span>
-	GAMMES</h2>
+	{{__('GAMMES')}}</h2>
 	{% filter shortcodes %}
 		[facetwp facet="gammes"]
 	{% endfilter %}
