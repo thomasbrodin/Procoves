@@ -15,7 +15,6 @@
 
 	add_filter( 'searchwp_admin_bar', '__return_false' );
 
-	// add_filter( 'facetwp_template_html', 'my_facetwp_template_html', 10, 2 );
 	add_filter( 'facetwp_facet_html', 'my_facetwp_facet_html', 10, 2 );
 
 	add_action('wp_enqueue_scripts', 'load_scripts');	
@@ -31,25 +30,26 @@
 	function options_page_settings( $settings )
 	{
 		$settings['title'] = 'Options';
+		$settings['pages'] = array('Global', 'Produits');
 		return $settings;
 	}
 
 	function add_to_context($data){
 		/* IMAGES */
-		$main_logo_id = get_field('main_logo', 'options');
+		$main_logo_id = get_field('main_logo', 'option');
 		$data['logo_procoves'] = new TimberImage($main_logo_id);
-		$tech_logo_id1 = get_field('tech_logo_noir', 'options');
+		$tech_logo_id1 = get_field('tech_logo_noir', 'option');
 		$data['logo_pro_noir'] = new TimberImage($tech_logo_id1);
-		$tech_logo_id2 = get_field('tech_logo_blanc', 'options');
+		$tech_logo_id2 = get_field('tech_logo_blanc', 'option');
 		$data['logo_pro_blanc'] = new TimberImage($tech_logo_id2);
-		$logo_afaq = get_field('normes_iso', 'options');
+		$logo_afaq = get_field('normes_iso', 'option');
 		$data['logo_afaq'] = new TimberImage($logo_afaq);
-		$logo_ce = get_field('norme_ce', 'options');
+		$logo_ce = get_field('norme_ce', 'option');
 		$data['CE'] = new TimberImage($logo_ce);
 		
 		$data['languages'] = icl_get_languages('skip_missing=1');
 		
-		$data['mode_emploi'] = get_field('guide_pratique', 'options');
+		$data['mode_emploi'] = get_field('guide_pratique', 'option');
 		$data['menu'] = new TimberMenu('navigation');
 		$data['footer'] = new TimberMenu('footer');
 
@@ -74,7 +74,6 @@
 			) );
 	}
 
-
 	function load_scripts(){
 		wp_deregister_script('jquery');
 		wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js', array(),'1.1', true); 
@@ -96,6 +95,7 @@
     	remove_action('wp_head', 'rsd_link');
     	remove_action('wp_head', 'wlwmanifest_link');
     }
+
     function my_facetwp_facet_html( $output, $params ) {
     if ( 'nom' == $params['facet']['name'] ) {
         $output = '';
