@@ -1,4 +1,6 @@
+
 <div id="thumbs-wrap">
+	{% if similaires %}
 	
 	<h2><span class="redline"></span>{{__('Produits Similaires', 'procoves')}}</h2>
 
@@ -17,11 +19,9 @@
 								{% endif %}		  		
 				    	</div>
 				    {% endfor %}
-			    {% else %} 
-			    	<p>{{__('Aucun produits trouvés', 'procoves')}}</p>
 			    {% endif %}
 			</div>
     </div>
-
+	{% endif %}
 </div>	
 {% include 'partials/actu-tease.twig' %}
