@@ -4,18 +4,22 @@
 
 	<div class="container thumbs">
 	      	<div class="row">
-	      		{% for produit in similaires %}
-			      	<div class="col-md-3 related-thumb" onclick="window.location='{{produit.link}}'">	  
-			      			<div class="caption_overlay">
-								<h4>{{produit.title}}</h4>	
-							</div>
-			      			{% if produit.img_prod %}
-				      			<img src="{{TimberImage(produit.img_prod).get_src|resize(300,300)}}">
-							{% else %}
-								<img src="{{theme.uri}}/img/blank.jpg">
-							{% endif %}		  		
-			    	</div>
-			    {% endfor %}
+	      		{% if similaires %}
+		      		{% for produit in similaires %}
+				      	<div class="col-md-3 related-thumb" onclick="window.location='{{produit.link}}'">	  
+				      			<div class="caption_overlay">
+									<h4>{{produit.title}}</h4>	
+								</div>
+				      			{% if produit.img_prod %}
+					      			<img src="{{TimberImage(produit.img_prod).get_src|resize(300,300)}}">
+								{% else %}
+									<img src="{{theme.uri}}/img/blank.jpg">
+								{% endif %}		  		
+				    	</div>
+				    {% endfor %}
+			    {% else %} 
+			    	<p>{{__('Aucun produits trouvés', 'procoves')}}</p>
+			    {% endif %}
 			</div>
     </div>
 

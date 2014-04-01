@@ -1,24 +1,33 @@
- <!-- Breadcrumbs  -->
 <div class="breadcrumbs">
 	<div class="container">
-		 
+
+		 <!-- Breadcrumbs  -->
 		 <ul class="bclist">
 			<li><a href="{{site.url}}" rel="home">{{site.title}}</a>&nbsp;</li>
 			{% if prod_title %}
-				<li>/&nbsp;<a href="{{prod_url}}" rel="home">{{prod_title}}</a>&nbsp;</li>
+				<li>/&nbsp;<a href="{{prod_url}}">{{prod_title}}</a>&nbsp;</li>
+			{% elseif actu_title %}
+				<li>/&nbsp;<a href="{{actu_url}}" rel="home">{{actu_title}}</a>&nbsp;</li>
 			{% endif %}
-			{% if breadcrumbs %}
-				{% for bc in breadcrumbs %}
-					<li>/&nbsp;<a href="/{{bc.taxonomy}}/{{bc.slug}}">{{bc.name}}</a></li>
+			{% if gammes %}
+				{% for breadcrumbs in gammes %}
+					{% if breadcrumbs.parent %}
+						<li>/&nbsp;<a href="/gammes/gamme-thermique">{{__('Gamme thermique', 'procoves')}}</a></li>
+					{% endif %}
+					<li>/&nbsp;<a href="/{{breadcrumbs.taxonomy}}/{{breadcrumbs.slug}}">{{breadcrumbs.name}}</a></li>
 				{% endfor %}
-			{% endif %}
-			<li>/&nbsp;<a href="{{link}}">{{title}}</a></li>			
+			{% endif %}	
+			{% if post.title %}
+					<li>/&nbsp;<a href="{{post.link}}">{{post.title}}</a></li>
+			{% endif %}		
 		 </ul>
 
 			<!-- titre  -->
-		  {% if title %}
-		  		<h1 class="title">{{title}}</h1>
-		  {% else %}
+		  {% if prod_title %}
+		  		<h1 class="title">{{prod_title}}</h1>
+		   {% elseif actu_title %}
+		  		<h1 class="title">{{actu_title}}</h1>
+		  	{% else  %}
 				 <h1 class="title">{{post.title}}</h1>
 		  {% endif %}
 	</div>

@@ -38,7 +38,7 @@
 							
 							<ul class="gammes">
 							    {% for gamme in gammes %}
-							        <li><a class="green" href="{{gamme.link}}">{{gamme.name}}</a>
+							        <li><a class="green" href="/{{gamme.taxonomy}}/{{gamme.slug}}">{{gamme.name}}</a>
 							        	
 									</li>
 							    {% endfor %}
@@ -55,10 +55,10 @@
 							    {% endfor %}
 							</ul>
 							
-							<h4>{% if post.use_prod_title %}
-									{{ post.use_prod_title }}
+							<h4>{% if use_title %}
+									{{ use_title }}
 								{% else %}
-									Utilisations preconisées
+									{{__('Utilisations preconisées','procoves')}}
 								{% endif %}
 							</h4>
 							<p class="use_prod">{{ post.use_prod }}</p>
@@ -70,19 +70,19 @@
 								    {% endfor %}
 								</ul>
 							{% endif %}
-							<h4>{% if post.desc_tech_title %}
-									{{ post.desc_tech_title }}
+							<h4>{% if desc_title %}
+									{{ desc_title }}
 								{% else %}
-									Description technique
+									{{__('Description technique','procoves')}}
 								{% endif %}
 								</h4>
 							<p class="desc_tech">{{ post.desc_tech }}</p>
 							
 							
-							<h4>{% if post.matiere_title %}
-									{{ post.matiere_title }}
+							<h4>{% if matiere_title %}
+									{{ matiere_title }}
 								{% else %}
-									Matières utilisées
+									{{__('Matières utilisées','procoves')}}
 								{% endif %}</h4>
 
 							<ul class="matieres">
