@@ -1344,6 +1344,28 @@ ul.navlist li a {
   margin-bottom:5px;
 }
 
+.page-content section h3 {
+  font-weight: 700;
+  text-align: left;
+  font-size:16px;
+  text-transform: uppercase;
+  font-family:'L Futura W01';
+  color:#333;
+  margin-top: 0;
+  margin-bottom:5px;
+}
+
+.page-content section h4 {
+  font-weight: 700;
+  text-align: left;
+  font-size:14px;
+  text-transform: uppercase;
+  font-family:'L Futura W01';
+  color:#333;
+  margin-top: 0;
+  margin-bottom:5px;
+}
+
 .page-content input, button, select, textarea {
   padding: 8px;
   margin: 0 0 15px 0;
