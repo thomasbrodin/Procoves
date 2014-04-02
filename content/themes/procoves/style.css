@@ -370,6 +370,10 @@ input.sidebar-top:focus{
 }
 
 /* NAV */
+.navbar-toggle {
+  margin-top: 30px
+}
+
 nav#access {
   margin-bottom: 0
 }
@@ -400,18 +404,35 @@ nav#access {
   position: fixed;
   width: 100%;
   z-index: 2;
-  padding-top: 85px
+  padding-top: 95px
+}
+
+.breadcrumbs i.angle-left{
+  
+}
+
+.breadcrumbs i.angle-left:before{
+  display: inline-block;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+ line-height: 0.75;
+  font-size: 24px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f104";
+  float:left;
+  color:#fff;
 }
 
 .breadcrumbs ul.bclist {
   padding-left:5px;
   float: left;
+  display: none
 }
 
 .breadcrumbs ul.bclist li{
   display: inline-block;
-  margin: 15px 0;
-  padding:10px 0;
 }
 .breadcrumbs ul.bclist li:first-child{
   padding-left:0;
@@ -429,11 +450,10 @@ nav#access {
   color:#fff;
   float: right;
   font-family:'L Futura W01';
-  padding:10px;
   font-weight:300;
   text-transform: uppercase;
-  font-size: 24px;
-  margin: 15px 0;
+  font-size: 16px;
+  margin:0;
 }
 
 /* HOME
@@ -492,7 +512,7 @@ html[xmlns] .slides {display: block;}
 /* CONTROLS */
 #controlswrap {
   position: absolute;
-  top: 11%;
+  top: 5%;
   width: 100%;
   z-index: 999;
 }
@@ -504,8 +524,8 @@ html[xmlns] .slides {display: block;}
 .flex-direction-nav a  { 
   text-decoration:none; 
   display: block; 
-  width: 40px; 
-  height: 40px; 
+  width: 25px; 
+  height: 25px; 
   color: #fff;
   background: #333; 
   z-index: 10; 
@@ -516,8 +536,8 @@ html[xmlns] .slides {display: block;}
   border:none;
   text-align: center;
 }
-.flex-direction-nav .flex-prev { float: right; margin-right: 50px;}
-.flex-direction-nav .flex-next { float: right; clear:right; margin: -40px 0 0;}
+.flex-direction-nav .flex-prev { float: right; margin-right: 35px;}
+.flex-direction-nav .flex-next { float: right; clear:right; margin: -25px 0 0;}
 
 .flex-direction-nav a:hover{
   background: #555;
@@ -530,7 +550,7 @@ html[xmlns] .slides {display: block;}
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'FontAwesome'; 
-  font-size: 39px; 
+  font-size: 24px; 
   content:"\f104"
 }
 
@@ -552,7 +572,7 @@ html[xmlns] .slides {display: block;}
   display: inline-block;
   background: #333; 
   padding:8px 10px;
-  font-size: 36px;
+  font-size: 18px;
   font-weight: 700;
 }
 
@@ -571,13 +591,14 @@ html[xmlns] .slides {display: block;}
 
 .jumbotron h2{
   font-family:'L Futura W01';
-  font-size: 18px;
+  padding-top: 5px;
   float: left;
-  margin: 20px 0;
-  letter-spacing: 0.02em;
+  font-size: 11px;
+  margin:0;
 }
+
 .jumbotron span img{
-  max-width:120px;
+  max-width:50px;
 }
 .jumbotron a {
   color: rgb(240,70,70);
@@ -890,9 +911,9 @@ html[xmlns] .slides {display: block;}
   text-transform: uppercase;
   padding:0 0 4px 0;
   color:#fff;
-  margin-top: 5px;
   margin-bottom: 0
 }
+
 .a-la-une .actu-body p.date {
   margin-bottom: 8px;
   text-transform: none;
@@ -929,9 +950,10 @@ html[xmlns] .slides {display: block;}
   float: right;
 }
 
-.a-la-une .contact{
-  float: right;
-  text-align: right
+#vedette .col-md-6.col-sm-6.actu-tease {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 10px;
 }
 
 .a-la-une h2 {
@@ -947,8 +969,7 @@ html[xmlns] .slides {display: block;}
   margin: 30px 0;
 }
 .a-la-une .contact h2 {
-  text-align: right;
-  padding: 0 0px 10px 40px;
+  padding: 0 0px 10px 0;
   margin-bottom: 50px
 }
 
@@ -1142,12 +1163,10 @@ h2.produit-title{
   position: absolute;
 }
 .prod-desc-heading span img.CE {
-  margin-top:-5px;
-  max-width: 45px
+  max-width: 30px
 }
 .prod-desc-heading span img.pro {
-  max-width: 130px;
-  padding-left:5px;
+  max-width: 90px;
 }
 
 .prod-desc-panel {
@@ -1510,7 +1529,7 @@ ul.navlist li a {
   min-height: 550px
 }
 
-.page-content input, button, select, textarea {
+.page-content input, select, textarea {
   padding: 8px;
   margin: 0 0 15px 0;
   width:100%;

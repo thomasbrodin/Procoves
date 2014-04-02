@@ -11,6 +11,21 @@
   margin-top: -11px;
   width: 400px;
   }
+  .breadcrumbs i.angle-left {
+    display:none;
+  }
+  .breadcrumbs ul.bclist {
+  display: inline-block;
+}
+  .breadcrumbs ul.bclist li{
+    margin: 15px 0;
+    padding:10px 0;
+  }
+  .breadcrumbs h1.title {
+    font-size: 24px;
+    margin: 15px 0;
+    padding:10px 0;
+  }
   section#home {
     padding-top: 110px;
   }
@@ -33,6 +48,14 @@
   }
   .breadcrumbs {
     padding-top: 110px
+  }
+  .jumbotron h2{
+  font-size: 18px;
+  margin: 20px 0;
+  letter-spacing: 0.02em;
+  }
+  .jumbotron span img{
+    max-width:120px;
   }
   .container>.navbar-collapse {
     margin-left: 50px;
@@ -85,11 +108,52 @@
     width: 67px;
     margin-left: 356px;
   }
+  #SliderContainer .captionwrap p {
+    font-size: 36px;
+  }
+  #controlswrap {
+    top: 11%;
+  }
+  .flex-direction-nav a  { 
+    width:30px;
+    height:30px;
+  }
+  .flex-direction-nav a:before {
+    font-size: 29px
+  }
+  .flex-direction-nav .flex-next{
+   margin: -30px 0 0;
+  }
   .carousel-caption p {
     margin-bottom: 20px;
     font-size: 21px;
     line-height: 1.4;
   }
+  .prod-desc-heading span img.CE {
+    margin-top:-5px;
+    max-width: 45px
+  }
+  .prod-desc-heading span img.pro {
+    max-width: 130px;
+    padding-left:5px;
+  }
+  #vedette .col-md-6.col-sm-6.actu-tease {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0
+  }
+  .a-la-une .actu-tease h4 {
+    margin-top: 5px;
+  }
+  .a-la-une .contact{
+    float: right;
+    text-align: right
+  }
+  .a-la-une .contact h2 {
+    padding: 0 0px 10px 40px;
+    text-align: right;
+  }
+
 }
 @media (min-width: 992px) {
   #navside.affix-top {
@@ -111,6 +175,22 @@
   }
 }
 @media (min-width: 1200px) {
+  #controlswrap {
+    top: 11%;
+  }
+  .flex-direction-nav .flex-prev { 
+    margin-right: 50px;
+  }
+  .flex-direction-nav .flex-next{
+   margin: -40px 0 0;
+  }
+  .flex-direction-nav a  { 
+    width:40px;
+    height:40px;
+  }
+  .flex-direction-nav a:before {
+    font-size: 39px
+  }
    #navside.affix-top {
     position: fixed;
     width: 293px;
