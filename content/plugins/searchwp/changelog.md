@@ -1,3 +1,20 @@
+### 2.0.3
+- **[New]** New Filter: `searchwp_get_custom_fields` allowing developers to pre-fetch (and set) post metadata just before indexing takes place (props Stefan Hans Schonert)
+- **[New]** New Filter: `searchwp_term_in` allowing you to modify each term (per term) used in the main search algorithm
+- **[Improvement]** Better handling of filtered terms, allowing extensions more control over the actual search query
+- **[Improvement]** `searchwp_indexer_loopback_args` is now applied to every HTTP call SearchWP makes
+
+
+### 2.0.2
+- **[New]** New Filter: `searchwp_statistics_cap` allows you to filter which capability is required to view and interact with stats
+- **[Improvement]** Ignored queries in search statistics are now stored per user, not globally
+
+
+### 2.0.1
+- **[Fix]** Fixed an issue introduced in 2.0 that prevented the uninstallation routine from properly executing when not using multisite
+- **[Improvement]** Resolved an issue in certain hosting environments that may have prevented the indexer from running
+
+
 ### 2.0
 - **[New]** Shortcode processing: SearchWP can now process your Shortcodes in a number of ways
 - **[New]** New Filter: `searchwp_do_shortcode` allows you to conditionally tell SearchWP to process all Shortcodes

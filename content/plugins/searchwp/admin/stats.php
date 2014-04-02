@@ -5,7 +5,9 @@ global $wpdb;
 // exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
+$user_id = get_current_user_id();
+
+if( ! is_admin() || ! current_user_can( apply_filters( 'searchwp_statistics_cap', 'publish_posts' ) ) || empty( $user_id ) ) {
 	wp_die( __( 'Invalid request', 'searchwp' ) );
 }
 
@@ -146,7 +148,7 @@ if( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
 
 	<?php
 
-	$ignored_queries = searchwp_get_setting( 'ignored_queries' );
+	$ignored_queries = get_user_meta( get_current_user_id(), SEARCHWP_PREFIX . 'ignored_queries', true );
 	if ( ! is_array( $ignored_queries ) ) {
 		$ignored_queries = array();
 	}
@@ -160,7 +162,7 @@ if( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
 		if( ! empty( $query_to_ignore ) ) {
 			$ignored_queries[$query_hash] = $query_to_ignore;
 		}
-		searchwp_update_option( 'ignored_queries', $ignored_queries );
+		update_user_meta( get_current_user_id(), SEARCHWP_PREFIX . 'ignored_queries', $ignored_queries );
 	}
 
 	$ignored_queries_sql = "'" . implode( "','", $ignored_queries ) . "'";

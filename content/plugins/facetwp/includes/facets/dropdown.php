@@ -26,6 +26,8 @@ class FacetWP_Facet_Dropdown
             $orderby = 'f.facet_value ASC';
         }
 
+        $orderby = apply_filters( 'facetwp_facet_orderby', $orderby, $facet );
+
         // Limit
         $limit = ctype_digit( $facet['count'] ) ? $facet['count'] : 10;
 

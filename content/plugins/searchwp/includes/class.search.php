@@ -1570,24 +1570,59 @@ class SearchWPSearch
 						$this->query_limit_by_mimes( $mimes );
 					}
 
+					// prep the term
+					$prepared_term = strtolower( $wpdb->prepare( '%s', $term ) );
+					$term = substr( $prepared_term, 1, strlen( $prepared_term ) - 2 );
+					$original_prepped_term = $term;
+
 					// determine whether we're stemming or not
-					if( !isset( $postTypeWeights['options']['stem'] ) || empty( $postTypeWeights['options']['stem'] ) ) {
-						$this->sql_term_where = " {$this->db_prefix}terms.term = " . strtolower( $wpdb->prepare( '%s', $term ) );
-					} else {
+					$term_or_stem = 'term';
+					if( isset( $postTypeWeights['options']['stem'] ) && ! empty( $postTypeWeights['options']['stem'] ) ) {
+						// build our stem
+						$term_or_stem = 'stem';
 						$unstemmed = $term;
 						$maybeStemmed = apply_filters( 'searchwp_custom_stemmer', $unstemmed );
 
 						// if the term was stemmed via the filter use it, else generate our own
 						$term = ( $unstemmed == $maybeStemmed ) ? $this->stemmer->stem( $term ) : $maybeStemmed;
+					}
+					// set up our term operator (e.g. LIKE terms or fuzzy matching)
 
-						$this->sql_term_where = " {$this->db_prefix}terms.stem = " . strtolower( $wpdb->prepare( '%s',$term ) );
+					// since we're going to allow extending the term WHERE SQL, we need to force $term as an array
+					// because in many cases with extensions it will be
+					$term = array( $term );
+
+					// let extensions filter this all day
+					$term = apply_filters( 'searchwp_term_in', $term, $this->engine );
+
+					// prepare our terms
+					if( ! is_array( $term ) || empty( $term ) ) {
+						// if it got messed with so bad it's no longer an array, we're going to revert
+						$term = array( $prepared_term );
 					}
 
+					$term = array_unique( $term );
+
+					// hopefully the developer sanitized their terms, but they might have prepared them (i.e. they're wrapped in single quotes)
+					foreach( $term as $raw_term_key => $raw_term ) {
+						if( "'" == substr( $raw_term, 0, 1 ) && "'" == substr( $raw_term, strlen( $raw_term ) - 1 ) ) {
+							$raw_term = substr( $raw_term, 1, strlen( $raw_term ) - 2 );
+						}
+						$raw_term = trim( sanitize_text_field( $raw_term ) );
+						$term[$raw_term_key] = strtolower( $wpdb->prepare( '%s', $raw_term ) );
+					}
+
+					// finalize our term WHERE
+					$this->sql_term_where = " {$this->db_prefix}terms." . $term_or_stem . " IN (" . implode( ',', $term ) . ")";
+
+					// reset back to our original term
+					$term = $original_prepped_term;
+
 					// we need to use absint because if a weight was set to -1 for exclusion, it was already forcefully excluded
-					$titleWeight = isset( $postTypeWeights['weights']['title'] ) ? absint( $postTypeWeights['weights']['title'] ) : 0;
-					$slugWeight = isset( $postTypeWeights['weights']['slug'] ) ? absint( $postTypeWeights['weights']['slug'] ) : 0;
-					$contentWeight = isset( $postTypeWeights['weights']['content'] ) ? absint( $postTypeWeights['weights']['content'] ) : 0;
-					$excerptWeight = isset( $postTypeWeights['weights']['excerpt'] ) ? absint( $postTypeWeights['weights']['excerpt'] ) : 0;
+					$titleWeight    = isset( $postTypeWeights['weights']['title'] )   ? absint( $postTypeWeights['weights']['title'] )   : 0;
+					$slugWeight     = isset( $postTypeWeights['weights']['slug'] )    ? absint( $postTypeWeights['weights']['slug'] )    : 0;
+					$contentWeight  = isset( $postTypeWeights['weights']['content'] ) ? absint( $postTypeWeights['weights']['content'] ) : 0;
+					$excerptWeight  = isset( $postTypeWeights['weights']['excerpt'] ) ? absint( $postTypeWeights['weights']['excerpt'] ) : 0;
 
 					if( apply_filters( 'searchwp_index_comments', true ) ) {
 						$commentWeight = isset( $postTypeWeights['weights']['comment'] ) ? absint( $postTypeWeights['weights']['comment'] ) : 0;

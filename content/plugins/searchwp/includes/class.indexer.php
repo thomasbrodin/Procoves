@@ -247,7 +247,7 @@ class SearchWPIndexer
 
 					// reset the transient
 					delete_transient( 'searchwp' );
-					$hash = sha1( uniqid( 'searchwpindex' ) );
+					$hash = sprintf( '%.22F', microtime( true ) ); // inspired by $doing_wp_cron
 					set_transient( 'searchwp', $hash );
 
 					do_action( 'searchwp_log', 'Request index (internal loopback) ' . trailingslashit( site_url() ) . '?swpnonce=' . $hash );
@@ -267,7 +267,7 @@ class SearchWPIndexer
 					do_action( 'searchwp_indexer_loopback', $args );
 
 					wp_remote_post(
-						trailingslashit( site_url() ),
+						trailingslashit( site_url() ) . '?swpnonce=' . $hash,
 						$args
 					);
 				} else {
@@ -344,20 +344,24 @@ class SearchWPIndexer
 				searchwp_set_setting( 'running', false );
 				searchwp_set_setting( 'in_process', false, 'stats' );
 				delete_transient( 'searchwp' );
-				$hash = sha1( uniqid( 'searchwpindex' ) );
+				$hash = sprintf( '%.22F', microtime( true ) ); // inspired by $doing_wp_cron
 				set_transient( 'searchwp', $hash );
 				do_action( 'searchwp_log', 'Request index (from stalled) ' . trailingslashit( site_url() ) . '?swpnonce=' . $hash );
 
 				$timeout = abs( apply_filters( 'searchwp_timeout', 0.02 ) );
+
+				$args = array(
+					'body'        => array( 'swpnonce' => $hash ),
+					'blocking'    => false,
+					'user-agent'  => 'SearchWP',
+					'timeout'     => $timeout,
+					'sslverify'   => false
+				);
+				$args = apply_filters( 'searchwp_indexer_loopback_args', $args );
+
 				wp_remote_post(
-					trailingslashit( site_url() ),
-					array(
-						'body'        => array( 'swpnonce' => $hash ),
-						'blocking'    => false,
-						'user-agent'  => 'SearchWP',
-						'timeout'     => $timeout,
-						'sslverify'   => false
-					)
+					trailingslashit( site_url() ) . '?swpnonce=' . $hash,
+					$args
 				);
 			}
 		} else {
@@ -778,7 +782,7 @@ class SearchWPIndexer
 						}
 
 						// index custom fields
-						$customFields = get_post_custom( $this->post->ID );
+						$customFields = apply_filters( 'searchwp_get_custom_fields', get_post_custom( $this->post->ID ), $this->post->ID );
 						if ( ! empty( $customFields ) ) {
 							while ( ( $customFieldValue = current( $customFields ) ) !== false ) {
 								$customFieldName = key( $customFields );

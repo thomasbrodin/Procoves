@@ -3,7 +3,7 @@
 Plugin Name: SearchWP
 Plugin URI: https://searchwp.com/
 Description: The best WordPress search you can find
-Version: 2.0
+Version: 2.0.3
 Author: Jonathan Christopher
 Author URI: https://searchwp.com/
 Text Domain: searchwp
@@ -27,7 +27,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SEARCHWP_VERSION', '2.0' );
+define( 'SEARCHWP_VERSION', '2.0.3' );
 define( 'SEARCHWP_PREFIX', 'searchwp_' );
 define( 'SEARCHWP_DBPREFIX', 'swp_' );
 define( 'EDD_SEARCHWP_STORE_URL', 'http://searchwp.com' );
@@ -186,7 +186,7 @@ class SearchWP {
 	 * @var array Common words as specified by Ando Saabas in Sphider http://www.sphider.eu/
 	 * @since 1.0
 	 */
-	public $common = array( "a", "able", "about", "above", "across", "after", "afterwards", "again", "against", "ago",
+	public $common = array( "a", "able", "above", "across", "after", "afterwards", "again", "against", "ago",
 		"all", "almost", "alone", "along", "already", "also", "although", "always", "am", "among", "amongst", "amoungst",
 		"amount", "an", "and", "another", "any", "anyhow", "anyone", "anything", "anyway", "anywhere", "are", "aren't",
 		"around", "as", "at", "back", "be", "became", "because", "become", "becomes", "becoming", "been", "before",
@@ -1276,9 +1276,12 @@ Results in this set:
 			$this->shutdown();
 			die();
 		} elseif ( ! $this->paused && ! $this->indexing && get_transient( 'searchwp' ) === sanitize_text_field( $indexnonce = searchwp_get_option( 'indexnonce' ) ) ) {
+			// TODO: this is leftover from the AJAX request I believe
 			$this->indexing = true;
 			$hash = sanitize_text_field( $indexnonce );
 			searchwp_delete_option( 'indexnonce' );
+			// prior to 2.0.1 this searchwp_add_option() was never fired so this indexer request would never happen (likely because this never needed to work because we no longer request an index from the options page via AJAX anymore)
+			// searchwp_add_option( 'indexnonce', $hash );
 			do_action( 'searchwp_log', 'Performing background index ' . $hash );
 			new SearchWPIndexer( $hash );
 			die();
@@ -1316,22 +1319,26 @@ Results in this set:
 		do_action( 'searchwp_log', '$toPurge = ' . var_export( $toPurge, true ) );
 
 		if( is_array( $toPurge ) && !empty( $toPurge ) && false == searchwp_get_setting( 'processing_purge_queue' ) ) {
-			$hash = sha1( uniqid( 'searchwppurge' ) );
+			$hash = sprintf( '%.22F', microtime( true ) ); // inspired by $doing_wp_cron
 			set_transient( 'swppurge', $hash );
 			searchwp_set_setting( 'processing_purge_queue', true );
 			do_action( 'searchwp_log', 'Deferred purge ' . trailingslashit( site_url() ) . '?swppurge=' . $hash );
 
 			// fire off our background request
 			$timeout = abs( apply_filters( 'searchwp_timeout', 0.02 ) );
+
+			$args = array(
+				'body'        => array( 'swppurge' => $hash ),
+				'blocking'    => false,
+				'user-agent'  => 'SearchWP',
+				'timeout'     => $timeout,
+				'sslverify'   => false
+			);
+			$args = apply_filters( 'searchwp_indexer_loopback_args', $args );
+
 			wp_remote_post(
-				trailingslashit( site_url() ),
-				array(
-					'body'        => array( 'swppurge' => $hash ),
-					'blocking'    => false,
-					'user-agent'  => 'SearchWP',
-					'timeout'     => $timeout,
-					'sslverify'   => false
-				)
+				trailingslashit( site_url() ) . '?swppurge=' . $hash,
+				$args
 			);
 		}
 	}
@@ -1390,21 +1397,25 @@ Results in this set:
 	 * @return array
 	 */
 	function triggerIndex() {
-		$hash = sha1( uniqid( 'searchwpindex' ) );
+		$hash = sprintf( '%.22F', microtime( true ) ); // inspired by $doing_wp_cron
 		set_transient( 'searchwp', $hash );
 
 		do_action( 'searchwp_log', 'triggerIndex() ' . trailingslashit( site_url() ) . '?swpnonce=' . $hash );
 
 		$timeout = abs( apply_filters( 'searchwp_timeout', 0.02 ) );
+
+		$args = array(
+			'body'        => array( 'swpnonce' => $hash ),
+			'blocking'    => false,
+			'user-agent'  => 'SearchWP',
+			'timeout'     => $timeout,
+			'sslverify'   => false
+		);
+		$args = apply_filters( 'searchwp_indexer_loopback_args', $args );
+
 		wp_remote_post(
-			trailingslashit( site_url() ),
-			array(
-				'body'        => array( 'swpnonce' => $hash ),
-				'blocking'    => false,
-				'user-agent'  => 'SearchWP',
-				'timeout'     => $timeout,
-				'sslverify'   => false
-			)
+			trailingslashit( site_url() ) . '?swpnonce=' . $hash,
+			$args
 		);
 	}
 
@@ -1976,7 +1987,7 @@ Results in this set:
 	 */
 	function adminMenu() {
 		add_options_page( $this->pluginName, __( $this->pluginName, 'searchwp' ), 'manage_options', $this->textDomain, array( $this, 'optionsPage' ) );
-		add_dashboard_page( __( 'Search Statistics', 'searchwp' ), __( 'Search Stats', 'searchwp' ), 'publish_posts', $this->textDomain . '-stats', array( $this, 'statsPage' ) );
+		add_dashboard_page( __( 'Search Statistics', 'searchwp' ), __( 'Search Stats', 'searchwp' ), apply_filters( 'searchwp_statistics_cap', 'publish_posts' ), $this->textDomain . '-stats', array( $this, 'statsPage' ) );
 	}
 
 

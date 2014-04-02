@@ -16,7 +16,9 @@ function searchwp_maybe_nuke() {
 	// maybe nuke all data and settings
 	$swp_live_settings = get_option( SEARCHWP_PREFIX . 'settings' );
 	$swp_nuke_on_delete = isset( $swp_live_settings['nuke_on_delete'] ) ? $swp_live_settings['nuke_on_delete'] : false;
-	if( ! empty( $swp_nuke_on_delete ) || get_option( SEARCHWP_PREFIX . 'nuke_on_delete' ) || apply_filters( 'searchwp_nuke_on_delete', false, get_current_site() ) ) {
+	$swp_multisite = is_multisite() && function_exists( 'get_current_site' ) ? get_current_site() : null;
+
+	if( ! empty( $swp_nuke_on_delete ) || get_option( SEARCHWP_PREFIX . 'nuke_on_delete' ) || apply_filters( 'searchwp_nuke_on_delete', false, $swp_multisite ) ) {
 
 		// purge the index including all post meta
 		$searchwp = new SearchWP();

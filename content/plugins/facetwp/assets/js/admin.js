@@ -41,15 +41,8 @@ var FWP = {};
             });
 
             // Set the UI elements
-            $('.facetwp-facets .facetwp-facet').hide();
-            $('.facetwp-facets .facetwp-facet:first').show();
-            $('.facetwp-content-facets .facetwp-tabs li').removeClass('active');
-            $('.facetwp-content-facets .facetwp-tabs li:first').addClass('active');
-
-            $('.facetwp-templates .facetwp-template').hide();
-            $('.facetwp-templates .facetwp-template:first').show();
-            $('.facetwp-content-templates .facetwp-tabs li').removeClass('active');
-            $('.facetwp-content-templates .facetwp-tabs li:first').addClass('active');
+            $('.facetwp-content-facets .facetwp-tabs li:first').click();
+            $('.facetwp-content-templates .facetwp-tabs li:first').click();
         }, 'json');
 
 
@@ -109,10 +102,7 @@ var FWP = {};
             $('.facetwp-facets').append(html);
             $('.facetwp-facets .facetwp-facet:last').attr('data-id', facet_count);
             $('.facetwp-content-facets .facetwp-tabs ul').append('<li data-id="' + facet_count + '">New Facet</li>');
-            $('.facetwp-facets .facetwp-facet').hide();
-            $('.facetwp-facets .facetwp-facet:last').show();
-            $('.facetwp-content-facets .facetwp-tabs li').removeClass('active');
-            $('.facetwp-content-facets .facetwp-tabs li:last').addClass('active');
+            $('.facetwp-content-facets .facetwp-tabs li:last').click();
 
             // Trigger conditional toggles
             $('.facetwp-facets .facetwp-facet:last .facet-type').trigger('change');
@@ -126,10 +116,7 @@ var FWP = {};
             $('.facetwp-templates').append(html);
             $('.facetwp-templates .facetwp-template:last').attr('data-id', template_count);
             $('.facetwp-content-templates .facetwp-tabs ul').append('<li data-id="' + template_count + '">New Template</li>');
-            $('.facetwp-templates .facetwp-template').hide();
-            $('.facetwp-templates .facetwp-template:last').show();
-            $('.facetwp-content-templates .facetwp-tabs li').removeClass('active');
-            $('.facetwp-content-templates .facetwp-tabs li:last').addClass('active');
+            $('.facetwp-content-templates .facetwp-tabs li:last').click();
             template_count++;
         });
 
@@ -140,8 +127,7 @@ var FWP = {};
                 var id = $(this).closest('.facetwp-facet').attr('data-id');
                 $(this).closest('.facetwp-facet').remove();
                 $('.facetwp-content-facets .facetwp-tabs li[data-id=' + id + ']').remove();
-                $('.facetwp-facets .facetwp-facet:first').show();
-                $('.facetwp-content-facets .facetwp-tabs li:first').addClass('active');
+                $('.facetwp-content-facets .facetwp-tabs li:first').click();
             }
         });
 
@@ -152,33 +138,31 @@ var FWP = {};
                 var id = $(this).closest('.facetwp-template').attr('data-id');
                 $(this).closest('.facetwp-template').remove();
                 $('.facetwp-content-templates .facetwp-tabs li[data-id=' + id + ']').remove();
-                $('.facetwp-templates .facetwp-template:first').show();
-                $('.facetwp-content-templates .facetwp-tabs li:first').addClass('active');
+                $('.facetwp-content-templates .facetwp-tabs li:first').click();
             }
         });
 
 
-        // Facet sidebar link click
-        $(document).on('click', '.facetwp-content-facets .facetwp-tabs li', function() {
+        // Sidebar link click
+        $(document).on('click', '.facetwp-tabs li', function() {
             var id = $(this).attr('data-id');
+            var $parent = $(this).closest('.facetwp-content');
+            var type = $parent.hasClass('facetwp-content-facets') ? 'facet' : 'template';
             $(this).siblings('li').removeClass('active');
             $(this).addClass('active');
-            $('.facetwp-facet').hide();
-            $('.facetwp-facet[data-id=' + id + ']').show();
+            $('.facetwp-' + type).hide();
+            $('.facetwp-' + type + '[data-id=' + id + ']').show();
+
+            // Make sure the content area is tall enough
+            var nav_height = $(this).closest('.facetwp-tabs').height();
+            var content_height = $('.facetwp-' + type + '[data-id=' + id + ']').height();
+            if (content_height < nav_height) {
+                $('.facetwp-' + type + '[data-id=' + id + ']').height(nav_height - 40);
+            }
         });
 
 
-        // Template sidebar link click
-        $(document).on('click', '.facetwp-content-templates .facetwp-tabs li', function() {
-            var id = $(this).attr('data-id');
-            $(this).siblings('li').removeClass('active');
-            $(this).addClass('active');
-            $('.facetwp-template').hide();
-            $('.facetwp-template[data-id=' + id + ']').show();
-        });
-
-
-        // When the label is changed, change the tab
+        // Change the sidebar link label
         $(document).on('keyup', '.facet-label, .template-label', function() {
             var val = $(this).val();
             var $tab = $(this).closest('.facetwp-content').find('.facetwp-tabs li.active');

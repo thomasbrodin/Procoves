@@ -305,7 +305,9 @@ class FacetWP_Indexer
 
         // Hash the value if it contains unsafe characters
         if ( preg_match( '/[^a-z0-9.\-]/i', $value ) ) {
-            $params['facet_value'] = md5( $value );
+            if ( !preg_match( '/^\d{4}-(0[1-9]|1[012])-([012]\d|3[01]) ([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/', $value ) ) {
+                $params['facet_value'] = md5( $value );
+            }
         }
 
         $wpdb->query( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}facetwp_index

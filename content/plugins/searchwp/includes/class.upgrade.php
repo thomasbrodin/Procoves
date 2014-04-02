@@ -425,6 +425,15 @@ class SearchWPUpgrade {
 			}
 		}
 
+		// make ignored queries for search stats per-user
+		if( version_compare( $this->last_version, '2.0.2', '<' ) ) {
+			$user_id = get_current_user_id();
+			if( $user_id ) {
+				$ignored_queries = searchwp_get_setting( 'ignored_queries' );
+				update_user_meta( $user_id, SEARCHWP_PREFIX . 'ignored_queries', $ignored_queries );
+			}
+		}
+
 	}
 
 }
