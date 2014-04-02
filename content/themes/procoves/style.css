@@ -1091,13 +1091,14 @@ html[xmlns] .slides {display: block;}
 .produit-info a:hover{
   color:rgb(240,70,70);
 }
+
 .produit-info h4 {
   margin: 5px 0 0px;
   font-size: 16px
 }
 .produit-info ul {
   padding: 0;
-  margin-bottom: 4px
+  margin-bottom: 2px
 }
 
 .produit-info ul li a {
@@ -1105,7 +1106,6 @@ html[xmlns] .slides {display: block;}
   text-transform: none;
   padding:0;
   margin:0;
-  display: block;
 }
 
 /* tooltip */
