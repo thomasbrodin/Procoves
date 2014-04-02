@@ -913,10 +913,7 @@ html[xmlns] .slides {display: block;}
   text-align: center;
   border-top:2px solid;
   border-color:#f0f0f0;
-  min-height: 70px;
-}
-.produit-info h4{
-  font-size: 17px
+  min-height: 80px;
 }
 .produit-info a{
   font-family:'L Futura W01'; 
@@ -929,17 +926,18 @@ html[xmlns] .slides {display: block;}
   color:rgb(240,70,70);
 }
 .produit-info h4 {
-  margin: 5px 0;
+  margin: 5px 0 2px;
+  font-size: 16px
 }
 .produit-info ul {
-  padding: 0
-}
-.produit-info ul li {
-  display: block;
+  padding: 0;
+  margin-bottom: 6px
 }
 .produit-info ul li a {
   color:#999;
-  text-transform: none
+  text-transform: none;
+  padding:0;
+  line-height: 10px;
 }
 
 /* tooltip */
