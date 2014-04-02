@@ -231,13 +231,14 @@ i.angle-up {
 }
 
 .page-content section ul li img {
-  padding-right:20px;
+  margin-right:20px;
   max-height:40px;
   width:auto;
 }
 
 .page-content section img {
   margin-right: 20px;
+  margin-bottom: 20px
 }
 
 /* HEADER
