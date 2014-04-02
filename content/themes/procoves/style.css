@@ -1100,6 +1100,9 @@ html[xmlns] .slides {display: block;}
   padding: 0;
   margin-bottom: 2px
 }
+.produit-info ul li {
+  line-height: 1.1
+}
 
 .produit-info ul li a {
   color:#999;
