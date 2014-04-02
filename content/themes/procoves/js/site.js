@@ -73,5 +73,5 @@ jQuery(document).ready(function($) {
 				bottom: 85
 				}
 		});
-		$("[data-toggle=tooltip").tooltip();
+		$("[data-toggle=tooltip]").tooltip();
 });
