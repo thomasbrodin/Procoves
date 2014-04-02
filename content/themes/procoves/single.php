@@ -28,14 +28,13 @@ if ( is_singular( 'produits' ) ) {
     $context['actu_url'] = get_permalink( get_option( 'page_for_posts' ) );
 }
 
-$term_order = array('orderby' => 'name', 'order' => 'DESC', 'fields' => 'all');
-
-$context['gammes'] = wp_get_object_terms($post->ID, 'gammes', $term_order );
-
 $context['fiche'] = get_field('fiche_tech');
 
 $post_id = get_the_ID();
+$term_order = array('orderby' => 'name', 'order' => 'DESC', 'fields' => 'all');
+
 $terms_gammes = wp_get_post_terms($post_id, 'gammes', $term_order );
+$context['taxs'] = $terms_gammes;
 $terms_gammes_values = array_map(function($item) {
                 return $item->slug;
             }, $terms_gammes);

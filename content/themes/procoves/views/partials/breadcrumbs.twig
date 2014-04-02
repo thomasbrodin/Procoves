@@ -9,8 +9,8 @@
 			{% elseif actu_title %}
 				<li>/&nbsp;<a href="{{actu_url}}" rel="home">{{actu_title}}</a>&nbsp;</li>
 			{% endif %}
-			{% if gammes %}
-				{% for breadcrumbs in gammes %}	
+			{% if taxs %}
+				{% for breadcrumbs in taxs %}	
 					<li>/&nbsp;<a href="/{{breadcrumbs.taxonomy}}/{{breadcrumbs.slug}}">{{breadcrumbs.name}}</a></li>
 				{% endfor %}
 			{% endif %}	
@@ -20,7 +20,9 @@
 		 </ul>
 
 			<!-- titre  -->
-		  {% if prod_title %}
+		  	{% if title %}
+		  		<h1 class="title">{{title}}</h1>
+		  	{% elseif prod_title %}
 		  		<h1 class="title">{{prod_title}}</h1>
 		   {% elseif actu_title %}
 		  		<h1 class="title">{{actu_title}}</h1>
