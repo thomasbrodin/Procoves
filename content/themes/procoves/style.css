@@ -83,6 +83,7 @@ ul li {
 
 h1, h2, h3, h4, h5, h6 {
   font-family:'L Futura W01';
+  line-height: 1.4;
 }
 
 h1, h2, h3 {
@@ -102,7 +103,7 @@ h4, h5, h6 {
   padding:0 0 12px 0;
   color:#333;
   margin-top: 0;
-  margin-bottom:5px;
+  margin-bottom:10px;
 }
 
 a.contact {
@@ -171,7 +172,7 @@ i.angle-up {
   margin-top: 20px;
   margin-bottom: 10px;
   border-bottom: 1px solid #333;
-  padding-bottom: 8px;
+  padding-bottom: 4px;
   display: inline-block;
 }
 
@@ -233,6 +234,10 @@ i.angle-up {
   padding-right:20px;
   max-height:40px;
   width:auto;
+}
+
+.page-content section img {
+  margin-right: 20px;
 }
 
 /* HEADER
