@@ -29,7 +29,7 @@ jQuery(document).ready(function($) {
 			return false;
 		});
 		$('#back-to-top').on('click', function() {
-			$('body,html').animate({scrollTop: 0}, 200);   
+			$('body,html').animate({scrollTop: 0}, 500);   
 		});
 		var nav_index;
 		$("#access li.nav-main-item").hover(function(){

@@ -167,29 +167,41 @@ i.angle-up {
 }
 
 .page-content section h2 {
-  font-size:18px;
-  margin-top: 9px;
-  margin-bottom:9px;
+  font-size: 16px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 8px;
+  display: inline-block;
 }
+
 .page-content section h3 {
-  font-size:17px;
-  margin-top: 8px;
-  margin-bottom:8px;
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
+
 .page-content section h4 {
-  font-size:16px;
-  margin-top: 8px;
-  margin-bottom:8px;
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-transform: none;
 }
+
 .page-content section h5 {
-  font-size:15px;
-  margin-top: 7px;
-  margin-bottom:7px;
+  font-size: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-transform: none;
+  font-weight: 500;
 }
+
 .page-content section h6 {
-  font-size:14px;
-  margin-top: 7px;
-  margin-bottom:7px;
+  font-size: 14px;
+  margin-top: 10px;
+  text-transform: none;
+  font-weight: 300;
+  margin-bottom: 7px;
 }
 
 .page-content section p{
@@ -199,16 +211,27 @@ i.angle-up {
 }
 
 .page-content section p strong, .page-content section ul li strong{
-  font-weight: 500
+  font-weight: 700
+}
+
+.page-content section p em, .page-content section ul li em{
+  border-bottom: 1px solid #5a5a5a;
+  padding-bottom:1px;
 }
 
 .page-content section ul {
-  padding-left:30px;
+  padding-left:20px;
 }
+
 .page-content section ul li {
-  list-style: disc;
+  list-style: none;
   font-family:'L Futura W01';
-  font-size:16px;
+  font-size:14px;
+}
+
+.page-content section ul li img {
+  padding-right:20px;
+  max-height:40px;
 }
 
 /* HEADER
