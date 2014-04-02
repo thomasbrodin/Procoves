@@ -115,5 +115,17 @@
         $value = is_array( $value ) ? $value[0] : $value;
         $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Secteurs' ) . '" />';
     }
+    if ( 'matieres' == $params['facet']['name'] ) {
+     	$output = '';
+        $values = (array) $params['values'];
+        $selected_values = (array) $params['selected_values'];
+
+        foreach ( $values as $result ) {
+            $selected = in_array( $result->facet_value, $selected_values ) ? ' checked' : '';
+            $output .= '<div class="facetwp-checkbox button' . $selected . '" data-value="' . $result->facet_value . '">';
+            $output .= $result->facet_display_value . ' <span class="facetwp-counter">(' . $result->counter . ')</span>';
+            $output .= '</div>';
+        }
+    }
     return $output;
 	}

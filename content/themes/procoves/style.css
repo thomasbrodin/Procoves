@@ -33,7 +33,7 @@ section#content .taxonomy,
 section#content .collection, 
 section#content .produits, 
 section#content .search {
-  min-height: 795px
+  min-height: 1050px
 }
 
 footer {
@@ -44,6 +44,7 @@ footer {
   background-color: #000;
   color:#999999
 }
+
 .placeholder { color: #aaa; }
 
 #navside.affix {
@@ -1315,7 +1316,7 @@ input.sidebar {
     margin-bottom: 10px!important;
     min-height:36px;
 }
-
+.facetwp-type-checkboxes,
 .facetwp-type-hierarchy {
     overflow: visible;
     max-height: 500px!important
@@ -1327,6 +1328,7 @@ input.sidebar {
   background-repeat: no-repeat;
 }
 
+
 /* Hierarchy facets */
 
 .facetwp-depth .facetwp-depth {
@@ -1337,18 +1339,18 @@ input.sidebar {
   cursor: pointer;
   color: #333;
   font-weight: 500;
-  font-family:'L Futura W01';
   text-transform: uppercase;
   margin-bottom: 6px;
   border: 1px solid #ccc;
   padding: 6px 12px;
 }
+
 .facetwp-depth .facetwp-depth {
-margin-left: 0!important;
+  margin-left: 0!important;
 }
 
 .searchside.normes .facetwp-link{
-  font-size: 12px;
+  font-size: 10px;
   display: inline-block;
   width:48%;
   margin-right:2%;
@@ -1356,6 +1358,8 @@ margin-left: 0!important;
 
 .searchside.gammes .facetwp-link{
   display: block;
+  font-family:'L Futura W01';
+  font-size: 12px;
 }
 
 .facetwp-link:hover{
@@ -1397,6 +1401,34 @@ margin-left: 0!important;
 
 .facetwp-hidden {
     display: none;
+}
+
+/* Checkboxes facets */
+.facetwp-checkbox.button{
+  background: transparent;
+  padding: 4px 2px;
+  display: inline-block;
+  width: 48%;
+  border: 1px solid #ccc;
+  margin-right: 2%;
+  text-align: center;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.facetwp-checkbox.button:hover{
+  color: #fff;
+  background-color: #000!important
+}
+
+.facetwp-checkbox.button .facetwp-counter {
+  display: none
+}
+
+.facetwp-checkbox.button.checked {
+  background: transparent;
+  background-color: #333;
+  color:#fff;
 }
 
 /* SEARCH PAGE
