@@ -10,8 +10,7 @@
 				<li>/&nbsp;<a href="{{actu_url}}" rel="home">{{actu_title}}</a>&nbsp;</li>
 			{% endif %}
 			{% if gammes %}
-				{% for breadcrumbs in gammes %}
-					
+				{% for breadcrumbs in gammes %}	
 					<li>/&nbsp;<a href="/{{breadcrumbs.taxonomy}}/{{breadcrumbs.slug}}">{{breadcrumbs.name}}</a></li>
 				{% endfor %}
 			{% endif %}	

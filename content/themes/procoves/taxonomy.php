@@ -20,8 +20,13 @@ $qobj = get_queried_object();
 $term_name = $qobj->name;
 
 if (is_tax('gammes')){
-	$term_ID = $qobj->term_id;
-	$context['gammes'] = array(get_term_by('id', $term_ID, 'gammes'));
+	$term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ); 
+	if ($term->parent == 0) {  
+		$context['gammes']= array($term);
+	} else {
+		$parent = get_term($term->parent, get_query_var('taxonomy') );
+		$context['gammes'] = array($parent, $term);
+	}
 	$context['wp_title'] .= ' - '.$term_name;
 	$context['title'] = $term_name;
 } else if (is_tax('normes')){

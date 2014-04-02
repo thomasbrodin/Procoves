@@ -105,6 +105,54 @@ h4, h5, h6 {
   margin-bottom:5px;
 }
 
+a.contact {
+  font-weight: 300;
+  text-align: left;
+  font-size: 12px;
+  margin-right: 20px;
+  text-transform: none;
+  float: left;
+  padding-top: 6px;
+  border:none;
+}
+
+a#back-to-top {
+  color: #333;
+  border:none;
+  float: right
+}
+
+a#back-to-top span{
+  font-weight: 300;
+  text-align: left;
+  font-size: 12px;
+  text-transform: none;
+  font-family: 'L Futura W01';
+  vertical-align: middle;
+  height: 20px;
+  display: inline-block;
+}
+
+a#back-to-top:hover{
+  color:rgb(240,70,70);
+}
+
+i.angle-up {
+  cursor: pointer;
+}
+
+.angle-up:before{
+  display: inline-block;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  font-size: 24px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f106";
+}
+
 .page-content section h2, 
 .page-content section h3,
 .page-content section h4,
@@ -146,7 +194,7 @@ h4, h5, h6 {
 
 .page-content section p{
   font-family:'L Futura W01';
-  font-size:12px;
+  font-size:14px;
   font-weight: 300
 }
 
@@ -515,7 +563,6 @@ html[xmlns] .slides {display: block;}
 }
 
 .marketing h2 {
-  font-weight: 700;
   font-size:18px;
   text-transform: uppercase;
   font-family:'L Futura W01';
@@ -525,6 +572,14 @@ html[xmlns] .slides {display: block;}
   color:#333;
 }
 
+.marketing h2 a{
+  font-weight: 700;
+  border-bottom: none;
+  color:#333;
+}
+.marketing h2 a:hover{
+  color:rgb(240,70,70);
+}
 .marketing .col-lg-4 p {
   margin-right: 10px;
   margin-left: 10px;
@@ -1183,7 +1238,7 @@ h2.produit-title{
   margin-bottom: 30px
 }
 
-#navside .searchside.gammes{
+#navside .searchside.matieres{
   margin-bottom: 32px
 }
 
@@ -1462,40 +1517,6 @@ article.actu p.date {
 
 /* FOOTER
 -------------------------------------------------- */
-a#back-to-top {
-  color: #333;
-  border:none;
-  display: block;
-  padding: 10px 7px 10px 0;
-  margin-top: 15px;
-}
-
-a#back-to-top span{
-  font-weight: 300;
-  text-align: left;
-  font-size: 16px;
-  font-family: 'L Futura W01';
-}
-a#back-to-top:hover{
-  color:rgb(240,70,70);
-}
-i.angle-up {
-  cursor: pointer;
-  float: right
-}
-
-.angle-up:before{
-  display: inline-block;
-  font-family: 'FontAwesome';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 0.5;
-  font-size: 36px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  content: "\f106";
-}
-
 footer p {
   margin: 0;
 }

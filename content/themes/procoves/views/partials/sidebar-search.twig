@@ -8,10 +8,14 @@
 		[facetwp facet="refs"]
 	{% endfilter %}
 	{% filter shortcodes %}
-		[facetwp facet="matieres"]
-	{% endfilter %}
-	{% filter shortcodes %}
 		[facetwp facet="activites"]
+	{% endfilter %}
+</div>
+<div class="searchside gammes">
+	<h2><span class="redline"></span>
+	{{__('GAMMES')}}</h2>
+	{% filter shortcodes %}
+		[facetwp facet="gammes"]
 	{% endfilter %}
 </div>
 <div class="searchside normes">
@@ -21,10 +25,10 @@
 		[facetwp facet="niveau_de_performance"]
 	{% endfilter %}
 </div>
-<div class="searchside gammes">
+<div class="searchside matieres">
 	<h2><span class="redline"></span>
-	{{__('GAMMES')}}</h2>
+	{{__('MATIERES')}}</h2>
 	{% filter shortcodes %}
-		[facetwp facet="gammes"]
+		[facetwp facet="matieres"]
 	{% endfilter %}
 </div>

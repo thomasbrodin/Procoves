@@ -109,12 +109,6 @@
         $value = is_array( $value ) ? $value[0] : $value;
         $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Refs' ) . '" />';
     }
-    if ( 'matieres' == $params['facet']['name'] ) {
-        $output = '';
-        $value = $params['selected_values'];
-        $value = is_array( $value ) ? $value[0] : $value;
-        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Matières' ) . '" />';
-    }
     if ( 'activites' == $params['facet']['name'] ) {
         $output = '';
         $value = $params['selected_values'];

@@ -35,7 +35,7 @@
 						</div>
 
 						<div class="prod-desc-panel">
-							
+							<!-- gammes -->
 							<ul class="gammes">
 							    {% for gamme in gammes %}
 							        <li><a class="green" href="/{{gamme.taxonomy}}/{{gamme.slug}}">{{gamme.name}}</a>
@@ -43,6 +43,7 @@
 									</li>
 							    {% endfor %}
 							</ul>
+							<!-- normes -->
 							<ul class="normes">
 							    {% for norme in post.terms('normes') %}
 								    {% if norme.tax_img %} 
@@ -54,7 +55,7 @@
 								    {% endif %}
 							    {% endfor %}
 							</ul>
-							
+							<!-- utilisations -->
 							<h4>{% if use_title %}
 									{{ use_title }}
 								{% else %}
@@ -62,6 +63,7 @@
 								{% endif %}
 							</h4>
 							<p class="use_prod">{{ post.use_prod }}</p>
+							<!-- activite -->
 							{% if post.terms('activite') %}
 								<ul class="activite">
 									<li>Secteur d’activité :</li>
@@ -70,6 +72,7 @@
 								    {% endfor %}
 								</ul>
 							{% endif %}
+							<!-- description -->
 							<h4>{% if desc_title %}
 									{{ desc_title }}
 								{% else %}
@@ -77,14 +80,12 @@
 								{% endif %}
 								</h4>
 							<p class="desc_tech">{{ post.desc_tech }}</p>
-							
-							
+							<!-- matieres -->
 							<h4>{% if matiere_title %}
 									{{ matiere_title }}
 								{% else %}
 									{{__('Matières utilisées','procoves')}}
 								{% endif %}</h4>
-
 							<ul class="matieres">
 							    {% for matiere in post.terms('matieres') %}
 							        <li><a class="green" href="{{matiere.link}}">{{matiere.name}}</a>
