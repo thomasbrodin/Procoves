@@ -34,7 +34,7 @@ section#content .taxonomy,
 section#content .collection, 
 section#content .produits, 
 section#content .search {
-  min-height: 1100px
+  min-height: 1040px
 }
 
 footer {
@@ -176,7 +176,7 @@ i.angle-up {
 .page-content section h2 {
   font-size: 16px;
   margin-top: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
  .page-content section h2 strong {
@@ -1280,10 +1280,6 @@ h2.produit-title{
 
 #navside .searchside {
   margin-bottom: 30px
-}
-
-#navside .searchside.matieres{
-  margin-bottom: 32px
 }
 
 #navside h2 {
