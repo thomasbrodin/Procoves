@@ -1066,7 +1066,7 @@ html[xmlns] .slides {display: block;}
   color:rgb(240,70,70);
 }
 .produit-info h4 {
-  margin: 5px 0 2px;
+  margin: 5px 0 -5px;
   font-size: 16px
 }
 .produit-info ul {
