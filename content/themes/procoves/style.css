@@ -211,7 +211,7 @@ i.angle-up {
 }
 
 .page-content section p strong, .page-content section ul li strong{
-  font-weight: 700
+  font-weight: 500
 }
 
 .page-content section p em, .page-content section ul li em{
@@ -220,7 +220,7 @@ i.angle-up {
 }
 
 .page-content section ul {
-  padding-left:20px;
+  padding-left:0px;
 }
 
 .page-content section ul li {
@@ -232,6 +232,7 @@ i.angle-up {
 .page-content section ul li img {
   padding-right:20px;
   max-height:40px;
+  width:auto;
 }
 
 /* HEADER
