@@ -18,7 +18,8 @@ body {
   margin-bottom: 85px;
   font-family:'Neue Helvetica W01';
   font-weight: 300;
-  font-size: 13px
+  font-size: 13px;
+  line-height: 1;
 }
 
 section#home{
@@ -1066,18 +1067,20 @@ html[xmlns] .slides {display: block;}
   color:rgb(240,70,70);
 }
 .produit-info h4 {
-  margin: 5px 0 -4px;
+  margin: 5px 0 0px;
   font-size: 16px
 }
 .produit-info ul {
   padding: 0;
   margin-bottom: 4px
 }
+
 .produit-info ul li a {
   color:#999;
   text-transform: none;
   padding:0;
-  line-height: 10px;
+  margin: 2px 0;
+  display: block;
 }
 
 /* tooltip */
@@ -1360,6 +1363,7 @@ input.sidebar {
   display: block;
   font-family:'L Futura W01';
   font-size: 12px;
+  padding: 8px 12px;
 }
 
 .facetwp-link:hover{
