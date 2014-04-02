@@ -11,9 +11,7 @@
 			{% endif %}
 			{% if gammes %}
 				{% for breadcrumbs in gammes %}
-					{% if breadcrumbs.parent %}
-						<li>/&nbsp;<a href="/gammes/gamme-thermique">{{__('Gamme thermique', 'procoves')}}</a></li>
-					{% endif %}
+					
 					<li>/&nbsp;<a href="/{{breadcrumbs.taxonomy}}/{{breadcrumbs.slug}}">{{breadcrumbs.name}}</a></li>
 				{% endfor %}
 			{% endif %}	
