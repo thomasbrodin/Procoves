@@ -141,7 +141,8 @@ FWP.used_facets = {};
             }
 
             // Fail on invalid ranges
-            if (parseFloat(opts.range[0]) >= parseFloat(opts.range[1])) {
+            if (parseFloat(opts.range.min) >= parseFloat(opts.range.max)) {
+                $(this).closest('.facetwp-slider-wrap').html('');
                 return false;
             }
 
@@ -172,7 +173,7 @@ FWP.used_facets = {};
             }).on('set', function() {
                 FWP.used_facets[facet_name] = true;
                 FWP.static_facet = facet_name;
-                FWP.refresh();
+                FWP.autoload();
             });
 
             $(this).addClass('ready');

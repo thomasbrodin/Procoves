@@ -99,7 +99,7 @@ class FacetWP_Facet_Search
     wp.hooks.addAction('facetwp/ready', function() {
         $(document).on('keyup', '.facetwp-facet .facetwp-search', function(e) {
             if (13 == e.keyCode) {
-                FWP.refresh();
+                FWP.autoload();
             }
         });
     });

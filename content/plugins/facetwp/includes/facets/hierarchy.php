@@ -188,7 +188,7 @@ class FacetWP_Facet_Hierarchy
             if ('' != $(this).attr('data-value')) {
                 $(this).addClass('checked');
             }
-            FWP.refresh();
+            FWP.autoload();
         });
 
         $(document).on('click', '.facetwp-facet .facetwp-toggle', function() {

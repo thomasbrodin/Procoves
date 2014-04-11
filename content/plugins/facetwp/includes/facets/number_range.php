@@ -88,7 +88,7 @@ class FacetWP_Facet_Number_Range
 
     wp.hooks.addAction('facetwp/ready', function() {
         $(document).on('blur', '.facetwp-number-min, .facetwp-number-max', function() {
-            FWP.refresh();
+            FWP.autoload();
         });
     });
 })(jQuery);

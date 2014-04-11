@@ -97,7 +97,7 @@ class FacetWP_Facet_Date_Range
                 autoclose: true,
                 clearBtn: true
             }).on('changeDate', function(e) {
-                FWP.refresh();
+                FWP.autoload();
             });
         });
     });

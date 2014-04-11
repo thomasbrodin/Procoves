@@ -100,7 +100,7 @@ class FacetWP_Facet_Autocomplete
     });
 
     $(document).on('click', '.facetwp-autocomplete-update', function() {
-        FWP.refresh();
+        FWP.autoload();
     });
 })(jQuery);
 </script>

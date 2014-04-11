@@ -20,6 +20,10 @@
     background: url(../images/checkbox-on.png) no-repeat;
 }
 
+.facetwp-checkbox.disabled {
+    opacity: 0.4;
+}
+
 .facetwp-pager-label {
     display: inline-block;
     margin-right: 12px;

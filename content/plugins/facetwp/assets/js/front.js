@@ -2,6 +2,7 @@ var FWP = {
     'facets': {},
     'template': null,
     'settings': {},
+    'auto_refresh': true,
     'soft_refresh': false,
     'static_facet': null,
     'loaded': false,
@@ -22,6 +23,14 @@ var FWP = {
             }
         }
         return str.join('&');
+    }
+
+
+    // Refresh on each facet interaction?
+    FWP.autoload = function() {
+        if (FWP.auto_refresh) {
+            FWP.refresh();
+        }
     }
 
 

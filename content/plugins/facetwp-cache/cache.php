@@ -5,7 +5,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 define( 'FACETWP_CACHE', true );
 
 $action = isset( $_POST['action'] ) ? $_POST['action'] : '';
-$nocache = isset( $_POST['data']['http_params']['get']['nocache'] );
+$nocache = false;
 
 if ( 'facetwp_refresh' == $action ) {
 

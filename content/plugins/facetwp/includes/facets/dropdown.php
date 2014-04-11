@@ -54,7 +54,7 @@ class FacetWP_Facet_Dropdown
         $selected_values = (array) $params['selected_values'];
 
         $output .= '<select class="facetwp-dropdown">';
-        $output .= '<option value="">- ' . __( 'Any', 'fwp' ) . ' -</option>';
+        $output .= '<option value="">' . __( 'Any', 'fwp' ) . '</option>';
 
         foreach ( $values as $result ) {
             $selected = in_array( $result->facet_value, $selected_values ) ? ' selected' : '';
@@ -135,7 +135,7 @@ class FacetWP_Facet_Dropdown
             if ('' != $facet.find(':selected').val()) {
                 FWP.static_facet = $facet.attr('data-name');
             }
-            FWP.refresh();
+            FWP.autoload();
         });
     });
 })(jQuery);
