@@ -3,7 +3,9 @@
 	include_once('inc/advanced-custom-fields/acf.php' );
 	include_once('inc/acf-options-page/acf-options-page.php');
 	include_once('inc/acf-gallery/acf-gallery.php');
-	
+
+	define('THEME_URL', get_template_directory_uri());
+
 	load_theme_textdomain('procoves', content_url() . '/languages/themes');
 
 	add_theme_support('post-thumbnails');
@@ -15,8 +17,9 @@
 
 	add_filter( 'searchwp_admin_bar', '__return_false' );
 
-	add_filter( 'facetwp_facet_html', 'my_facetwp_facet_html', 10, 2 );
-
+	add_filter( 'facetwp_facet_html', 'pro_facetwp_facet_html', 10, 2 );
+	// add_filter( 'facetwp_facet_types', 'fwpckbx2_facet_types' );
+	
 	add_action('wp_enqueue_scripts', 'load_scripts');	
 	add_action('wp_enqueue_scripts', 'load_styles');
 
@@ -24,8 +27,6 @@
 
 	add_action('init', 'removeHeadLinks');
     remove_action('wp_head', 'wp_generator');
-
-	define('THEME_URL', get_template_directory_uri());
 
 	function options_page_settings( $settings )
 	{
@@ -96,7 +97,7 @@
     	remove_action('wp_head', 'wlwmanifest_link');
     }
 
-    function my_facetwp_facet_html( $output, $params ) {
+    function pro_facetwp_facet_html( $output, $params ) {
     if ( 'nom' == $params['facet']['name'] ) {
         $output = '';
         $value = $params['selected_values'];
@@ -121,11 +122,18 @@
         $selected_values = (array) $params['selected_values'];
 
         foreach ( $values as $result ) {
-            $selected = in_array( $result->facet_value, $selected_values ) ? ' checked' : '';
-            $output .= '<div class="facetwp-checkbox button' . $selected . '" data-value="' . $result->facet_value . '">';
-            $output .= $result->facet_display_value . ' <span class="facetwp-counter">(' . $result->counter . ')</span>';
+            $selected = in_array( $result['facet_value'], $selected_values ) ? ' checked' : '';
+            $selected .= ( 0 == $result['counter'] ) ? ' disabled' : '';
+            $output .= '<div class="facetwp-checkbox button' . $selected . '" data-value="' . $result['facet_value'] . '">';
+            $output .= $result['facet_display_value'] . ' <span class="facetwp-counter">(' . $result['counter'] . ')</span>';
             $output .= '</div>';
         }
     }
     return $output;
+	}
+
+	function fwpckbx2_facet_types( $facet_types ) {
+	    include('inc/facet_ckbx2.php');
+	    $facet_types['checkboxes2'] = new FacetWP_Facet_Checkboxes2();
+	    return $facet_types;
 	}
