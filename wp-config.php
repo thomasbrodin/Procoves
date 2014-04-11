@@ -54,7 +54,6 @@ $table_prefix  = 'wp_';
 // Leave blank for American English
 // ================================
 define( 'WPLANG', 'fr_FR' );
-define( 'SAVEQUERIES', true );
 
 // ===========
 // Hide errors
