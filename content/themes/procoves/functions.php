@@ -18,7 +18,7 @@
 	add_filter( 'searchwp_admin_bar', '__return_false' );
 
 	add_filter( 'facetwp_facet_html', 'pro_facetwp_facet_html', 10, 2 );
-	// add_filter( 'facetwp_facet_types', 'fwpckbx2_facet_types' );
+	add_filter( 'facetwp_facet_types', 'fwpckbx2_facet_types' );
 	
 	add_action('wp_enqueue_scripts', 'load_scripts');	
 	add_action('wp_enqueue_scripts', 'load_styles');
