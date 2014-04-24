@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Twenty Thirteen package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2013-11-21 19:17:59+0000\n"
+"PO-Revision-Date: 2014-03-28 12:32:44+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,7 +17,7 @@ msgstr "Introuvable"
 msgid "The 2013 theme for WordPress takes us back to the blog, featuring a full range of post formats, each displayed beautifully in their own unique way. Design details abound, starting with a vibrant color scheme and matching header images, beautiful typography and icons, and a flexible layout that looks great on any device, big or small."
 msgstr "Le thème de WordPress pour 2013 nous ramène au blog, avec un grand nombre de formats d'article, chacun s'affichant à sa propre manière, en toute beauté. Vous y trouverez de nombreux détails de mise en page, à commencer par le jeu de couleurs vives et les images d'en-tête assorties, une superbe typographie et de belles icônes, et une mise en page flexible qui fonctionne sur toutes les tailles d'écrans, grands ou petits."
 
-#: functions.php:237
+#: functions.php:233
 msgid "Appears in the footer section of the site."
 msgstr "Apparaît dans le pied de page du site."
 
@@ -28,15 +28,15 @@ msgstr "http://wordpress.org/themes/twentythirteen"
 msgid "Link to full-size image"
 msgstr "Lien vers l&rsquo;image originale"
 
-#: functions.php:235
+#: functions.php:231
 msgid "Main Widget Area"
 msgstr "Zone principale de widgets"
 
-#: functions.php:245
+#: functions.php:241
 msgid "Secondary Widget Area"
 msgstr "Zone secondaire de widgets"
 
-#: functions.php:247
+#: functions.php:243
 msgid "Appears on posts and pages in the sidebar."
 msgstr "Apparaît dans la barre latérale des articles et pages."
 
@@ -44,7 +44,7 @@ msgstr "Apparaît dans la barre latérale des articles et pages."
 msgid "Full resolution"
 msgstr "Pleine résolution"
 
-#: inc/back-compat.php:41 inc/back-compat.php:53 inc/back-compat.php:68
+#: inc/back-compat.php:37 inc/back-compat.php:47 inc/back-compat.php:60
 msgid "Twenty Thirteen requires at least WordPress version 3.6. You are running version %s. Please upgrade and try again."
 msgstr "Twenty Thirteen nécessite au moins WordPress 3.6. Vous utilisez la version %s. Veuillez faire une mise à jour et réessayer."
 
@@ -141,7 +141,7 @@ msgstr "Pages&nbsp;:"
 msgid "Edit"
 msgstr "Modifier"
 
-#: functions.php:379
+#: functions.php:369
 msgid "Permalink to %s"
 msgstr "Permalien vers %s"
 
@@ -202,49 +202,49 @@ msgctxt "Bitter font: on or off"
 msgid "on"
 msgstr "on"
 
-#: functions.php:220
+#: functions.php:218
 msgid "Page %s"
 msgstr "Page %s"
 
-#: functions.php:272
+#: functions.php:266
 msgid "Posts navigation"
 msgstr "Navigation des articles"
 
-#: functions.php:276
+#: functions.php:270
 msgid "<span class=\"meta-nav\">&larr;</span> Older posts"
 msgstr "<span class=\"meta-nav\">&larr;</span> Articles plus anciens"
 
-#: functions.php:280
+#: functions.php:274
 msgid "Newer posts <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Articles plus récents <span class=\"meta-nav\">&rarr;</span>"
 
-#: functions.php:308
+#: functions.php:300
 msgid "Post navigation"
 msgstr "Navigation des articles"
 
-#: functions.php:311
+#: functions.php:303
 msgctxt "Previous post link"
 msgid "<span class=\"meta-nav\">&larr;</span> %title"
 msgstr "<span class=\"meta-nav\">&larr;</span> %title"
 
-#: functions.php:312
+#: functions.php:304
 msgctxt "Next post link"
 msgid "%title <span class=\"meta-nav\">&rarr;</span>"
 msgstr "%title <span class=\"meta-nav\">&rarr;</span>"
 
-#: functions.php:332
+#: functions.php:322
 msgid "Sticky"
 msgstr "Mis en avant"
 
-#: functions.php:338 functions.php:344
+#: functions.php:328 functions.php:334
 msgid ", "
 msgstr ", "
 
-#: functions.php:353
+#: functions.php:343
 msgid "View all posts by %s"
 msgstr "Afficher tous les articles par %s"
 
-#: functions.php:373
+#: functions.php:363
 msgctxt "1: post format name. 2: date"
 msgid "%1$s on %2$s"
 msgstr "%1$s le %2$s"
@@ -269,17 +269,17 @@ msgstr "<span class=\"meta-nav\">&larr;</span> Précédent"
 msgid "Next <span class=\"meta-nav\">&rarr;</span>"
 msgstr "Suivant <span class=\"meta-nav\">&rarr;</span>"
 
-#: inc/custom-header.php:51
+#: inc/custom-header.php:49
 msgctxt "header image description"
 msgid "Circle"
 msgstr "Cercle"
 
-#: inc/custom-header.php:56
+#: inc/custom-header.php:54
 msgctxt "header image description"
 msgid "Diamond"
 msgstr "Losange"
 
-#: inc/custom-header.php:61
+#: inc/custom-header.php:59
 msgctxt "header image description"
 msgid "Star"
 msgstr "Étoile"
@@ -297,7 +297,7 @@ msgid "%s Archives"
 msgstr "Archives des %s"
 
 msgid "Twenty Thirteen"
-msgstr "Twenty Twelve"
+msgstr "Twenty Thirteen"
 
 msgid "the WordPress team"
 msgstr "L&rsquo;équipe WordPress"
