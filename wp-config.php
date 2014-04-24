@@ -11,6 +11,16 @@ if ( file_exists( dirname( __FILE__ ) . '/local-config.php' ) ) {
 	define( 'DB_USER', 'userdbpro' );
 	define( 'DB_PASSWORD', 'Procoves11b' );
 	define( 'DB_HOST', 'localhost' ); // Probably 'localhost'
+	
+	/** Define Upgrade FTP Usernames and Passwords */
+	define( 'FTP_BASE', '/var/www/wp/');
+	define( 'FTP_CONTENT_DIR', '/var/www/content/');
+	define( 'FTP_PLUGIN_DIR ', '/var/www/content/plugins/');
+	define( 'FTP_PUBKEY', '/home/wordpress/.ssh/id_rsa.pub');
+	define( 'FTP_PRIKEY', '/home/wordpress/.ssh/id_rsa');
+	define( 'FTP_USER', 'wordpress');
+	define( 'FTP_PASS', ' ' );
+	define( 'FTP_HOST', 'localhost' );
 }
 
 // ========================
