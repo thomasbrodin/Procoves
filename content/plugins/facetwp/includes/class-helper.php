@@ -66,7 +66,7 @@ final class FacetWP_Helper
 
 
     /**
-     * Get an array of active facets
+     * Get an array of all facets
      * @return array
      */
     function get_facets() {
@@ -74,7 +74,22 @@ final class FacetWP_Helper
         foreach ( $this->settings['facets'] as $facet ) {
             $facets[] = $facet;
         }
-        return $facets;
+
+        return apply_filters( 'facetwp_facets', $facets );
+    }
+
+
+    /**
+     * Get an array of all templates
+     * @return array
+     */
+    function get_templates() {
+        $templates = array();
+        foreach ( $this->settings['templates'] as $template ) {
+            $templates[] = $template;
+        }
+
+        return apply_filters( 'facetwp_templates', $templates );
     }
 
 
@@ -84,7 +99,7 @@ final class FacetWP_Helper
      * @return mixed An array of facet info, or false
      */
     function get_facet_by_name( $facet_name ) {
-        foreach ( $this->settings['facets'] as $facet ) {
+        foreach ( $this->get_facets() as $facet ) {
             if ( $facet_name == $facet['name'] ) {
                 return $facet;
             }
@@ -99,7 +114,7 @@ final class FacetWP_Helper
      * @return mixed An array of template info, or false
      */
     function get_template_by_name( $template_name ) {
-        foreach ( $this->settings['templates'] as $template ) {
+        foreach ( $this->get_templates() as $template ) {
             if ( $template_name == $template['name'] ) {
                 return $template;
             }

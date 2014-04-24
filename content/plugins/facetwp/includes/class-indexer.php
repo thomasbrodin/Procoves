@@ -1,7 +1,7 @@
 <?php
 
 // Bypass the PHP timeout
-set_time_limit( 0 );
+ini_set( 'max_execution_time', 0 );
 
 class FacetWP_Indexer
 {
@@ -299,7 +299,7 @@ class FacetWP_Indexer
 
         // Only accept scalar values
         $value = $params['facet_value'];
-        if ( empty( $value ) || is_array( $value ) || is_object( $value ) ) {
+        if ( '' == $value || ! is_scalar( $value ) ) {
             return;
         }
 

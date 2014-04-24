@@ -58,8 +58,8 @@ class FacetWP_Facet_Slider
         $where_clause = $params['where_clause'];
         $selected_values = $params['selected_values'];
 
-        $min = $wpdb->get_var( "SELECT facet_value FROM {$wpdb->prefix}facetwp_index WHERE facet_name = '{$facet['name']}' $where_clause ORDER BY CAST(facet_value AS SIGNED) ASC" );
-        $max = $wpdb->get_var( "SELECT facet_value FROM {$wpdb->prefix}facetwp_index WHERE facet_name = '{$facet['name']}' $where_clause ORDER BY CAST(facet_value AS SIGNED) DESC" );
+        $min = $wpdb->get_var( "SELECT facet_value FROM {$wpdb->prefix}facetwp_index WHERE facet_name = '{$facet['name']}' $where_clause ORDER BY CAST(facet_value AS SIGNED) ASC LIMIT 1" );
+        $max = $wpdb->get_var( "SELECT facet_value FROM {$wpdb->prefix}facetwp_index WHERE facet_name = '{$facet['name']}' $where_clause ORDER BY CAST(facet_value AS SIGNED) DESC LIMIT 1" );
 
         $selected_min = isset( $selected_values[0] ) ? $selected_values[0] : $min;
         $selected_max = isset( $selected_values[1] ) ? $selected_values[1] : $max;

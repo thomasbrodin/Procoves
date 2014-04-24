@@ -35,13 +35,18 @@ class FacetWP_Facet_Checkboxes
 
         // Properly handle "OR" facets
         if ( 'or' == $facet['operator'] ) {
-            if ( isset( $facetwp->or_values ) && ( 1 < count( $facetwp->or_values ) || !isset( $facetwp->or_values[ $facet['name'] ] ) ) ) {
+
+            // Apply filtering (ignore the current facet's selections)
+            if ( !empty( $facetwp->or_values ) && ( 1 < count( $facetwp->or_values ) || !isset( $facetwp->or_values[ $facet['name'] ] ) ) ) {
                 $post_ids = array();
-                $or_values = $facetwp->or_values; // To preserve the original
+                $or_values = $facetwp->or_values; // Preserve the original
                 unset( $or_values[ $facet['name'] ] );
                 foreach ( $or_values as $key => $vals ) {
                     $post_ids = ( 0 == $key ) ? $vals : array_intersect( $post_ids, $vals );
                 }
+
+                // Return only applicable results
+                $post_ids = array_intersect( $post_ids, $facetwp->unfiltered_post_ids );
             }
             else {
                 $post_ids = $facetwp->unfiltered_post_ids;

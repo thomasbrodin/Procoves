@@ -4,7 +4,7 @@ class FacetWP_Display
 {
 
     public $active_types = array();
-    public $template_exists = false;
+    public $load_assets = false;
 
 
     function __construct() {
@@ -22,7 +22,7 @@ class FacetWP_Display
 
         $output = '';
         if ( isset( $atts['facet'] ) ) {
-            foreach ( $helper->settings['facets'] as $facet ) {
+            foreach ( $helper->get_facets() as $facet ) {
                 if ( $atts['facet'] == $facet['name'] ) {
                     $operator = isset( $facet['operator'] ) ? $facet['operator'] : '';
                     $output = '<div class="facetwp-facet facetwp-facet-' . $facet['name'] . ' facetwp-type-' . $facet['type'] . '" data-name="' . $facet['name'] . '" data-type="' . $facet['type'] . '" data-operator="' . $operator . '"></div>';
@@ -35,10 +35,10 @@ class FacetWP_Display
             }
         }
         elseif ( isset( $atts['template'] ) ) {
-            foreach ( $helper->settings['templates'] as $template ) {
+            foreach ( $helper->get_templates() as $template ) {
                 if ( $atts['template'] == $template['name'] ) {
                     $output = '<div class="facetwp-template" data-name="' . $atts['template'] . '"></div>';
-                    $this->template_exists = true;
+                    $this->load_assets = true;
                 }
             }
         }
@@ -87,7 +87,7 @@ class FacetWP_Display
      * Output facet scripts
      */
     function front_scripts() {
-        if ( $this->template_exists ) {
+        if ( true === apply_filters( 'facetwp_load_assets', $this->load_assets ) ) {
 
             // Not enqueued - we NEED these to load before the dynamic front_scripts
             echo '<link rel="stylesheet" href="' . FACETWP_URL . '/assets/css/front.css" />' . "\n";
