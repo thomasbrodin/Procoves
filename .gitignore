@@ -9,10 +9,3 @@ local-config.php
 /content/plugins/akismet
 
 /wp
-
-/content/plugins/facetwp
-/content/plugins/facetwp-cache
-/content/plugins/facetwp-wpml
-/content/plugins/searchwp
-/content/plugins/searchwp-like
-/content/plugins/searchwp-wpml

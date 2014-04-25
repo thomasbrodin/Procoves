@@ -1,0 +1,385 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Advanced Post Types Order\n"
+"POT-Creation-Date: 2014-03-13 12:34-0500\n"
+"PO-Revision-Date: 2014-03-13 12:39-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: include/functions.php:14 include/reorder-class.php:136
+#: include/shortcodes.php:141
+msgid "Invalid Nonce"
+msgstr ""
+
+#: include/functions.php:111
+msgid "Items Order Updated"
+msgstr "Ordre mise à jour"
+
+#: include/functions.php:150
+msgid "Settings Saved"
+msgstr "Paramètres enregistrés"
+
+#: include/functions.php:1066
+msgid "Previous Post"
+msgstr "Article précédent"
+
+#: include/functions.php:1066
+msgid "Next Post"
+msgstr "Article suivant"
+
+#: include/licence.php:19 include/licence.php:26
+msgid "Advanced Post Types Order plugin is inactive, please enter your"
+msgstr ""
+
+#: include/licence.php:19 include/licence.php:26
+msgid "Licence Key"
+msgstr ""
+
+#: include/licence.php:127 include/licence.php:201
+msgid "There was a problem connecting to "
+msgstr ""
+
+#: include/licence.php:149
+msgid "There was a problem deactivating the licence: "
+msgstr ""
+
+#: include/licence.php:168 include/licence.php:230
+msgid "There was a problem with the data block received from "
+msgstr ""
+
+#: include/licence.php:184
+msgid "Licence Key can't be empty"
+msgstr ""
+
+#: include/licence.php:224
+msgid "There was a problem activating the licence: "
+msgstr ""
+
+#: include/licence.php:242 include/licence.php:287 include/licence.php:328
+#: include/options.php:22
+msgid "General Settings"
+msgstr "Parametres généraux"
+
+#: include/licence.php:246 include/licence.php:293 include/licence.php:330
+msgid "Software License"
+msgstr ""
+
+#: include/licence.php:260
+msgid ""
+"Enter the License Key you got when bought this product. If you lost the key, "
+"you can always retrieve it from"
+msgstr ""
+
+#: include/licence.php:261
+msgid "More keys can be generate from"
+msgstr ""
+
+#: include/licence.php:270
+msgid "Save"
+msgstr "Enregistrer"
+
+#: include/licence.php:301
+msgid "License Key"
+msgstr ""
+
+#: include/licence.php:306 include/licence.php:338
+msgid "You can generate more keys from"
+msgstr ""
+
+#: include/licence.php:337
+msgid ""
+"Enter your License Key that you got when bought this product. If you lost "
+"the key, you can always retrieve that from"
+msgstr ""
+
+#: include/options.php:32
+msgid "Allow reorder"
+msgstr ""
+
+#: include/options.php:72
+msgid "General"
+msgstr "General"
+
+#: include/options.php:77
+msgid "Minimum Capability to use this plugin"
+msgstr ""
+
+#: include/options.php:83
+msgid "Subscriber"
+msgstr ""
+
+#: include/options.php:87
+msgid "Contributor"
+msgstr ""
+
+#: include/options.php:91
+msgid "Author"
+msgstr ""
+
+#: include/options.php:95
+msgid "Editor"
+msgstr ""
+
+#: include/options.php:99
+msgid "Administrator"
+msgstr ""
+
+#: include/options.php:129
+msgid "Auto Sort"
+msgstr ""
+
+#: include/options.php:134
+msgid ""
+"<b>OFF</b> - If checked, you will need to manually update the queries to use "
+"the menu_order"
+msgstr ""
+
+#: include/options.php:136 include/options.php:179 include/options.php:208
+msgid "Show Example"
+msgstr ""
+
+#: include/options.php:139
+msgid "You must include a 'orderby' parameter with value as 'menu_order'"
+msgstr ""
+
+#: include/options.php:165
+msgid ""
+"<b>ON</b> - If checked, the plug-in will automatically update the wp-queries "
+"to use the new order (<b>No code update is necessarily</b>)."
+msgstr ""
+
+#: include/options.php:177
+msgid ""
+"<b>ON/Custom</b> - If checked, the plug-in will automatically update the wp-"
+"queries to use the new order, but if a query already contain a 'orderby' "
+"parameter then this will be used instead."
+msgstr ""
+
+#: include/options.php:182
+msgid "The following code will return the posts ordered by title"
+msgstr ""
+
+#: include/options.php:203
+msgid "Ignore Sticky Posts"
+msgstr ""
+
+#: include/options.php:207
+msgid "Ignore Sticky Posts when Auto Sort is ON."
+msgstr ""
+
+#: include/options.php:208
+msgid ""
+"You can overwrite this from code using the 'ignore_sticky_posts' within your "
+"query"
+msgstr ""
+
+#: include/options.php:211
+msgid ""
+"The following code will return the Stiky posts first even if the Autosort is "
+"ON"
+msgstr ""
+
+#: include/options.php:231
+msgid "Admin Sort"
+msgstr ""
+
+#: include/options.php:235
+msgid ""
+"To update the admin interface and see the post types per your new sort, this "
+"need to be checked"
+msgstr ""
+
+#: include/options.php:240
+msgid "Send new items to bottom"
+msgstr ""
+
+#: include/options.php:244
+msgid ""
+"All new posts / custom types will append at the end instead top. This will "
+"apply when manual ordering."
+msgstr ""
+
+#: include/options.php:249
+msgid "Feed Sort"
+msgstr ""
+
+#: include/options.php:253
+msgid ""
+"Use defined order when gernerate a feed. Leave unchecked to use the default "
+"date order"
+msgstr ""
+
+#: include/options.php:258 include/reorder-class.php:827
+#: include/shortcodes.php:611
+msgid "Toggle Thumbnails"
+msgstr "Montrer Les vignettes"
+
+#: include/options.php:262
+msgid "Always show the Thumbnails within the re-order interface"
+msgstr ""
+
+#: include/options.php:267
+msgid "Ignore Suppress Filters"
+msgstr ""
+
+#: include/options.php:271
+msgid ""
+"Set FALSE the <b>suppress_filters</b> for get_posts() default function. Use "
+"this feature if Autosort will not work with you, otherwise you should leave "
+"un-checked."
+msgstr ""
+
+#: include/options.php:277
+msgid "bbPress Replies"
+msgstr ""
+
+#: include/options.php:281
+msgid "Reverse the order of bbPress replies, show newest posts first"
+msgstr ""
+
+#: include/options.php:290
+msgid "Save Settings"
+msgstr "Enregistré les paramètres"
+
+#: include/reorder-class.php:95 include/reorder-class.php:97
+#: include/reorder-class.php:99
+msgid "Re-Order"
+msgstr "Ordre"
+
+#: include/reorder-class.php:132 include/shortcodes.php:137
+msgid "Reset Order Successfully"
+msgstr "Ordre mise a jour\t"
+
+#: include/reorder-class.php:310
+msgid " -  Re-order"
+msgstr " - Ordre"
+
+#: include/reorder-class.php:316 include/shortcodes.php:311
+msgid ""
+"This plugin can't work without javascript, because it's use drag and drop "
+"and AJAX."
+msgstr ""
+
+#: include/reorder-class.php:485 include/shortcodes.php:330
+msgid "Archive & Taxonomies"
+msgstr ""
+
+#: include/reorder-class.php:489 include/reorder-class.php:493
+#: include/shortcodes.php:334 include/shortcodes.php:338
+msgid "Archive"
+msgstr ""
+
+#: include/reorder-class.php:489 include/reorder-class.php:505
+#: include/reorder-class.php:510 include/shortcodes.php:334
+#: include/shortcodes.php:357
+msgid "Total"
+msgstr ""
+
+#: include/reorder-class.php:489 include/shortcodes.php:334
+msgid "Archive Posts"
+msgstr "Archive article"
+
+#: include/reorder-class.php:505 include/reorder-class.php:510
+#: include/shortcodes.php:357
+msgid "Taxonomy Title"
+msgstr "Titre"
+
+#: include/reorder-class.php:505 include/reorder-class.php:510
+#: include/shortcodes.php:357
+msgid "Posts"
+msgstr "Articles"
+
+#: include/reorder-class.php:627
+msgid "Automatic Order"
+msgstr "Ordre automatique"
+
+#: include/reorder-class.php:653 include/shortcodes.php:492
+msgid "Order By"
+msgstr "Classé par"
+
+#: include/reorder-class.php:694 include/shortcodes.php:533
+msgid "Order"
+msgstr "Ordre"
+
+#: include/reorder-class.php:719 include/shortcodes.php:558
+msgid "Batch Terms Automatic Update"
+msgstr ""
+
+#: include/reorder-class.php:729 include/shortcodes.php:568
+msgid "<b>WARNING!</b></i> using this will update all existing"
+msgstr ""
+
+#: include/reorder-class.php:729 include/shortcodes.php:568
+msgid "terms order type with automatic sort type using currrent settings."
+msgstr ""
+
+#: include/reorder-class.php:729 include/shortcodes.php:568
+msgid ""
+"However all existing manual/custom sort lists will be kept, but order type "
+"switched to automatic."
+msgstr ""
+
+#: include/reorder-class.php:757
+msgid "Manual Order"
+msgstr "Ordre Manuel"
+
+#: include/reorder-class.php:790
+msgid "Show all dates"
+msgstr "Afficher les dates"
+
+#: include/reorder-class.php:791
+msgid "Today"
+msgstr "Aujourd'hui"
+
+#: include/reorder-class.php:792
+msgid "Yesterday"
+msgstr "Hier"
+
+#: include/reorder-class.php:793
+msgid "Last Week"
+msgstr "La semaine dernière"
+
+#: include/reorder-class.php:836 include/reorder-class.php:888
+#: include/shortcodes.php:613 include/shortcodes.php:666
+msgid "Update"
+msgstr "Mettre à jour"
+
+#: include/reorder-class.php:901 include/shortcodes.php:680
+msgid "Reset Order"
+msgstr "Réinitialiser l'ordre "
+
+#: include/reorder-class.php:907 include/shortcodes.php:686
+msgid "Are you sure you want to reset the order??"
+msgstr "Etes vous certain de vouloir réinitialiser l'ordre??"
+
+#: include/reorder-class.php:1001 include/shortcodes.php:779
+msgid "Pages"
+msgstr ""
+
+#: include/updater.php:66
+msgid ""
+"An error occour when try to identify the pluguin.</p> <p><a href=\"?\" "
+"onclick=\"document.location.reload(); return false;\">Try again</a>"
+msgstr ""
+
+#: include/updater.php:72
+msgid ""
+"An Unexpected HTTP Error occurred during the API request.</p> <p><a href=\"?"
+"\" onclick=\"document.location.reload(); return false;\">Try again</a>"
+msgstr ""
+
+#: include/updater.php:77
+msgid "An unknown error occurred"
+msgstr ""
