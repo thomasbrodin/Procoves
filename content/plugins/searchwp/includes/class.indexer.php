@@ -702,12 +702,13 @@ class SearchWPIndexer
 								if ( empty( $pdfContent ) ) {
 
 									// PdfParser runs only on 5.3+ but SearchWP runs on 5.2+
-									if( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
-										// try PdfParser
-										$parser = new \Smalot\PdfParser\Parser();
+									// a wrapper class was conditionally included if we're running PHP 5.3+ so let's try that
+									if( class_exists( 'SearchWP_PdfParser' ) ) {
+										// try PdfParser first
+										$parser = new SearchWP_PdfParser();
+										$parser = $parser->init();
 										$pdf = $parser->parseFile( $filename );
 										$text = $pdf->getText();
-										$text = $this->cleanContent( $text );
 										$pdfContent = trim( str_replace( "\n", " ", $text ) );
 									}
 
@@ -717,7 +718,6 @@ class SearchWPIndexer
 										$pdfParser->setFilename( $filename );
 										$pdfParser->decodePDF();
 										$pdfContent = $pdfParser->output();
-										$pdfContent = $this->cleanContent( $pdfContent );
 										$pdfContent = trim( str_replace( "\n", " ", $pdfContent ) );
 									}
 
@@ -736,9 +736,6 @@ class SearchWPIndexer
 												while ( list( $nr, $page ) = each( $pages ) ) {
 													$pdfContent .= $page->get_text();
 												}
-											}
-											if( ! empty( $pdfContent ) ) {
-												$pdfContent = $this->cleanContent( $pdfContent );
 											}
 										} else {
 											// empty out the content so wacky concatenations are not indexed

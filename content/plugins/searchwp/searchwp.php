@@ -3,7 +3,7 @@
 Plugin Name: SearchWP
 Plugin URI: https://searchwp.com/
 Description: The best WordPress search you can find
-Version: 2.1
+Version: 2.1.3
 Author: Jonathan Christopher
 Author URI: https://searchwp.com/
 Text Domain: searchwp
@@ -27,7 +27,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 // exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SEARCHWP_VERSION', '2.1' );
+define( 'SEARCHWP_VERSION', '2.1.3' );
 define( 'SEARCHWP_PREFIX', 'searchwp_' );
 define( 'SEARCHWP_DBPREFIX', 'swp_' );
 define( 'EDD_SEARCHWP_STORE_URL', 'http://searchwp.com' );
@@ -414,34 +414,8 @@ class SearchWP {
 		}
 
 		// PdfParser runs only on 5.3+ but SearchWP runs on 5.2+
-		if( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
-			include_once( $this->dir . '/vendor/tcpdf_parser.php' );
-
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Document.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Object.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Encoding.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Font.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Header.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Page.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Pages.php' );
-
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementBoolean.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementString.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementNumeric.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementArray.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementXref.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementNull.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementDate.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementHexa.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementName.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementMissing.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Element/ElementStruct.php' );
-
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/XObject/Image.php' );
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/XObject/Form.php' );
-
-			include_once( $this->dir . '/vendor/Smalot/PdfParser/Parser.php' );
+		if ( version_compare( PHP_VERSION, '5.3', '>=' ) ) {
+			include_once( $this->dir . '/vendor/pdfparser-bootloader.php' );
 		}
 
 		if ( ! class_exists( 'PDF2Text' ) ) {

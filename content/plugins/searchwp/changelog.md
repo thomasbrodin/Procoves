@@ -1,3 +1,13 @@
+### 2.1.3
+- **[Improvement]** Better encoding and font support for PDF content extraction
+- **[Improvement]** Reduced memory footprint when not indexing PDFs
+- **[Fix]** Fixed an issue where `searchwp_settings_cap` was not properly applied
+- **[Fix]** Reduced aggressiveness when tokenizing PDF content
+- **[Fix]** Fixed thrown exception when parsing specific PDF encodings
+- **[Fix]** Fixed a PHP 5.2 issue
+- **[Fix]** Corrected an include path for ElementXRef.php
+
+
 ### 2.1
 - **[Improvement]** Significant query performance improvement in AND logic pass
 - **[Improvement]** Much improved PDF content extraction when using only PHP as opposed to Xpdf Integration (requires PHP5.3+ else SearchWP will fall back to previous method)
