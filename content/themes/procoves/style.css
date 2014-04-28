@@ -55,7 +55,7 @@ footer {
 #navside {
   height: 605px;
   overflow-x:hidden;
-  overflow-y:scroll;
+  overflow-y:auto;
 }
 /* TYPOS
 -------------------------------------------------- */
