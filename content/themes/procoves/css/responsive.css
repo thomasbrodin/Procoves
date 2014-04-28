@@ -159,12 +159,12 @@
   #navside.affix-top {
     position: fixed;
     width: 243px;
-   top: 247px;
+   top: 215px;
   }
   #navside.affix {
     position: fixed;
     width: 243px;
-    top: 247px;
+    top: 215px;
   }
   #navside.affix-bottom{
     position: absolute;
@@ -194,12 +194,12 @@
    #navside.affix-top {
     position: fixed;
     width: 293px;
-    top: 247px;
+    top: 215px;
   }
   #navside.affix {
     position: fixed;
     width: 293px;
-    top: 245px;
+    top: 215px;
   }
   #navside.affix-bottom{
     position: absolute;
