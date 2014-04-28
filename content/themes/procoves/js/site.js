@@ -80,7 +80,7 @@ $(function() {
 			bottom: 85
 		}
 	});
-	$('.scroll-pane').jScrollPane();
+	// $('.scroll-pane').jScrollPane();
 	// Tooltip
 	$("[data-toggle=tooltip]").tooltip();
 });

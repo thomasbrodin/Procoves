@@ -20,10 +20,54 @@
 </div>
 <div class="searchside normes">
 	<h2><span class="redline"></span>
-	{{__('NIVEAU DE PROTECTION')}}</h2>
-	{% filter shortcodes %}
-		[facetwp facet="niveau_de_performance"]
-	{% endfilter %}
+	{{__('NIVEAU DE PROTECTION')}}</h2>	
+		
+		{% filter shortcodes %}
+				[facetwp facet="cat_1"]
+		{% endfilter %}
+		<div class="box-wrapper">
+			<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse1">
+			{{__('Protection Risque Coupure')}}
+			</button>
+			<div class="sub-collapse1 collapse">
+			{% filter shortcodes %}
+				[facetwp facet="coupure"]
+			{% endfilter %}
+			</div>
+		</div>
+		<div class="box-wrapper">
+			<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse2">
+			{{__('Protection Chaleur')}}
+			</button>
+			<div class="sub-collapse2 collapse">
+			{% filter shortcodes %}
+					[facetwp facet="chaleur"]
+			{% endfilter %}
+			</div>
+		</div>
+		{% filter shortcodes %}
+				[facetwp facet="froid"]
+		{% endfilter %}
+		<div class="box-wrapper">
+			<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse3">
+			{{__('Protection Risque Categorie III')}}
+			</button>
+			<div class="sub-collapse3 collapse">
+			{% filter shortcodes %}
+				[facetwp facet="cat_3"]
+			{% endfilter %}
+			</div>
+		</div>
+		<div class="box-wrapper">
+			<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse4">
+			{{__('Protection Norme Agroalimentaire')}}
+			</button>
+			<div class="sub-collapse4 collapse">
+			{% filter shortcodes %}
+				[facetwp facet="agro"]
+			{% endfilter %}
+			</div>
+		</div>
 </div>
 <div class="searchside matieres">
 	<h2><span class="redline"></span>
