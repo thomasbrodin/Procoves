@@ -81,10 +81,7 @@ $(function() {
 	// $('.scroll-pane').jScrollPane();
 	// Tooltip
 	$("[data-toggle=tooltip]").tooltip();
-});
-
-//Fix IE placeholder
-$(function() {
+	//Fix IE placeholder
 	$('input, textarea').placeholder();
 });
 

@@ -6,8 +6,11 @@
 		      		$image_id = get_field('img_prod');
 					$size = 'medium'; // (thumbnail, medium, large, full or custom size)
 					$image = wp_get_attachment_image_src( $image_id, $size );
-					?>
+					if ($images) { ?>
 					 <img src="<?php echo $image[0]; ?>" />
+					 <?php } else { ?>
+					 	<img src="<?php bloginfo('template_directory'); ?>/img/blank.jpg" alt="Besoin d'image" />
+					<?php } ?>
 		    </a>
 	      	<div class="produit-info">
 	      		<h4><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h4>
