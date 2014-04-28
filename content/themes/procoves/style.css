@@ -34,7 +34,7 @@ section#content .taxonomy,
 section#content .collection, 
 section#content .produits, 
 section#content .search {
-  min-height: 1040px
+  min-height: 500px
 }
 
 footer {
@@ -52,6 +52,11 @@ footer {
   position: relative;
 }
 
+#navside {
+  height: 500px;
+  overflow-x:hidden;
+  overflow-y:scroll;
+}
 /* TYPOS
 -------------------------------------------------- */
 
@@ -74,7 +79,7 @@ span.redline {
   width: 30px;
   border-bottom: 4px solid;
   border-color: rgb(240,70,70);
-  margin-top: 33px;
+  margin-top: 30px;
   display: block;
   position: absolute;
 }
@@ -1311,8 +1316,8 @@ h2.produit-title{
   text-transform: uppercase;
   font-family:'L Futura W01';
   border-bottom: 1px solid #cccccc;
-  padding: 0 0 15px 0;
-  margin: 0 0 20px 0;
+  padding: 0 0 12px 0;
+  margin: 0 0 12px 0;
   display: block;
 }
 
@@ -1338,9 +1343,9 @@ input.sidebar {
 }
 
 .facetwp-facet {
-    margin-bottom: 10px!important;
-    min-height:36px;
+    margin-bottom: 6px!important;
 }
+
 .facetwp-type-checkboxes,
 .facetwp-type-hierarchy {
     overflow: visible;
@@ -1353,6 +1358,12 @@ input.sidebar {
   background-repeat: no-repeat;
 }
 
+.loading {
+  background: url(img/loading.gif) !important;
+  margin:15% auto;
+  width:25px;
+  height: 25px
+}
 
 /* Hierarchy facets */
 
@@ -1393,6 +1404,47 @@ input.sidebar {
   background-color: #000!important
 }
 
+/* Checkboxes facets */
+
+.box-wrapper {
+  
+}
+
+button.normes {
+  color: #333;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  border: 1px solid #ccc;
+  font-family: 'L Futura W01';
+  font-size: 12px;
+  padding: 6px 8px;
+  background-color: #fff;
+  width: 100%;
+  text-align: left;
+  border-radius: 0;
+}
+
+button.normes:hover, 
+button.normes:focus {
+  background-color: #000;
+  color:#fff;
+  outline: none;
+}
+
+.facetwp-checkbox.norme_unique {
+  font-family: 'L Futura W01';
+  background: transparent;
+  padding: 6px 8px;
+  width: 100%;
+  border: 1px solid #ccc;
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
 .searchside.normes .facetwp-link.checked,
 .searchside.gammes .facetwp-link.checked {
     color: #fff;
@@ -1416,6 +1468,7 @@ input.sidebar {
   background-repeat:no-repeat;
   background-position:top center
 }
+
 .searchside.normes .facetwp-link.button:hover, 
 .searchside.gammes .facetwp-link.button:hover {
   background-position:bottom center;
@@ -1442,6 +1495,8 @@ input.sidebar {
   text-transform: uppercase;
   font-weight: 500;
 }
+
+.facetwp-checkbox.norme_unique:hover,
 .facetwp-checkbox.button:hover{
   color: #fff;
   background-color: #000!important
@@ -1451,11 +1506,13 @@ input.sidebar {
   display: none
 }
 
+.facetwp-checkbox.norme_unique.checked,
 .facetwp-checkbox.button.checked {
   background: transparent;
   background-color: #333;
   color:#fff;
 }
+
 
 /* SEARCH PAGE
 -------------------------------------------------- */

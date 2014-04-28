@@ -82,11 +82,14 @@
 		wp_enqueue_script( 'bootstrap-js', THEME_URL . '/js/bootstrap.min.js', array('jquery'), '3.1.0',true);
 		wp_enqueue_script( 'flexslider', THEME_URL . '/js/jquery.flexslider-min.js', array('jquery'), '2.2',true);
 		wp_enqueue_script( 'placeholder', THEME_URL . '/js/jquery.placeholder.js', array('jquery'), '',true);
+		wp_enqueue_script( 'mousewheel', THEME_URL . '/js/jquery.mousewheel.js', array('jquery'), '',true);
+		wp_enqueue_script( 'scrollpane', THEME_URL . '/js/jquery.jscrollpane.min.js', array('jquery'), '',true);
 		wp_enqueue_script( 'site', THEME_URL . '/js/site.js', array('jquery'), '1.0', true);
 	}
 
 	function load_styles() {
 		wp_enqueue_style( 'bootstrap-style', THEME_URL . '/css/bootstrap.min.css');
+		wp_enqueue_style( 'scrollpane', THEME_URL . '/css/jquery.jscrollpane.css'); 
 		wp_enqueue_style( 'custom', THEME_URL . '/style.css'); 
 		wp_enqueue_style( 'mobile', THEME_URL . '/css/responsive.css');
 	}
@@ -98,6 +101,7 @@
     }
 
     function pro_facetwp_facet_html( $output, $params ) {
+    // Test Input recherche
     if ( 'nom' == $params['facet']['name'] ) {
         $output = '';
         $value = $params['selected_values'];
@@ -116,7 +120,15 @@
         $value = is_array( $value ) ? $value[0] : $value;
         $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Secteurs' ) . '" />';
     }
-    if ( 'matieres' == $params['facet']['name'] ) {
+
+    // Checkboxes
+    if ( 
+    	'matieres' == $params['facet']['name'] 
+    	|| 'agro' == $params['facet']['name'] 
+    	|| 'chaleur' == $params['facet']['name'] 
+    	|| 'cat_3' == $params['facet']['name'] 
+    	|| 'coupure' == $params['facet']['name']
+    	) {
      	$output = '';
         $values = (array) $params['values'];
         $selected_values = (array) $params['selected_values'];
@@ -129,6 +141,19 @@
             $output .= '</div>';
         }
     }
+    // Checkboxes no children
+    if ('froid' == $params['facet']['name'] || 'cat_1' == $params['facet']['name'] ) {
+     	$output = '';
+        $values = (array) $params['values'];
+        $selected_values = (array) $params['selected_values'];
+
+        foreach ( $values as $result ) {
+            $selected = in_array( $result['facet_value'], $selected_values ) ? ' checked' : '';
+            $output .= '<div class="facetwp-checkbox norme_unique' . $selected . '" data-value="' . $result['facet_value'] . '">';
+            $output .= $result['facet_display_value'] . '</div>';
+        }
+    }
+
     return $output;
 	}
 

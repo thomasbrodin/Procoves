@@ -26,26 +26,3 @@
 <?php endwhile; else: ?>
 		<h4 class="none"><?php _e('Aucun Produits Trouvés... Veuillez recommencez votre ', 'procoves')?><a href="/produits"><?php _e('recherche')?></a></h4>
 <?php endif; ?>
-<script>
-	var pathArray = window.location.href.split('/');
-	if (pathArray.length > 5) {
-	  $('.facetwp-template').show();
-	} else {
-		$('.facetwp-template').hide();
-	}
-	(function($) {
-	    $(document).on('facetwp-refresh', function() {
-	        if (FWP.loaded) {
-	            $('.facetwp-template').show();
-	            $('.collection .gammes').hide();
-	        }
-	    });
-	    $(document).on('facetwp-loaded', function() {
-	        $('html, body').animate({ scrollTop: 0 }, 200);
-	        $( '[data-value=""]' ).addClass( "button" );
-     	});
-	})(jQuery);
-	$(function() {
- 		$('input, textarea').placeholder();
-	});
-</script>
