@@ -21,8 +21,6 @@ $(function() {
 				}
 		});
 	});
-	//Fix IE placeholder
-	$('input, textarea').placeholder();
 	//Scroll top
 	$('.navlist li a').on('click', function() {
 			var scrollAnchor = $(this).attr('data-scroll'),
@@ -83,6 +81,11 @@ $(function() {
 	// $('.scroll-pane').jScrollPane();
 	// Tooltip
 	$("[data-toggle=tooltip]").tooltip();
+});
+
+//Fix IE placeholder
+$(function() {
+	$('input, textarea').placeholder();
 });
 
 $(window).load(function() {
