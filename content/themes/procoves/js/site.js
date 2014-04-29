@@ -3,7 +3,7 @@ $(function() {
 	$('section#content .row.search').hide();
 	$('.row.home .facetwp-template').hide();
 	$('.loading').show();
-	FWP.auto_refresh = false;
+	// FWP.auto_refresh = false;
 	$(document).on('facetwp-refresh', function() {
 		$('.facet-loading').show();
 		$('.ajax-hide').hide();
@@ -25,6 +25,17 @@ $(function() {
 					$(this).closest('.box-wrap').hide();
 				}
 		});
+		var sticky = $('.sticky');
+		var stickyHeight = $('.sticky').height();
+		var stickyTop = $('.sticky').offset().top;
+		$(window).scroll(function(){
+			var WindowTop = $(window).scrollTop();
+			if (stickyTop < WindowTop){
+				sticky.css('top', WindowTop);
+			} else {
+				sticky.css('top',0);
+			}
+		});
 	});
 	//Scroll top
 	$('.navlist li a').on('click', function() {
@@ -32,15 +43,11 @@ $(function() {
 				scrollPoint = $('section[data-anchor="' + scrollAnchor + '"]').offset().top - 235;
 			$('body,html').animate({
 				scrollTop: scrollPoint
-			}, 500);   
+			}, 500);
 			return false;
 	});
 	$('#back-to-top').on('click', function() {
-		$('body,html').animate({scrollTop: 0}, 500);   
-	});
-	$(window).scroll(function(){ 
-		var windowTop = $(window).scrollTop()+30; 
-		$('.sticky').css('top',windowTop);  
+		$('body,html').animate({scrollTop: 0}, 500);
 	});
 	//Navigation slider
 	var nav_index;
@@ -90,25 +97,25 @@ $(function() {
 	// $('.scroll-pane').jScrollPane();
 	// Tooltip
 	$("[data-toggle=tooltip]").tooltip();
-});
-
-$(window).load(function() {
-	$('.slider').flexslider({
-		slideshow: false, 
-		animation: "slide", 
-		animationLoop: false, 
-		controlNav: false,
-		controlsContainer: "#controlswrap .container",
-		keyboard: true,
+	// Slider
+	$(window).load(function() {
+		$('.slider').flexslider({
+			slideshow: false,
+			animation: "slide",
+			animationLoop: false,
+			controlNav: false,
+			controlsContainer: "#controlswrap .container",
+			keyboard: true,
+		});
+		$('.thumbslider').flexslider({
+			slideshow: false,
+			animation: "slide",
+			animationLoop: true,
+			itemWidth: 200,
+			itemMargin: 28,
+			controlNav: false,
+			minItems: 2,
+			maxItems: 4
+		});
 	});
-	$('.thumbslider').flexslider({
-		slideshow: false,
-		animation: "slide",
-		animationLoop: true,
-		itemWidth: 200,
-		itemMargin: 28,
-		controlNav: false,
-		minItems: 2,
-		maxItems: 4
-  	});
 });

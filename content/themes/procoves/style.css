@@ -1382,9 +1382,7 @@ input.sidebar {
 
 .sticky {
   position: absolute;
-  margin-top: 500px;
   z-index: 0;
-  overflow: hidden
 }
 
 .redbutton{
