@@ -11,12 +11,13 @@
 					<p>{{__('Chargement des criteres...')}}</p>
 				</div>
 				<div class="sticky ajax-hide">
-					<button onclick="FWP.reset()">Reinitialiser</button>
-					<button onclick="FWP.refresh()">Soumettre</button>
 					<a id="back-to-top" href="#top" title="Haut de page">
-						<span>{{__('Haut de page', 'procoves')}}</span>
+						<span>{{__('Details haut de page', 'procoves')}}</span>
 						<i class="angle-up"></i>
 					</a>
+					<div class="redbutton">
+						<button class="reset-facets" onclick="FWP.reset()">Reinitialiser</button>
+					</div>
 				</div>
 			</div>
 		</div>
