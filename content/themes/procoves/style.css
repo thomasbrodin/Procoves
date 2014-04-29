@@ -31,13 +31,6 @@ section#content {
 	padding-top: 170px;
 }
 
-section#content .taxonomy, 
-section#content .collection, 
-section#content .produits, 
-section#content .search {
-  min-height: 750px
-}
-
 footer {
   position: absolute;
   bottom: 0;
