@@ -3,6 +3,7 @@ $(function() {
 	$('section#content .row.search').hide();
 	$('.row.home .facetwp-template').hide();
 	$('.loading').show();
+	FWP.auto_refresh = false;
 	$(document).on('facetwp-refresh', function() {
 		$('.facet-loading').show();
 		$('.ajax-hide').hide();
@@ -82,6 +83,12 @@ $(function() {
 			bottom: 85
 		}
 	});
+	// $('#navside .haut').affix({
+	// 	offset: {
+	// 		top: 605,
+	// 		bottom: 85
+	// 	}
+	// });
 	// $('.scroll-pane').jScrollPane();
 	// Tooltip
 	$("[data-toggle=tooltip]").tooltip();
