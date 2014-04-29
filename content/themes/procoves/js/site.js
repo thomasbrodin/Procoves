@@ -38,6 +38,10 @@ $(function() {
 	$('#back-to-top').on('click', function() {
 		$('body,html').animate({scrollTop: 0}, 500);   
 	});
+	$(window).scroll(function(){ 
+		var windowTop = $(window).scrollTop()+30; 
+		$('.sticky').css('top',windowTop);  
+	});
 	//Navigation slider
 	var nav_index;
 	$("#access li.nav-main-item").hover(function(){
@@ -83,12 +87,6 @@ $(function() {
 			bottom: 85
 		}
 	});
-	// $('#navside .haut').affix({
-	// 	offset: {
-	// 		top: 605,
-	// 		bottom: 85
-	// 	}
-	// });
 	// $('.scroll-pane').jScrollPane();
 	// Tooltip
 	$("[data-toggle=tooltip]").tooltip();

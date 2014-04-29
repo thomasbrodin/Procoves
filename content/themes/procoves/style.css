@@ -1306,10 +1306,6 @@ h2.produit-title{
   padding-left:0px;
 }
 
-#navside .searchside {
-  margin-bottom: 30px
-}
-
 #navside h2 {
   font-weight: 700;
   text-align: left;
@@ -1383,6 +1379,19 @@ input.sidebar {
   height: 25px
 }
 
+.sticky {
+  position: absolute;
+  margin-top: 500px;
+  z-index: 0;
+  width:260px;
+}
+
+#navside .searchside {
+  position: relative;
+  z-index: 1;
+  background-color: #fff;
+  padding-bottom: 20px
+}
 
 /* Hierarchy facets */
 
