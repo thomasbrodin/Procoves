@@ -173,6 +173,9 @@
   #navside .normes-list li.cat-1 {
     display: block;
   }
+   .sticky{
+    width:213px;
+  }
 }
 @media (min-width: 1200px) {
   #controlswrap {
@@ -214,6 +217,9 @@
   }
   #navside .normes-list li.cat-1 a {
   font-size: 12px
+  }
+  .sticky{
+    width:260px;
   }
   .collection .gamme-thumb img{
   min-width: 255px;
