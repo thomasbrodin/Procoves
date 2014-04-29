@@ -4,6 +4,9 @@ $(function() {
 	$('.row.home .facetwp-template').hide();
 	$('.loading').show();
 	$(document).on('facetwp-refresh', function() {
+		$('.facet-loading').show();
+		$('.ajax-hide').hide();
+		$('html, body').animate({ scrollTop: 0 }, 200);
 		if (FWP.loaded) { // wait until the first user interaction
 			$('.collection .gammes').hide();
 			$('.facetwp-template').show();
@@ -12,12 +15,13 @@ $(function() {
 	$(document).on('facetwp-loaded', function() {
 		$('.loading').hide();
 		$('section#content .row.search').show();
-		$('html, body').animate({ scrollTop: 0 }, 200);
+		$('.facet-loading').hide();
+		$('.ajax-hide').show();
 		$( '[data-value=""]' ).addClass( "button" );
 		$('.facetwp-facet').each(function() {
-			$(this).closest('.box-wrapper').show();
+			$(this).closest('.box-wrap').show();
 				if ('' == $(this).html()) {
-					$(this).closest('.box-wrapper').hide();
+					$(this).closest('.box-wrap').hide();
 				}
 		});
 	});
@@ -71,8 +75,8 @@ $(function() {
     }).bind('mouseleave',function() {
 		$(this).children('.caption_overlay').animate({'opacity':'0'},'slow');
     });
-    // Fixed navigation
-	$('#navside').affix({
+    // Fixed nav pages
+	$('#navside .nav-fix').affix({
 		offset: {
 			top: 0,
 			bottom: 85
@@ -81,8 +85,6 @@ $(function() {
 	// $('.scroll-pane').jScrollPane();
 	// Tooltip
 	$("[data-toggle=tooltip]").tooltip();
-	//Fix IE placeholder
-	$('input, textarea').placeholder();
 });
 
 $(window).load(function() {
