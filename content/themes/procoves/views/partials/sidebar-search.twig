@@ -1,78 +1,91 @@
-<div class="searchside">
+<div class="searchside ajax-hide">
 	<h2><span class="redline"></span>
-	{{__('RECHERCHE')}}</h2> 
-	{% filter shortcodes %}
-		[facetwp facet="nom"]
-	{% endfilter %}
-	{% filter shortcodes %}
-		[facetwp facet="refs"]
-	{% endfilter %}
-	{% filter shortcodes %}
-		[facetwp facet="activites"]
-	{% endfilter %}
+	{{__('RECHERCHE')}}
+	</h2> 
+	<div class="facet-wrapper">
+		{% filter shortcodes %}
+			[facetwp facet="nom"]
+		{% endfilter %}
+		{% filter shortcodes %}
+			[facetwp facet="refs"]
+		{% endfilter %}
+		{% filter shortcodes %}
+			[facetwp facet="activites"]
+		{% endfilter %}
+	</div>
 </div>
-<div class="searchside gammes">
+<div class="searchside ajax-hide gammes">
 	<h2><span class="redline"></span>
-	{{__('GAMMES')}}</h2>
-	{% filter shortcodes %}
-		[facetwp facet="gammes"]
-	{% endfilter %}
+	{{__('GAMMES')}}
+	</h2>
+	<div class="facet-wrapper">
+		{% filter shortcodes %}
+			[facetwp facet="gammes"]
+		{% endfilter %}
+	</div>
 </div>
-<div class="searchside normes">
+<div class="searchside ajax-hide normes">
 	<h2><span class="redline"></span>
 	{{__('NIVEAU DE PROTECTION')}}</h2>	
-		
-		{% filter shortcodes %}
-				[facetwp facet="cat_1"]
-		{% endfilter %}
-		<div class="box-wrapper">
-			<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse1">
-			{{__('Protection Risque Coupure')}}
-			</button>
-			<div class="sub-collapse1 collapse">
-			{% filter shortcodes %}
-				[facetwp facet="coupure"]
-			{% endfilter %}
+		<div class="facet-wrapper">
+			<div class="box-wrap">
+				{% filter shortcodes %}
+						[facetwp facet="cat_1"]
+				{% endfilter %}
 			</div>
-		</div>
-		<div class="box-wrapper">
-			<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse2">
-			{{__('Protection Chaleur')}}
-			</button>
-			<div class="sub-collapse2 collapse">
-			{% filter shortcodes %}
-					[facetwp facet="chaleur"]
-			{% endfilter %}
+			<div class="box-wrap">
+				<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse1">
+				{{__('Protection Risque Coupure')}}
+				</button>
+				<div class="sub-collapse1 collapse">
+				{% filter shortcodes %}
+					[facetwp facet="coupure"]
+				{% endfilter %}
+				</div>
 			</div>
-		</div>
-		{% filter shortcodes %}
-				[facetwp facet="froid"]
-		{% endfilter %}
-		<div class="box-wrapper">
-			<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse3">
-			{{__('Protection Risque Categorie III')}}
-			</button>
-			<div class="sub-collapse3 collapse">
-			{% filter shortcodes %}
-				[facetwp facet="cat_3"]
-			{% endfilter %}
+			<div class="box-wrap">
+				<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse2">
+				{{__('Protection Chaleur')}}
+				</button>
+				<div class="sub-collapse2 collapse">
+				{% filter shortcodes %}
+						[facetwp facet="chaleur"]
+				{% endfilter %}
+				</div>
 			</div>
-		</div>
-		<div class="box-wrapper">
-			<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse4">
-			{{__('Protection Norme Agroalimentaire')}}
-			</button>
-			<div class="sub-collapse4 collapse">
-			{% filter shortcodes %}
-				[facetwp facet="agro"]
-			{% endfilter %}
+			<div class="box-wrap">
+				{% filter shortcodes %}
+						[facetwp facet="froid"]
+				{% endfilter %}
+			</div>
+			<div class="box-wrap">
+				<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse3">
+				{{__('Protection Risque Categorie III')}}
+				</button>
+				<div class="sub-collapse3 collapse">
+				{% filter shortcodes %}
+					[facetwp facet="cat_3"]
+				{% endfilter %}
+				</div>
+			</div>
+			<div class="box-wrap">
+				<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse4">
+				{{__('Protection Norme Agroalimentaire')}}
+				</button>
+				<div class="sub-collapse4 collapse">
+				{% filter shortcodes %}
+					[facetwp facet="agro"]
+				{% endfilter %}
+				</div>
 			</div>
 		</div>
 </div>
-<div class="searchside matieres">
+<div class="searchside ajax-hide matieres">
 	<h2><span class="redline"></span>
 	{{__('MATIERES')}}</h2>
-	{% filter shortcodes %}
-		[facetwp facet="matieres"]
-	{% endfilter %}
+	<div class="facet-wrapper">
+		{% filter shortcodes %}
+			[facetwp facet="matieres"]
+		{% endfilter %}
+	</div>
 </div>

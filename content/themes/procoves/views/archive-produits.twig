@@ -4,9 +4,19 @@
 	<div class="loading"></div>
 	<div class="row search">
 		<div id="navside" class="col-md-3">
-			<!-- <div class="scroll-pane"> -->
-				{% include ['partials/sidebar-search.twig'] %}
-		<!-- 	</div>			 -->	
+			{% include ['partials/sidebar-search.twig'] %}
+			<div class="side-up">
+		 		<div class="facet-loading">
+					<div class="facet-spin"></div>
+					<p>{{__('Chargement des criteres...')}}</p>
+				</div>
+				<!-- <div class="haut ajax-hide">
+					<a id="back-to-top" href="#top" title="Haut de page">
+						<span>{{__('Haut de page', 'procoves')}}</span>
+						<i class="angle-up"></i>
+					</a>
+				</div> -->
+			</div>
 		</div>
 
 		<div class="col-md-9 collection pull-right" role="main">

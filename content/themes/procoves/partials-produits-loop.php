@@ -6,8 +6,8 @@
 		      		$image_id = get_field('img_prod');
 					$size = 'medium'; // (thumbnail, medium, large, full or custom size)
 					$image = wp_get_attachment_image_src( $image_id, $size );
-					if ($images) { ?>
-					 <img src="<?php echo $image[0]; ?>" />
+					if ($image) { ?>
+						<img src="<?php echo $image[0]; ?>" />
 					 <?php } else { ?>
 					 	<img src="<?php bloginfo('template_directory'); ?>/img/blank.jpg" alt="Besoin d'image" />
 					<?php } ?>
@@ -29,3 +29,10 @@
 <?php endwhile; else: ?>
 		<h4 class="none"><?php _e('Aucun Produits Trouvés... Veuillez recommencez votre ', 'procoves')?><a href="/produits"><?php _e('recherche')?></a></h4>
 <?php endif; ?>
+
+
+<script>
+	$(function() {
+     	$('input, textarea').placeholder();
+	});
+</script>

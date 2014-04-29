@@ -156,19 +156,19 @@
 
 }
 @media (min-width: 992px) {
-  #navside.affix-top {
+  #navside .nav-fix.affix-top {
     position: fixed;
-    width: 243px;
+    width: 227px;
    top: 215px;
   }
-  #navside.affix {
+  #navside .nav-fix.affix {
     position: fixed;
-    width: 243px;
+    width: 227px;
     top: 215px;
   }
-  #navside.affix-bottom{
+  #navside .nav-fix.affix-bottom{
     position: absolute;
-    width: 243px;
+    width: 227px;
   }
   #navside .normes-list li.cat-1 {
     display: block;
@@ -191,19 +191,19 @@
   .flex-direction-nav a:before {
     font-size: 39px
   }
-   #navside.affix-top {
+   #navside .nav-fix.affix-top {
     position: fixed;
-    width: 293px;
+    width: 278px;
     top: 215px;
   }
-  #navside.affix {
+  #navside .nav-fix.affix {
     position: fixed;
-    width: 293px;
+    width: 278px;
     top: 215px;
   }
-  #navside.affix-bottom{
+  #navside .nav-fix.affix-bottom{
     position: absolute;
-    width: 293px;
+    width: 275px;
   }
   #navside .normes-list li img {
     max-height: 50px;

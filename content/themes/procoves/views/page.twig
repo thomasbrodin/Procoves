@@ -3,16 +3,18 @@
 {% block content %}
 	<div class="row">
 	 	<div id="navside" class="col-md-3">
-	 		<ul class="navlist">
-				 {% for subpage in subpages %}
-					<li>
-						<span class="redline"></span>
-						<a href="#{{subpage.post_name}}" data-scroll="{{subpage.post_name}}">{{subpage.post_title}}
-						<i class="angle-right"></i>
-						</a>
-					</li>
-				{% endfor %}
-			</ul>
+	 		<div class="nav-fix">
+	 			<ul class="navlist">
+					 {% for subpage in subpages %}
+						<li>
+							<span class="redline"></span>
+							<a href="#{{subpage.post_name}}" data-scroll="{{subpage.post_name}}">{{subpage.post_title}}
+							<i class="angle-right"></i>
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
 		</div>
 		<div class="col-md-9 page-content pull-right" role="main">
 			<section id="main-parent">

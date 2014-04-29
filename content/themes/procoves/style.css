@@ -34,7 +34,7 @@ section#content .taxonomy,
 section#content .collection, 
 section#content .produits, 
 section#content .search {
-  min-height: 605px
+  min-height: 1040px
 }
 
 footer {
@@ -48,15 +48,16 @@ footer {
 
 .placeholder { color: #aaa; }
 
-#navside.affix {
+#navside .nav-fix.affix {
   position: relative;
 }
 
-#navside {
+/*#navside {
   height: 605px;
   overflow-x:hidden;
   overflow-y:auto;
-}
+}*/
+
 /* TYPOS
 -------------------------------------------------- */
 
@@ -1358,12 +1359,30 @@ input.sidebar {
   background-repeat: no-repeat;
 }
 
+.facet-loading{
+  margin:50% auto;
+  width:150px;
+}
+
+.facet-spin{
+  background: url(img/spinner.gif) !important;
+  margin:0 auto;
+  width:20px;
+  height: 20px;
+}
+
+.facet-loading p{
+  font-size: 10px;
+  margin-top: 10px;
+  text-align: center;
+}
 .loading {
   background: url(img/loading.gif) !important;
   margin:15% auto;
   width:25px;
   height: 25px
 }
+
 
 /* Hierarchy facets */
 
