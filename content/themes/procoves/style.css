@@ -1426,6 +1426,13 @@ div.searchside input.sidebar.used{
   color:#000;
 }
 
+button {
+  border-radius: 0;
+  outline: none;
+  -webkit-appearance: none;
+  border: 0;
+}
+
 button.reset-facets,
 button.submit-facets {
   background-color: #fff;
@@ -1468,13 +1475,6 @@ button.submit-facets:hover{
   margin-left: 0!important;
 }
 
-.searchside.normes .facetwp-link{
-  font-size: 10px;
-  display: inline-block;
-  width:48%;
-  margin-right:2%;
-}
-
 .searchside.gammes .facetwp-link{
   display: block;
   font-family:'L Futura W01';
@@ -1487,14 +1487,41 @@ button.submit-facets:hover{
   background-color: #000!important
 }
 
-/* Checkboxes facets */
-button {
-  border-radius: 0;
-  outline: none;
-  -webkit-appearance: none;
-  border: 0;
+.searchside.gammes .facetwp-link.checked {
+    color: #fff;
+    background-color: #000!important;
+    cursor: pointer;
+    border: none;
+    display: block;
+    width: 100%
 }
 
+.searchside.gammes .facetwp-link.button{
+  text-indent:-999px;
+  display: block;
+  width:15px;
+  height:15px;
+  border:none;
+  margin: 0;
+  padding:0;
+  background-image: url(img/check.png);
+  background-repeat:no-repeat;
+  background-position:top center
+}
+
+.searchside.gammes .facetwp-link.button:hover {
+  background-position:bottom center;
+}
+
+.facetwp-toggle {
+    cursor: pointer;
+}
+
+.facetwp-hidden {
+    display: none;
+}
+
+/* Checkboxes facets */
 button.normes {
   color: #333;
   font-weight: 500;
@@ -1509,7 +1536,7 @@ button.normes {
   text-align: left;
   border-radius: 0;
 }
-
+ 
 button.normes:hover, 
 button.normes:focus {
   background-color: #000;
@@ -1530,44 +1557,6 @@ button.normes:focus {
   margin-bottom: 0;
 }
 
-.searchside.normes .facetwp-link.checked,
-.searchside.gammes .facetwp-link.checked {
-    color: #fff;
-    background-color: #000!important;
-    cursor: pointer;
-    border: none;
-    display: block;
-    width: 100%
-}
-
-.searchside.normes .facetwp-link.button, 
-.searchside.gammes .facetwp-link.button{
-  text-indent:-999px;
-  display: block;
-  width:15px;
-  height:15px;
-  border:none;
-  margin: 0;
-  padding:0;
-  background-image: url(img/check.png);
-  background-repeat:no-repeat;
-  background-position:top center
-}
-
-.searchside.normes .facetwp-link.button:hover, 
-.searchside.gammes .facetwp-link.button:hover {
-  background-position:bottom center;
-}
-
-.facetwp-toggle {
-    cursor: pointer;
-}
-
-.facetwp-hidden {
-    display: none;
-}
-
-/* Checkboxes facets */
 .facetwp-checkbox.button{
   background: transparent;
   padding: 4px 2px;
@@ -1593,11 +1582,18 @@ button.normes:focus {
 
 .facetwp-checkbox.norme_unique.checked,
 .facetwp-checkbox.button.checked {
-  background: transparent;
-  background-color: #333;
+  background-image: url(img/check_on.jpg);
+  background-repeat:no-repeat;
+  background-position:2px 50%;
+  background-color: #000;
   color:#fff;
+  padding-left:15px;
 }
 
+.facetwp-checkbox.norme_unique.checked:hover,
+.facetwp-checkbox.button.checked:hover{
+  background-image: url(img/check_off.jpg);
+}
 
 /* SEARCH PAGE
 -------------------------------------------------- */
