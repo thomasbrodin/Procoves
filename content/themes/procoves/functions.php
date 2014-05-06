@@ -18,7 +18,6 @@
 	add_filter( 'searchwp_admin_bar', '__return_false' );
 
 	add_filter( 'facetwp_facet_html', 'pro_facetwp_facet_html', 10, 2 );
-	add_filter( 'facetwp_facet_types', 'fwpckbx2_facet_types' );
 	
 	add_action('wp_enqueue_scripts', 'load_scripts');	
 	add_action('wp_enqueue_scripts', 'load_styles');
@@ -76,20 +75,14 @@
 	}
 
 	function load_scripts(){
-		wp_deregister_script('jquery');
-		wp_register_script('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js', array(),'1.1', true); 
 		wp_enqueue_script('jquery');
 		wp_enqueue_script( 'bootstrap-js', THEME_URL . '/js/bootstrap.min.js', array('jquery'), '3.1.0',true);
 		wp_enqueue_script( 'flexslider', THEME_URL . '/js/jquery.flexslider-min.js', array('jquery'), '2.2',true);
-		wp_enqueue_script( 'placeholder', THEME_URL . '/js/jquery.placeholder.js', array('jquery'), '',true);
-		wp_enqueue_script( 'mousewheel', THEME_URL . '/js/jquery.mousewheel.js', array('jquery'), '',true);
-		wp_enqueue_script( 'scrollpane', THEME_URL . '/js/jquery.jscrollpane.min.js', array('jquery'), '',true);
 		wp_enqueue_script( 'site', THEME_URL . '/js/site.js', array('jquery'), '', true);
 	}
 
 	function load_styles() {
 		wp_enqueue_style( 'bootstrap-style', THEME_URL . '/css/bootstrap.min.css');
-		wp_enqueue_style( 'scrollpane', THEME_URL . '/css/jquery.jscrollpane.css'); 
 		wp_enqueue_style( 'custom', THEME_URL . '/style.css'); 
 		wp_enqueue_style( 'mobile', THEME_URL . '/css/responsive.css');
 	}
@@ -101,24 +94,27 @@
     }
 
     function pro_facetwp_facet_html( $output, $params ) {
-    // Test Input recherche
+    // Input recherche
     if ( 'nom' == $params['facet']['name'] ) {
         $output = '';
         $value = $params['selected_values'];
         $value = is_array( $value ) ? $value[0] : $value;
-        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Noms' ) . '" />';
+        $output .= '<label class="search noms">'.__('Noms').'</label>';
+        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" />';
     }
     if ( 'refs' == $params['facet']['name'] ) {
         $output = '';
         $value = $params['selected_values'];
         $value = is_array( $value ) ? $value[0] : $value;
-        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Refs' ) . '" />';
+        $output .= '<label class="search refs">' .__( "Refs" ).'</label>';
+        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" />';
     }
     if ( 'activites' == $params['facet']['name'] ) {
         $output = '';
         $value = $params['selected_values'];
         $value = is_array( $value ) ? $value[0] : $value;
-        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" placeholder="' . __( 'Secteurs' ) . '" />';
+        $output .= '<label class="search act">'.__( "Secteurs" ).'</label>';
+        $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" />';
     }
 
     // Checkboxes
@@ -155,10 +151,4 @@
     }
 
     return $output;
-	}
-
-	function fwpckbx2_facet_types( $facet_types ) {
-	    include('inc/facet_ckbx2.php');
-	    $facet_types['checkboxes2'] = new FacetWP_Facet_Checkboxes2();
-	    return $facet_types;
 	}

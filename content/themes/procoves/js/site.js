@@ -1,9 +1,8 @@
-$(function() {
+(function($) {
 	//Facets events
 	$('section#content .row.search').hide();
 	$('.row.home .facetwp-template').hide();
 	$('.loading').show();
-	// FWP.auto_refresh = false;
 	$(document).on('facetwp-refresh', function() {
 		$('.facet-loading').show();
 		$('.ajax-hide').hide();
@@ -25,6 +24,13 @@ $(function() {
 					$(this).closest('.box-wrap').hide();
 				}
 		});
+		//Inputs
+		$('input.sidebar').filter(function() {
+			if ($(this).val() != '') {
+				$(this).addClass('used');
+			}
+		});
+		//Sticky sidebar
 		var sticky = $('.sticky');
 		var stickyHeight = $('.sticky').height();
 		var stickyTop = $('.sticky').offset().top;
@@ -94,7 +100,6 @@ $(function() {
 			bottom: 85
 		}
 	});
-	// $('.scroll-pane').jScrollPane();
 	// Tooltip
 	$("[data-toggle=tooltip]").tooltip();
 	// Slider
@@ -118,4 +123,4 @@ $(function() {
 			maxItems: 4
 		});
 	});
-});
+})(jQuery);

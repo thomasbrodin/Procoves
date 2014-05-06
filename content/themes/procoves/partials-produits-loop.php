@@ -29,10 +29,3 @@
 <?php endwhile; else: ?>
 		<h4 class="none"><?php _e('Aucun Produits Trouvés... Veuillez recommencez votre ', 'procoves')?><a href="/produits"><?php _e('recherche')?></a></h4>
 <?php endif; ?>
-
-
-<script>
-	$(function() {
-     	$('input, textarea').placeholder();
-	});
-</script>
