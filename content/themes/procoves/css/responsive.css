@@ -52,6 +52,9 @@
   section#content {
     padding-top: 215px;
   }
+  .jumbotron {
+    padding: 15px 0;
+  }
   .jumbotron h2{
     font-size: 18px;
     margin: 20px 0;
@@ -63,6 +66,9 @@
   }
   .jumbotron span img{
     max-width:120px;
+  }
+  .marketing{
+    margin:30px auto
   }
   .container>.navbar-collapse {
     margin-left: 50px;
@@ -144,9 +150,6 @@
   }
   .prod-desc-heading span img.pro {
     max-width: 130px;
-  }
-  .prod-desc-panel ul.normes li a.tax_img img{
-    margin-top: -12px;
   }
   span.page-haut{
     padding:0;
@@ -246,6 +249,9 @@
   }
   .collection .gamme-thumb img{
     min-width: 255px;
+  }
+   .prod-desc-panel ul.normes li a.tax_img img{
+    margin-top: -12px;
   }
 }
 
