@@ -1,12 +1,13 @@
 (function($) {
 	//Facets events
 	$('section#content .row.search').hide();
-	$('.row.home .facetwp-template').hide();
+	$('.facetwp-template').hide();
 	$('.loading').show();
 	$(document).on('facetwp-refresh', function() {
 		$('.facet-loading').show();
 		$('.ajax-hide').hide();
 		$('html, body').animate({ scrollTop: 0 }, 200);
+		$('.facetwp-template .produit-thumb').css("opacity","0.5");
 		if (FWP.loaded) { // wait until the first user interaction
 			$('.collection .gammes').hide();
 			$('.facetwp-template').show();
@@ -15,6 +16,7 @@
 	$(document).on('facetwp-loaded', function() {
 		$('.loading').hide();
 		$('section#content .row.search').show();
+		$('.facetwp-template .produit-thumb').css("opacity","1");
 		$('.facet-loading').hide();
 		$('.ajax-hide').show();
 		$( '[data-value=""]' ).addClass( "button" );
