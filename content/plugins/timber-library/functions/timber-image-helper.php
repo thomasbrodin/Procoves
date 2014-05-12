@@ -2,34 +2,142 @@
 
 	class TimberImageHelper {
 
-		function hexrgb($hexstr) {
-		    $int = hexdec($hexstr);
+		/**
+         * @param string $hexstr
+         * @return array
+         */
+		public static function hexrgb($hexstr) {
+			if (!strstr($hexstr, '#')){
+				$hexstr = '#'.$hexstr;
+			}
+			if (strlen($hexstr) == 4){
+				$hexstr = '#' . $hexstr[1] . $hexstr[1] . $hexstr[2] . $hexstr[2] . $hexstr[3] . $hexstr[3];
+			}
+			$int = hexdec($hexstr);
 		    return array("red" => 0xFF & ($int >> 0x10), "green" => 0xFF & ($int >> 0x8), "blue" => 0xFF & $int);
 		}
 
-		public static function get_letterbox_file_rel($src, $w, $h) {
+        /**
+         * @param string $src
+         * @param int $w
+         * @param int $h
+         * @param string $color
+         * @return string
+         */
+        public static function get_letterbox_file_rel($src, $w, $h, $color) {
 			$path_parts = pathinfo($src);
 			$basename = $path_parts['filename'];
 			$ext = $path_parts['extension'];
 			$dir = $path_parts['dirname'];
-			$newbase = $basename . '-lb-' . $w . 'x' . $h;
+			$color = str_replace('#', '', $color);
+			$newbase = $basename . '-lbox-' . $w . 'x' . $h . '-' . $color;
 			$new_path = $dir . '/' . $newbase . '.' . $ext;
 			return $new_path;
 		}
 
-		public static function get_letterbox_file_path($src, $w, $h) {
+        /**
+         * @param string $src
+         * @param int $w
+         * @param int $h
+         * @param string $color
+         * @return string
+         */
+        public static function get_letterbox_file_path($src, $w, $h, $color) {
 			$path_parts = pathinfo($src);
 			$basename = $path_parts['filename'];
 			$ext = $path_parts['extension'];
 			$dir = $path_parts['dirname'];
-			$newbase = $basename . '-lb-' . $w . 'x' . $h;
+			$color = str_replace('#', '', $color);
+			$newbase = $basename . '-lbox-' . $w . 'x' . $h . '-' . $color;
 			$new_path = $dir . '/' . $newbase . '.' . $ext;
 			$new_root_path = ABSPATH . $new_path;
 			$new_root_path = str_replace('//', '/', $new_root_path);
 			return $new_root_path;
 		}
 
-		function img_to_jpg($src, $bghex = '#FFFFFF'){
+		/**
+	     * @param int $iid
+	     * @return string
+	     */
+	    public static function get_image_path($iid) {
+			$size = 'full';
+			$src = wp_get_attachment_image_src($iid, $size);
+			$src = $src[0];
+			return self::get_rel_path($src);
+		}
+
+		/**
+		 * @param string $src
+		 * @param int $w
+		 * @param int $h
+		 * @param string $color
+		 * @return mixed|null|string
+		 */
+		public static function letterbox($src, $w, $h, $color = '#000000', $force = false) {
+			$abspath = substr(ABSPATH, 0, -1);
+			$urlinfo = parse_url($src);
+			if( $_SERVER['DOCUMENT_ROOT'] != $abspath ) {
+				$subdir = str_replace($_SERVER['DOCUMENT_ROOT'].'/', '', $abspath);
+				$urlinfo['path'] = str_replace('/'.$subdir.'/', '', $urlinfo['path']);
+			}
+			$old_file = ABSPATH.$urlinfo['path'];
+			$new_file = self::get_letterbox_file_path($urlinfo['path'], $w, $h, $color);
+			$urlinfo = parse_url($src);
+			$new_file_rel = self::get_letterbox_file_rel($urlinfo['path'], $w, $h, $color);
+			if (file_exists($new_file_rel) && !$force) {
+				return $new_file_rel;
+			}
+			$bg = imagecreatetruecolor($w, $h);
+			$c = self::hexrgb($color);
+			$white = imagecolorallocate($bg, $c['red'], $c['green'], $c['blue']);
+			imagefill($bg, 0, 0, $white);
+			$image = wp_get_image_editor($old_file);
+			if (!is_wp_error($image)) {
+				$current_size = $image->get_size();
+				$ow = $current_size['width'];
+				$oh = $current_size['height'];
+				$new_aspect = $w / $h;
+				$old_aspect = $ow / $oh;
+				if ($new_aspect > $old_aspect) {
+					//taller than goal
+					$h_scale = $h / $oh;
+					$owt = $ow * $h_scale;
+					$y = 0;
+					$x = $w / 2 - $owt / 2;
+					$oht = $h;
+					$image->crop(0, 0, $ow, $oh, $owt, $oht);
+				} else {
+					$w_scale = $w / $ow;
+					$oht = $oh * $w_scale;
+					$x = 0;
+					$y = $h / 2 - $oht / 2;
+					$owt = $w;
+					$image->crop(0, 0, $ow, $oh, $owt, $oht);
+				}
+				$image->save($new_file);
+				$func = 'imagecreatefromjpeg';
+				$ext = pathinfo($new_file, PATHINFO_EXTENSION);
+				if ($ext == 'gif') {
+					$func = 'imagecreatefromgif';
+				} else if ($ext == 'png') {
+					$func = 'imagecreatefrompng';
+				}
+				$image = $func($new_file);
+				imagecopy($bg, $image, $x, $y, 0, 0, $owt, $oht);
+				imagejpeg($bg, $new_file);
+				return TimberURLHelper::get_rel_path($new_file);
+			} else {
+				TimberHelper::error_log($image);
+			}
+			return null;
+		}
+
+        /**
+         * @param string $src
+         * @param string $bghex
+         * @return string
+         */
+        public static function img_to_jpg($src, $bghex = '#FFFFFF'){
 			$src = str_replace(site_url(), '', $src);
 			$output = str_replace('.png', '.jpg', $src);
         	$input_file = ABSPATH . $src;
@@ -49,7 +157,11 @@
 			return $filename;
 		}
 
-		public static function get_sideloaded_file_loc($file){
+        /**
+         * @param string $file
+         * @return string
+         */
+        public static function get_sideloaded_file_loc($file){
 			$upload = wp_upload_dir();
 			$dir = $upload['path'];
 			$filename = $file;
@@ -63,7 +175,11 @@
 			return $dir . '/' . $basename. '.' . $ext;
 		}
 
-		public static function sideload_image($file) {
+        /**
+         * @param string $file
+         * @return string
+         */
+        public static function sideload_image($file) {
 			$loc = self::get_sideloaded_file_loc($file);
 			if (file_exists($loc)){
 				return str_replace(ABSPATH, '', $loc);
@@ -87,7 +203,15 @@
 			return $file['url'];
 		}
 
-		public static function resize($src, $w, $h = 0, $crop = 'default', $force_resize = false ){
+        /**
+         * @param string $src
+         * @param int $w
+         * @param int $h
+         * @param string $crop
+         * @param bool $force_resize
+         * @return string
+         */
+        public static function resize($src, $w, $h = 0, $crop = 'default', $force_resize = false ){
 			if (empty($src)){
 				return '';
 			}
@@ -123,7 +247,7 @@
 					if ($abs){
 						return untrailingslashit(content_url()).$new_path;
 					} else {
-						return TimberHelper::preslashit($new_path);
+						return TimberURLHelper::preslashit($new_path);
 					}
 					return $new_path;
 				}
@@ -139,63 +263,48 @@
 				$src_h = $current_size['height'];
 
 				$src_ratio = $src_w / $src_h;
-				if ( $h ) {
-
-					// Get ratios
-					$dest_ratio = $w / $h;
-					$src_wt = $src_h * $dest_ratio;
-					$src_ht = $src_w / $dest_ratio;
-
-					if ( ! $crop ) {
-						// Do not crop
-						$image->resize( $w, $h );
-					} else {
-						//start with defaults:
-						$src_x = $src_w / 2 - $src_wt / 2;
-						$src_y = ( $src_h - $src_ht ) / 6;
-						//now specific overrides based on options:
-						if ( $crop == 'center' ) {
-							// Get source x and y
-							$src_x = round( ( $src_w - $src_wt ) / 2 );
-							$src_y = round( ( $src_h - $src_ht ) / 2 );
-						} else if ($crop == 'top') {
-
-							error_log('found it on top');
-							$src_y = 0;
-						} else if ($crop == 'bottom') {
-							$src_y = $src_h - $src_ht;
-						} else if ($crop == 'left') {
-							$src_x = 0;
-						} else if ($crop == 'right') {
-							$src_x = $src_w - $src_wt;
-						}
-
-						// Crop the image
-						if ( $dest_ratio > $src_ratio ) {
-							$image->crop( 0, $src_y, $src_w, $src_ht, $w, $h );
-						} else {
-							$image->crop( $src_x, 0, $src_wt, $src_h, $w, $h );
-						}
-
-					}
-
-				} else {
-					$h = $w;
-					if ( $src_ratio < 1 ){
-						$h = $w / $src_ratio;
-						// Get source x and y
-						if ( $crop == 'center' ) {
-							$src_x = round( ( $src_w - $w ) / 2 );
-							$src_y = round( ( $src_h - $h ) / 2 );
-						} else {
-							$src_x = 0;
-							$src_y = 0;
-						}
-						$image->crop( $src_x, $src_y, $src_w, $src_h, $w, $h );
-					} else {
-						$image->resize( $w, $h );
-					}
+				if ( ! $h ) {
+					$h = round( $w / $src_ratio);
 				}
+
+				// Get ratios
+				$dest_ratio = $w / $h;
+				$src_wt = $src_h * $dest_ratio;
+				$src_ht = $src_w / $dest_ratio;
+
+				if ( ! $crop ) {
+					// Always crop, to allow resizing upwards
+					$image->crop( 0, 0, $src_w, $src_h, $w, $h );
+				} else {
+					//start with defaults:
+					$src_x = $src_w / 2 - $src_wt / 2;
+					$src_y = ( $src_h - $src_ht ) / 6;
+					//now specific overrides based on options:
+					if ( $crop == 'center' ) {
+						// Get source x and y
+						$src_x = round( ( $src_w - $src_wt ) / 2 );
+						$src_y = round( ( $src_h - $src_ht ) / 2 );
+					} else if ($crop == 'top') {
+
+						error_log('found it on top');
+						$src_y = 0;
+					} else if ($crop == 'bottom') {
+						$src_y = $src_h - $src_ht;
+					} else if ($crop == 'left') {
+						$src_x = 0;
+					} else if ($crop == 'right') {
+						$src_x = $src_w - $src_wt;
+					}
+
+					// Crop the image
+					if ( $dest_ratio > $src_ratio ) {
+						$image->crop( 0, $src_y, $src_w, $src_ht, $w, $h );
+					} else {
+						$image->crop( $src_x, 0, $src_wt, $src_h, $w, $h );
+					}
+
+				}
+
 				$result = $image->save($new_root_path);
 				if (is_wp_error($result)){
 					error_log('Error resizing image');

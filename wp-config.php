@@ -13,9 +13,10 @@ if ( file_exists( dirname( __FILE__ ) . '/local-config.php' ) ) {
 	define( 'DB_HOST', 'localhost' ); // Probably 'localhost'
 	
 	/** Define Upgrade FTP Usernames and Passwords */
-	define( 'FTP_BASE', '/var/www/wp/');
-	define( 'FTP_CONTENT_DIR', '/var/www/content/');
-	define( 'FTP_PLUGIN_DIR ', '/var/www/content/plugins/');
+	define( 'FS_METHOD', 'ssh2' );
+	define( 'FTP_BASE', dirname(__FILE__) . '/wp/');
+	define( 'FTP_CONTENT_DIR', dirname(__FILE__) . '/content/');
+	define( 'FTP_PLUGIN_DIR ', dirname(__FILE__) . '/content/plugins/');
 	define( 'FTP_PUBKEY', '/home/wordpress/.ssh/id_rsa.pub');
 	define( 'FTP_PRIKEY', '/home/wordpress/.ssh/id_rsa');
 	define( 'FTP_USER', 'wordpress');

@@ -67,8 +67,13 @@ var FWP = {
                 FWP.facets['paged'] = FWP.paged;
             }
 
+            // Add sorting to the URL hash
+            if (FWP.extras.sort && 'default' != FWP.extras.sort) {
+                FWP.facets['sort'] = FWP.extras.sort;
+            }
+
             if (false === FWP.soft_refresh && facet_name != FWP.static_facet) {
-                $this.html('<div class="facetwp-loading" />');
+                $this.html('<div class="facetwp-loading"></div>');
             }
         });
 
@@ -94,6 +99,9 @@ var FWP = {
 
                     if ('paged' == pieces[0]) {
                         FWP.paged = pieces[1];
+                    }
+                    else if ('sort' == pieces[0]) {
+                        FWP.extras.sort = pieces[1];
                     }
                     else if ('' != pieces[1]) {
                         FWP.facets[pieces[0]] = decodeURIComponent(pieces[1]).split(',');

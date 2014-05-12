@@ -14,7 +14,7 @@ final class FacetWP_Helper
     public static function instance() {
         if ( ! isset( self::$instance ) ) {
             self::$instance = new FacetWP_Helper;
-            self::$instance->settings = json_decode( get_option( 'facetwp_settings' ), true );
+            self::$instance->settings = self::$instance->load_settings();
 
             // custom facet types
             include( FACETWP_DIR . '/includes/facets/autocomplete.php' );
@@ -66,16 +66,22 @@ final class FacetWP_Helper
 
 
     /**
+     * Get settings and allow for developer hooks
+     */
+    function load_settings() {
+        $settings = json_decode( get_option( 'facetwp_settings' ), true );
+        $settings['facets'] = apply_filters( 'facetwp_facets', $settings['facets'] );
+        $settings['templates'] = apply_filters( 'facetwp_templates', $settings['templates'] );
+        return $settings;
+    }
+
+
+    /**
      * Get an array of all facets
      * @return array
      */
     function get_facets() {
-        $facets = array();
-        foreach ( $this->settings['facets'] as $facet ) {
-            $facets[] = $facet;
-        }
-
-        return apply_filters( 'facetwp_facets', $facets );
+        return $this->settings['facets'];
     }
 
 
@@ -84,12 +90,7 @@ final class FacetWP_Helper
      * @return array
      */
     function get_templates() {
-        $templates = array();
-        foreach ( $this->settings['templates'] as $template ) {
-            $templates[] = $template;
-        }
-
-        return apply_filters( 'facetwp_templates', $templates );
+        return $this->settings['templates'];
     }
 
 

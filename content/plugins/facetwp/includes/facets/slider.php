@@ -104,7 +104,7 @@ class FacetWP_Facet_Slider
      */
     function front_scripts() {
 ?>
-<link href="<?php echo FACETWP_URL; ?>/assets/js/noUiSlider/jquery.nouislider.min.css" rel="stylesheet">
+<link href="<?php echo FACETWP_URL; ?>/assets/js/noUiSlider/jquery.nouislider.css" rel="stylesheet">
 <script src="<?php echo FACETWP_URL; ?>/assets/js/noUiSlider/jquery.nouislider.min.js"></script>
 <script>
 
@@ -154,7 +154,7 @@ FWP.used_facets = {};
                 connect: true,
                 serialization: {
                     lower: [
-                        new $.noUiSlider.Link({
+                        $.Link({
                             target: function(val) {
                                 FWP.settings[facet_name]['lower'] = val;
                                 wp.hooks.doAction('facetwp/set_label/slider', $parent);
@@ -162,7 +162,7 @@ FWP.used_facets = {};
                         })
                     ],
                     upper: [
-                        new $.noUiSlider.Link({
+                        $.Link({
                             target: function(val) {
                                 FWP.settings[facet_name]['upper'] = val;
                                 wp.hooks.doAction('facetwp/set_label/slider', $parent);

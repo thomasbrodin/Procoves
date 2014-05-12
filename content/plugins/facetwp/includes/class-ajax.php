@@ -21,9 +21,10 @@ class FacetWP_Ajax
      */
     function load_settings() {
         if ( current_user_can( 'manage_options' ) ) {
-            echo get_option( 'facetwp_settings' );
+            $helper = FacetWP_Helper::instance();
+            echo json_encode( $helper->settings );
         }
-        die();
+        exit;
     }
 
 
@@ -36,7 +37,7 @@ class FacetWP_Ajax
             update_option( 'facetwp_settings', $settings );
             echo __( 'Settings saved', 'fwp' );
         }
-        die();
+        exit;
     }
 
 
@@ -48,7 +49,7 @@ class FacetWP_Ajax
             $indexer = new FacetWP_Indexer();
             $indexer->index();
         }
-        die();
+        exit;
     }
 
 
@@ -115,7 +116,7 @@ class FacetWP_Ajax
     function heartbeat() {
         $indexer = new FacetWP_Indexer();
         echo $indexer->get_progress();
-        die();
+        exit;
     }
 
 
@@ -152,7 +153,7 @@ class FacetWP_Ajax
 
             if ( empty( $import_code ) || !is_array( $import_code ) ) {
                 _e( 'Nothing to import', 'fwp' );
-                die();
+                exit;
             }
 
             $response = array(
@@ -196,7 +197,7 @@ class FacetWP_Ajax
             }
         }
 
-        die();
+        exit;
     }
 
 
@@ -227,6 +228,6 @@ class FacetWP_Ajax
                 'message'   => __( 'Unable to connect to activation server', 'fwp' ),
             ) );
         }
-        die();
+        exit;
     }
 }
