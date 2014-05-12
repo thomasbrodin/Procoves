@@ -7,13 +7,13 @@
 		</div>
 
 		<div class="row">
-			<div class="col-md-12 search pull-right" role="main">
+			<div class="col-md-12 search" role="main">
 			{% if post or produits %}
 				{% if produits %}
 					<h3>Nos Produits</h3>
 					<div class="row thumbs">
 						{% for produit in produits %}
-					      <div class="col-md-3">
+					      <div class="col-md-3 col-sm-6">
 					      	<div class="produit-thumb">
 						      	<a href="{{produit.link}}">	
 						      		{% if produit.img_prod %}

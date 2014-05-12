@@ -610,7 +610,7 @@ html[xmlns] .slides {display: block;}
   color: rgb(240,70,70);
   background-color: #fff;
   border:none;
-  padding: 6px 8px;
+  padding: 3px 5px;
 }
 .jumbotron a:hover {
   color: #fff;
