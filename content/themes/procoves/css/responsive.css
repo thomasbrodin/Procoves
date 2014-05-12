@@ -143,18 +143,16 @@
    max-width: none;
   }
   .prod-desc-heading span img.CE {
-    margin-top:15px;
     max-width: 45px
   }
   .prod-desc-heading span img.pro {
     max-width: 130px;
-    padding-left:5px;
   }
   .prod-desc-panel ul.normes li a.tax_img img{
     margin-top: -12px;
   }
   span.page-haut{
-    padding-top:0;
+    padding:0;
   }
 
   a.contact{
@@ -256,8 +254,20 @@
 @media screen and (max-width: 860px) {
  .thumbslider .flex-direction-nav{display: none}
 }
+
 @media screen and (max-width: 320px) {
   .page-content section img{
     max-width: 290px
+  }
+  .thumbslider .caption_overlay h4{
+    font-size: 11px
+  }
+  .thumbslider .caption_overlay li a {
+    font-size: 9px
+  }
+  .ribbon-home{
+  left: -57px;
+  top: 15px;
+  font-size: 10px;
   }
 }

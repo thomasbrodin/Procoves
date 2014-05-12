@@ -10,7 +10,7 @@
 										<h4>{{produit.title}}</h4>	
 									</div>
 					      			{% if produit.img_prod %}
-						      			<img src="{{TimberImage(produit.img_prod).get_src|resize(300,300)}}">
+						      			<img src="{{TimberImage(produit.img_prod).get_src|resize(500,500)}}">
 									{% else %}
 										<img src="{{theme.uri}}/img/blank.jpg">
 									{% endif %}		  		
