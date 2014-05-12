@@ -64,9 +64,6 @@
   .jumbotron span img{
     max-width:120px;
   }
-  .sticky{
-    opacity: 1
-  }
   .container>.navbar-collapse {
     margin-left: 50px;
     position: absolute;
@@ -200,6 +197,7 @@
   }
    .sticky{
     width:213px;
+    opacity: 1
   }
   #controlswrap {
     top: 10.5%;
