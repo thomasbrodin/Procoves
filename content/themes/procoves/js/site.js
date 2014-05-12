@@ -1,7 +1,7 @@
 (function($) {
 	//Facets events
 	$('section#content .row.search').hide();
-	$('.facetwp-template').hide();
+	$('.row.home .facetwp-template').hide();
 	$('.loading').show();
 	$(document).on('facetwp-refresh', function() {
 		$('.facet-loading').show();

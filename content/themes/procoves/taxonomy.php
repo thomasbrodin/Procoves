@@ -27,17 +27,17 @@ if (is_tax('gammes')){
 		$parent = get_term($term->parent, get_query_var('taxonomy') );
 		$context['taxs'] = array($parent, $term);
 	}
-	$context['wp_title'] .= ' - '.$term_name;
+	$context['wp_title'] .= 'Procoves - '.$term_name;
 	$context['title'] = $term_name;
 } else if (is_tax('normes')){
 	$context['title'] = __( 'Norme ' ) .$term_name;
-	$context['wp_title'] .= __( 'Norme: ' ) .$term_name;
+	$context['wp_title'] .= 'Procoves -' .__( 'Norme: ' ) .$term_name;
 } else if (is_tax('activite')){
 	$context['title'] = __( 'Secteur d\'activité ' ) .$term_name;
-	$context['wp_title'] .= __( ' - Secteur d\'activité: ' ) . $term_name;
+	$context['wp_title'] .= 'Procoves -' .__( ' - Secteur d\'activité: ' ) . $term_name;
 } else if (is_tax('matieres')){
 	$context['title'] = __( 'Matieres ' ) .$term_name;
-	$context['wp_title'] .= __( ' - Matieres: ' ) . $term_name;
+	$context['wp_title'] .= 'Procoves -' .__( ' - Matieres: ' ) . $term_name;
 } 
 
 Timber::render($templates, $context);
