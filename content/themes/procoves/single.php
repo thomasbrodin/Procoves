@@ -17,7 +17,7 @@ if (isset($post->img_prod) && strlen($post->img_prod)){
 }
 
 $context['post'] = $post;
-$context['wp_title'] .= ' - ' . $post->title();
+$context['wp_title'] = 'Procoves - ' . $post->title();
 $context['title'] = $post->title();
 
 if ( is_singular( 'produits' ) ) {

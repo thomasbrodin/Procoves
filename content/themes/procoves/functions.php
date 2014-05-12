@@ -99,24 +99,23 @@
         $output = '';
         $value = $params['selected_values'];
         $value = is_array( $value ) ? $value[0] : $value;
-        $output .= '<label class="search noms">'.__('Noms').'</label>';
+        $output = '<label class="search noms">'.__('Noms','procoves').'</label>';
         $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" />';
     }
     if ( 'refs' == $params['facet']['name'] ) {
         $output = '';
         $value = $params['selected_values'];
         $value = is_array( $value ) ? $value[0] : $value;
-        $output .= '<label class="search refs">' .__( "Refs" ).'</label>';
+        $output = '<label class="search refs">' .__( "Refs" ,'procoves').'</label>';
         $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" />';
     }
     if ( 'activites' == $params['facet']['name'] ) {
         $output = '';
         $value = $params['selected_values'];
         $value = is_array( $value ) ? $value[0] : $value;
-        $output .= '<label class="search act">'.__( "Secteurs" ).'</label>';
+        $output = '<label class="search act">'.__( "Secteurs" ,'procoves').'</label>';
         $output .= '<input type="text" class="facetwp-search form-control sidebar" value="' . esc_attr( $value ) . '" />';
     }
-
     // Checkboxes
     if ( 
     	'matieres' == $params['facet']['name'] 

@@ -23,7 +23,7 @@
 	$templates = array('index.twig');
 	if (is_home()){
 		$context['actu_title'] = 'Actualites';
-		$context['wp_title'] .= ' - Actualites';
+		$context['wp_title'] = 'Procoves - Actualites';
 		array_unshift($templates, 'home.twig');
 	}
 

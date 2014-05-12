@@ -14,7 +14,7 @@
 	}
 
 	$context = Timber::get_context();
-	$context['wp_title'] .= __( ' Industrie - ','procoves') . get_bloginfo( 'description' );
+	$context['wp_title'] = __( 'Procoves Industrie - ','procoves') . get_bloginfo( 'description' );
 
 	$args = array(
 		'post_type' => 'produits', 
