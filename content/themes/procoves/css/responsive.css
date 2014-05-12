@@ -122,7 +122,7 @@
     font-size: 36px;
   }
   #controlswrap {
-    top: 11%;
+    top: 8%;
   }
   .flex-direction-nav a  { 
     width:30px;
@@ -162,7 +162,7 @@
   }
   .page-content section ul li img,
   .page-content section img{
-    margin: 20px 0 20px 0
+    margin: 20px 20px 0
   }
   #vedette .col-md-6.col-sm-6.actu-tease {
     margin-bottom: 0;
@@ -203,11 +203,11 @@
    .sticky{
     width:213px;
   }
+  #controlswrap {
+    top: 10.5%;
+  }
 }
 @media (min-width: 1200px) {
-  #controlswrap {
-    top: 11%;
-  }
   .flex-direction-nav .flex-prev { 
     margin-right: 50px;
   }
@@ -254,6 +254,10 @@
 }
 
 @media screen and (max-width: 860px) {
-  .flex-direction-nav .flex-prev { opacity: 1; left: 10px;}
-  .flex-direction-nav .flex-next { opacity: 1; right: 10px;}
+ .thumbslider .flex-direction-nav{display: none}
+}
+@media screen and (max-width: 320px) {
+  .page-content section img{
+    max-width: 290px
+  }
 }
