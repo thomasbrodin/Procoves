@@ -12,8 +12,9 @@
 
 	$templates = array('search.twig', 'archive.twig', 'index.twig');
 	$context = Timber::get_context();
+	$context['wp_title'] = 'Procoves - '.__('Recherche','procoves');
 
-	$context['title'] = __('Resultats de recherche') .' : ' . esc_attr( $_GET['s'] );;
+	$context['title'] = __('Resultats de recherche','procoves') .' : ' . esc_attr( $_GET['s'] );;
 	$args = array(
   		'post_type'=> array('post', 'page'),
   		'numberposts' => -1,
