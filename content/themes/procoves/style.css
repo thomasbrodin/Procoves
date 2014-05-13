@@ -1464,8 +1464,14 @@ button.submit-facets {
   border:1px solid;
   border-color: rgb(240,70,70);
   color: #333;
-  padding: 4px 6px;
+  padding: 5px 7px;
   font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+button.submit-facets{
+    margin-top: 5px;
 }
 
 button.reset-facets:hover,
