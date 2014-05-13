@@ -26,9 +26,9 @@
 					$(this).closest('.box-wrap').hide();
 				}
 		});
-		//Inputs
-		$('input.sidebar').filter(function() {
-			if ($(this).val() != '') {
+		//Input
+		$('input[type="text"].sidebar').each(function() {
+			if ($(this).val() !== '') {
 				$(this).addClass('used');
 			}
 		});
