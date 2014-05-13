@@ -62,6 +62,7 @@
 			if (isset($url_info['query']) && strlen($url_info['query'])){
 				$link .= '?'.$url_info['query'];
 			}
+			$link = TimberURLHelper::remove_double_slashes($link);
 			return $link;
 		}
 
@@ -85,6 +86,13 @@
 			$old_root_path = $root . $src;
 			$old_root_path = str_replace('//', '/', $old_root_path);
 			return $old_root_path;
+		}
+
+		public static function url_to_file_system($url){
+			$url_parts = parse_url($url);
+			$path = ABSPATH . $url_parts['path'];
+			$path = str_replace('//', '/', $path);
+			return $path;
 		}
 
 		/**

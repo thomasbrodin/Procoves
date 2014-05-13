@@ -1,5 +1,9 @@
 <?php
 
+if(!class_exists('ICL_Language_Switcher')) {
+	include ICL_PLUGIN_PATH . '/inc/widgets/icl-language-switcher.class.php';
+}
+
 class SitePressLanguageSwitcher {
 
     var $widget_preview = false;
@@ -71,8 +75,10 @@ class SitePressLanguageSwitcher {
             }
             add_filter('the_content', array(&$this, 'post_availability'), 100);
         }
+
         // the language selector widget
-        $this->language_selector_widget_init();
+	    add_action( 'widgets_init', array( $this, 'language_selector_widget_init' ) );
+
         if(is_admin() && isset($_GET['page']) && $_GET['page'] == ICL_PLUGIN_FOLDER . '/menu/languages.php'){
             add_action('admin_head', 'icl_lang_sel_nav_css', 1, 1, true);
             add_action('admin_head', array(&$this, 'custom_language_switcher_style'));
@@ -88,8 +94,9 @@ class SitePressLanguageSwitcher {
     }
 
     function language_selector_widget_init(){
-        wp_register_sidebar_widget('icl_lang_sel_widget', __('Language Selector', 'sitepress'), 'language_selector_widget', array('classname'=>'icl_languages_selector'));
-        wp_register_widget_control('icl_lang_sel_widget_control', __('Language Selector', 'sitepress'), array(&$this, 'set_widget') );
+	   	register_widget( 'ICL_Language_Switcher' );
+//        wp_register_sidebar_widget('icl_lang_sel_widget', __('Language Selector', 'sitepress'), 'language_selector_widget', array('classname'=>'icl_languages_selector'));
+//        wp_register_widget_control('icl_lang_sel_widget_control', __('Language Selector', 'sitepress'), array(&$this, 'set_widget') );
         add_action('template_redirect','icl_lang_sel_nav_ob_start', 0);
         add_action('wp_head','icl_lang_sel_nav_ob_end');
     }

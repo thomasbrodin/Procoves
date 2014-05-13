@@ -4,7 +4,7 @@
     <h2><?php _e('Support', 'sitepress') ?></h2>
     
     <p style="margin-top: 20px;">
-        <?php _e('Technical support for clients is available via <a target="_blank" href="http://forum.wpml.org">WPML forum</a>.','sitepress'); ?>
+        <?php _e('Technical support for clients is available via <a target="_blank" href="https://wpml.org/forums/">WPML forums</a>.','sitepress'); ?>
     </p>
 
     <?php
@@ -80,7 +80,7 @@
                 <br />
                 <p>
                     <a class="button-primary" href="http://wp-compatibility.com/installer-plugin/">' . __('Download Installer', 'sitepress') . '</a>&nbsp;
-                    <a href="http://wpml.org/faq/install-wpml/#2">' . __('Instructions', 'sitepress') . '</a>
+                    <a href="https://wpml.org/faq/install-wpml/#2">' . __('Instructions', 'sitepress') . '</a>
                 </p>
             </div>
         ';

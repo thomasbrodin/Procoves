@@ -36,6 +36,21 @@ function pickColor(color) {
     icl_cp_target_element.trigger('keyup');
 }
 
+function iclHandleToggle() {
+	var toggle_value_name = jQuery(this).data('toggle_value_name');
+	var toggle_value_checked = jQuery(this).data('toggle_checked_value');
+	var toggle_value_unchecked = jQuery(this).data('toggle_unchecked_value');
+	var toggle_value = jQuery('[name="' + toggle_value_name + '"]');
+	if(toggle_value.length == 0) {
+		toggle_value = jQuery('<input type="hidden" name="' + toggle_value_name + '">');
+		toggle_value.insertAfter(this);
+	}
+	if(jQuery(this).is(':checked')) {
+		toggle_value.val(toggle_value_checked);
+	} else {
+		toggle_value.val(toggle_value_unchecked);
+	}
+}
 
 function editingDefaultLanguage() {
     jQuery('#icl_change_default_button').hide();
@@ -813,163 +828,169 @@ function iclEnableContentTranslation() {
 }
 
 
-addLoadEvent(function(){
-    var icl_lang_preview_config_footer,icl_lang_preview_config,icl_flag_visible,icl_hide_languages,icl_save_language_switcher_options;
+addLoadEvent(function () {
+	var icl_lang_preview_config_footer, icl_lang_preview_config, icl_flag_visible, icl_hide_languages, icl_save_language_switcher_options;
 
-    jQuery('#icl_change_default_button').click(editingDefaultLanguage);
-    jQuery('#icl_save_default_button').click(saveDefaultLanguage);
-    jQuery('#icl_cancel_default_button').click(doneEditingDefaultLanguage);
-    jQuery('#icl_add_remove_button').click(showLanguagePicker);
-    jQuery('#icl_cancel_language_selection').click(hideLanguagePicker);
-    jQuery('#icl_save_language_selection').click(saveLanguageSelection);
-    jQuery('#icl_enabled_languages').find('input').attr('disabled','disabled');
-    jQuery('#icl_save_language_negotiation_type').submit(iclSaveLanguageNegotiationType);
-    icl_save_language_switcher_options = jQuery('#icl_save_language_switcher_options');
-    icl_save_language_switcher_options.submit(iclSaveForm);
-    jQuery('#icl_admin_language_options').submit(iclSaveForm);
-    jQuery('#icl_lang_more_options').submit(iclSaveForm);
-    jQuery('#icl_blog_posts').submit(iclSaveForm);
-    icl_hide_languages = jQuery('#icl_hide_languages');
-    icl_hide_languages.submit(iclHideLanguagesCallback);
-    icl_hide_languages.submit(iclSaveForm);
-    jQuery('#icl_adjust_ids').submit(iclSaveForm);
-    jQuery('#icl_automatic_redirect').submit(iclSaveForm);
-    jQuery('input[name="icl_language_negotiation_type"]').change(iclLntDomains);
-    jQuery('#icl_use_directory').change(iclUseDirectoryToggle);
+	jQuery('.toggle:checkbox').click(iclHandleToggle);
+	jQuery('#icl_change_default_button').click(editingDefaultLanguage);
+	jQuery('#icl_save_default_button').click(saveDefaultLanguage);
+	jQuery('#icl_cancel_default_button').click(doneEditingDefaultLanguage);
+	jQuery('#icl_add_remove_button').click(showLanguagePicker);
+	jQuery('#icl_cancel_language_selection').click(hideLanguagePicker);
+	jQuery('#icl_save_language_selection').click(saveLanguageSelection);
+	jQuery('#icl_enabled_languages').find('input').attr('disabled', 'disabled');
+	jQuery('#icl_save_language_negotiation_type').submit(iclSaveLanguageNegotiationType);
+	icl_save_language_switcher_options = jQuery('#icl_save_language_switcher_options');
+	icl_save_language_switcher_options.submit(iclSaveForm);
+	jQuery('#icl_admin_language_options').submit(iclSaveForm);
+	jQuery('#icl_lang_more_options').submit(iclSaveForm);
+	jQuery('#icl_blog_posts').submit(iclSaveForm);
+	icl_hide_languages = jQuery('#icl_hide_languages');
+	icl_hide_languages.submit(iclHideLanguagesCallback);
+	icl_hide_languages.submit(iclSaveForm);
+	jQuery('#icl_adjust_ids').submit(iclSaveForm);
+	jQuery('#icl_automatic_redirect').submit(iclSaveForm);
+	jQuery('input[name="icl_language_negotiation_type"]').change(iclLntDomains);
+	jQuery('#icl_use_directory').change(iclUseDirectoryToggle);
 
-    jQuery('input[name="show_on_root"]').change(iclToggleShowOnRoot);
-    jQuery('#wpml_show_page_on_root_details').find('a').click(function(){ if(!jQuery('#wpml_show_on_root_page').hasClass('active')) {alert(jQuery('#wpml_show_page_on_root_x').html()); return false;} });
+	jQuery('input[name="show_on_root"]').change(iclToggleShowOnRoot);
+	jQuery('#wpml_show_page_on_root_details').find('a').click(function () {
+		if (!jQuery('#wpml_show_on_root_page').hasClass('active')) {
+			alert(jQuery('#wpml_show_page_on_root_x').html());
+			return false;
+		}
+	});
 
-    jQuery('#icl_seo_options').submit(iclSaveForm);
+	jQuery('#icl_seo_options').submit(iclSaveForm);
 
-    jQuery('#icl_setup_back_1').click(iclSetupStep1);
-    jQuery('#icl_setup_back_2').click(iclSetupStep2);
-    jQuery('#icl_setup_next_1').click(saveLanguageSelection);
+	jQuery('#icl_setup_back_1').click(iclSetupStep1);
+	jQuery('#icl_setup_back_2').click(iclSetupStep2);
+	jQuery('#icl_setup_next_1').click(saveLanguageSelection);
 
-    jQuery('#icl_avail_languages_picker').find('li input:checkbox').click(function(){
-        if(jQuery('#icl_avail_languages_picker').find('li input:checkbox:checked').length > 1){
-            jQuery('#icl_setup_next_1').removeAttr('disabled');
-        }else{
-            jQuery('#icl_setup_next_1').attr('disabled', 'disabled');
-        }
-    });
+	jQuery('#icl_avail_languages_picker').find('li input:checkbox').click(function () {
+		if (jQuery('#icl_avail_languages_picker').find('li input:checkbox:checked').length > 1) {
+			jQuery('#icl_setup_next_1').removeAttr('disabled');
+		} else {
+			jQuery('#icl_setup_next_1').attr('disabled', 'disabled');
+		}
+	});
 
-    icl_flag_visible = jQuery('.iclflag:visible');
-    icl_lp_flag = icl_flag_visible.length > 0;
+	icl_flag_visible = jQuery('.iclflag:visible');
+	icl_lp_flag = icl_flag_visible.length > 0;
 	icl_lp_footer_flag = icl_flag_visible.length > 0;
 
-    icl_lang_preview_config = jQuery('#icl_lang_preview_config');
-    icl_lang_preview_config.find('input').each(iclUpdateLangSelQuickPreview);
-    icl_lang_preview_config_footer = jQuery('#icl_lang_preview_config_footer');
-    icl_lang_preview_config_footer.find('input').each(iclUpdateLangSelQuickPreviewFooter);
+	icl_lang_preview_config = jQuery('#icl_lang_preview_config');
+	icl_lang_preview_config.find('input').each(iclUpdateLangSelQuickPreview);
+	icl_lang_preview_config_footer = jQuery('#icl_lang_preview_config_footer');
+	icl_lang_preview_config_footer.find('input').each(iclUpdateLangSelQuickPreviewFooter);
 	// Picker align
 	jQuery(".pick-show").click(function () {
 		var set = jQuery(this).offset();
 		jQuery("#colorPickerDiv").css({"top": set.top + 25, "left": set.left});
 	});
 
-    jQuery('#icl_promote_form').submit(iclSaveForm);
+	jQuery('#icl_promote_form').submit(iclSaveForm);
 
-    icl_lang_preview_config.find('input').keyup(iclUpdateLangSelQuickPreview);
+	icl_lang_preview_config.find('input').keyup(iclUpdateLangSelQuickPreview);
 	icl_lang_preview_config_footer.find('input').keyup(iclUpdateLangSelQuickPreviewFooter);
 
-    icl_save_language_switcher_options.find(':checkbox[name="icl_lso_flags"]').change(function(){
-        if(jQuery(this).prop('checked')){
-            jQuery('#lang_sel').find('.iclflag').show();
+	icl_save_language_switcher_options.find(':checkbox[name="icl_lso_flags"]').change(function () {
+		if (jQuery(this).prop('checked')) {
+			jQuery('#lang_sel').find('.iclflag').show();
 			jQuery('#lang_sel_list').find('.iclflag').show();
 			jQuery('#lang_sel_footer').find('.iclflag').show();
-        }else{
-            if(!jQuery('#icl_save_language_switcher_options').find(':checkbox:checked.icl_ls_include').length){
-                jQuery(this).prop('checked', true);
-                return false;
-            }
+		} else {
+			if (!jQuery('#icl_save_language_switcher_options').find(':checkbox:checked.icl_ls_include').length) {
+				jQuery(this).prop('checked', true);
+				return false;
+			}
 
 			jQuery('#lang_sel').find('.iclflag').hide();
 			jQuery('#lang_sel_list').find('.iclflag').hide();
 			jQuery('#lang_sel_footer').find('.iclflag').hide();
-        }
-    });
+		}
+	});
 
 
-    icl_save_language_switcher_options.find(':checkbox[name="icl_lso_native_lang"]').change(function(){
-        if(jQuery(this).attr('checked')){
-            jQuery('.icl_lang_sel_native').show();
-            jQuery('.icl_lang_sel_current').show();
-        }else{
-            if(!icl_save_language_switcher_options.find(':checkbox:checked.icl_ls_include').length){
-                jQuery(this).attr('checked', true);
-                return false;
-            }
+	icl_save_language_switcher_options.find(':checkbox[name="icl_lso_native_lang"]').change(function () {
+		if (jQuery(this).attr('checked')) {
+			jQuery('.icl_lang_sel_native').show();
+			jQuery('.icl_lang_sel_current').show();
+		} else {
+			if (!icl_save_language_switcher_options.find(':checkbox:checked.icl_ls_include').length) {
+				jQuery(this).attr('checked', true);
+				return false;
+			}
 
-            jQuery('.icl_lang_sel_native').hide();
-            if(!icl_save_language_switcher_options.find(':checkbox[name="icl_lso_display_lang"]').attr('checked')){
-                jQuery('.icl_lang_sel_current').hide();
-            }
-        }
-    });
+			jQuery('.icl_lang_sel_native').hide();
+			if (!icl_save_language_switcher_options.find(':checkbox[name="icl_lso_display_lang"]').attr('checked')) {
+				jQuery('.icl_lang_sel_current').hide();
+			}
+		}
+	});
 
-    icl_save_language_switcher_options.find(':checkbox[name="icl_lso_display_lang"]').change(function(){
-        if(jQuery(this).attr('checked')){
-            jQuery('.icl_lang_sel_translated').show();
-            jQuery('.icl_lang_sel_current').show();
-        }else{
+	icl_save_language_switcher_options.find(':checkbox[name="icl_lso_display_lang"]').change(function () {
+		if (jQuery(this).attr('checked')) {
+			jQuery('.icl_lang_sel_translated').show();
+			jQuery('.icl_lang_sel_current').show();
+		} else {
 
-            if(!icl_save_language_switcher_options.find(':checkbox:checked.icl_ls_include').length){
-                jQuery(this).attr('checked', 'checked');
-                return false;
-            }
+			if (!icl_save_language_switcher_options.find(':checkbox:checked.icl_ls_include').length) {
+				jQuery(this).attr('checked', 'checked');
+				return false;
+			}
 
-            jQuery('.icl_lang_sel_translated').hide();
-            if(!icl_save_language_switcher_options.find(':checkbox[name="icl_lso_native_lang"]').attr('checked')){
-                jQuery('.icl_lang_sel_current').hide();
-            }
+			jQuery('.icl_lang_sel_translated').hide();
+			if (!icl_save_language_switcher_options.find(':checkbox[name="icl_lso_native_lang"]').attr('checked')) {
+				jQuery('.icl_lang_sel_current').hide();
+			}
 
-        }
-    });
+		}
+	});
 
-    jQuery('#icl_lang_sel_color_scheme').change(iclUpdateLangSelColorScheme);
+	jQuery('#icl_lang_sel_color_scheme').change(iclUpdateLangSelColorScheme);
 	jQuery('#icl_lang_sel_footer_color_scheme').change(iclUpdateLangSelColorSchemeFooter);
 
-    icl_save_language_switcher_options.find(':checkbox[name="icl_lang_sel_footer"]').change(function(){
-        if(jQuery(this).attr('checked')){
-            jQuery('#icl_lang_sel_footer_preview_wrap').show();
+	icl_save_language_switcher_options.find(':checkbox[name="icl_lang_sel_footer"]').change(function () {
+		if (jQuery(this).attr('checked')) {
+			jQuery('#icl_lang_sel_footer_preview_wrap').show();
 			jQuery('#icl_lang_sel_footer_preview_link').show();
 			//jQuery('#icl_lang_preview_config_footer_editor_wrapper').show();
-        }else{
+		} else {
 			jQuery('#icl_lang_sel_footer_preview_wrap').hide();
 			jQuery('#icl_lang_sel_footer_preview_link').hide();
 			jQuery('#icl_lang_preview_config_footer_editor_wrapper').hide();
-        }
-    });
+		}
+	});
 
 	var icl_arrow_img = icl_ajxloaderimg_src.replace("ajax-loader.gif", "nav-arrow-down.png");
-    icl_save_language_switcher_options.find(':radio[name="icl_lang_sel_type"]').change(function(){
-        if(jQuery(this).val() === 'dropdown'){
+	icl_save_language_switcher_options.find(':radio[name="icl_lang_sel_type"]').change(function () {
+		if (jQuery(this).val() === 'dropdown') {
 			jQuery('#lang_sel_list').hide();
 			jQuery('#lang_sel').show();
-        }else{
+		} else {
 			jQuery('#lang_sel').hide();
 			jQuery('#lang_sel_list').show();
-        }
-    });
+		}
+	});
 
-    jQuery('#icl_reset_languages').click(icl_reset_languages);
+	jQuery('#icl_reset_languages').click(icl_reset_languages);
 
-    jQuery(':radio[name=icl_translation_option]').change(function(){
-        jQuery('#icl_enable_content_translation').removeAttr('disabled');
-    });
-    jQuery('#icl_enable_content_translation, .icl_noenable_content_translation').click(iclEnableContentTranslation);
+	jQuery(':radio[name=icl_translation_option]').change(function () {
+		jQuery('#icl_enable_content_translation').removeAttr('disabled');
+	});
+	jQuery('#icl_enable_content_translation, .icl_noenable_content_translation').click(iclEnableContentTranslation);
 
-    jQuery('#icl_display_ls_in_menu').change(function(){
+	jQuery('#icl_display_ls_in_menu').change(function () {
 		if (jQuery(this).attr('checked')) {
 			jQuery('#icl_ls_menus_list').show();
 		}
 		else {
 			jQuery('#icl_ls_menus_list').hide();
 		}
-    });
+	});
 
-    jQuery('input[name=icl_lang_sel_type]').change(function(){
+	jQuery('input[name=icl_lang_sel_type]').change(function () {
 		if (jQuery(this).val() === 'dropdown') {
 			jQuery('select[name=icl_lang_sel_stype]').fadeIn();
 			jQuery('select[name=icl_lang_sel_orientation]').hide();
@@ -977,31 +998,31 @@ addLoadEvent(function(){
 			jQuery('select[name=icl_lang_sel_stype]').hide();
 			jQuery('select[name=icl_lang_sel_orientation]').fadeIn();
 		}
-    });
+	});
 
-    jQuery('select[name=icl_lang_sel_orientation]').change(function(){
-        var lang_sel_list = jQuery('#lang_sel_list');
-        lang_sel_list.removeClass('lang_sel_list_horizontal').removeClass('lang_sel_list_vertical');
-        lang_sel_list.addClass('lang_sel_list_' + jQuery(this).val());
-    });
+	jQuery('select[name=icl_lang_sel_orientation]').change(function () {
+		var lang_sel_list = jQuery('#lang_sel_list');
+		lang_sel_list.removeClass('lang_sel_list_horizontal').removeClass('lang_sel_list_vertical');
+		lang_sel_list.addClass('lang_sel_list_' + jQuery(this).val());
+	});
 
-    jQuery('#icl_languages_order').sortable({
-        update: function(){
-            jQuery('.icl_languages_order_ajx_resp').html(icl_ajxloaderimg).fadeIn();
-            var languages_order = [];
-            jQuery('#icl_languages_order').find('li').each(function(){
-                languages_order.push(jQuery(this).attr('class').replace(/icl_languages_order_/, ''));
-            });
-            jQuery.ajax({
-                type: "POST",
-                url: icl_ajx_url,
-                dataType: 'json',
-                data: 'icl_ajx_action=set_languages_order&_icl_nonce=' + jQuery('#icl_languages_order_nonce').val()  + '&order=' + languages_order.join(';'),
-                success: function(resp){
-                    fadeInAjxResp('.icl_languages_order_ajx_resp', resp.message);
-                }
-            });
-        }
-    });
+	jQuery('#icl_languages_order').sortable({
+		update: function () {
+			jQuery('.icl_languages_order_ajx_resp').html(icl_ajxloaderimg).fadeIn();
+			var languages_order = [];
+			jQuery('#icl_languages_order').find('li').each(function () {
+				languages_order.push(jQuery(this).attr('class').replace(/icl_languages_order_/, ''));
+			});
+			jQuery.ajax({
+				type: "POST",
+				url: icl_ajx_url,
+				dataType: 'json',
+				data: 'icl_ajx_action=set_languages_order&_icl_nonce=' + jQuery('#icl_languages_order_nonce').val() + '&order=' + languages_order.join(';'),
+				success: function (resp) {
+					fadeInAjxResp('.icl_languages_order_ajx_resp', resp.message);
+				}
+			});
+		}
+	});
 
 });

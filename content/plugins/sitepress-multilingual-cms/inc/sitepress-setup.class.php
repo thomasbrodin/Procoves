@@ -84,10 +84,9 @@ class SitePress_Setup {
 					  UNIQUE KEY `english_name` (`english_name`)
 				  ) " . self::get_charset_collate();
 
-			$wpdb->query( $sql );
-			if ( $e = mysql_error() ) {
+			if ($wpdb->query($sql) === false) {
 				return false;
-			}
+			} 
 		}
 
 		return true;
@@ -96,7 +95,7 @@ class SitePress_Setup {
 	static function languages_table_is_complete() {
 		global $wpdb;
 		$table_name    = $wpdb->prefix . 'icl_languages';
-		$sql           = $wpdb->prepare( "SELECT count(id) FROM {$table_name}", array() );
+		$sql           = "SELECT count(id) FROM {$table_name}";
 		$records_count = $wpdb->get_var( $sql );
 
 		$languages_names_count = self::get_languages_names_count();
@@ -141,7 +140,7 @@ class SitePress_Setup {
 
 			$wpdb->hide_errors();
 
-			$sql = $wpdb->prepare( "TRUNCATE " . $table_name, array() );
+			$sql = "TRUNCATE " . $table_name;
 
 			$truncate_result = $wpdb->query( $sql );
 
@@ -164,10 +163,9 @@ class SitePress_Setup {
 						'default_locale' => $default_locale,
 						'tag'            => str_replace( '_', '-', $default_locale )
 					);
-					$wpdb->insert( $table_name, $args );
-					if ( $e = mysql_error() ) {
+					if ( $wpdb->insert( $table_name, $args )  === false) {
 						return false;
-					}
+					}                  
 				}
 			}
 		}
@@ -189,10 +187,9 @@ class SitePress_Setup {
                 `name` VARCHAR( 255 ) CHARACTER SET utf8 NOT NULL,
                 UNIQUE(`language_code`, `display_language_code`)
             ) " . self::get_charset_collate();
-			$wpdb->query( $sql );
-			if ( $e = mysql_error() ) {
+			if ($wpdb->query($sql) === false) {
 				return false;
-			}
+			}  
 		}
 
 		return true;
@@ -214,7 +211,7 @@ class SitePress_Setup {
 			//First truncate the table
 			$wpdb->hide_errors();
 
-			$sql = $wpdb->prepare( "TRUNCATE " . $table_name, array() );
+			$sql =  "TRUNCATE " . $table_name;
 
 			$truncate_result = $wpdb->query( $sql );
 
@@ -242,10 +239,9 @@ class SitePress_Setup {
 								'display_language_code' => $languages_codes[ $k ],
 								'name'                  => $display
 							);
-							$wpdb->insert( $wpdb->prefix . 'icl_languages_translations', $args );
-							if ( $e = mysql_error() ) {
+							if ($wpdb->insert( $wpdb->prefix . 'icl_languages_translations', $args ) === false) {
 								return false;
-							}
+							}  
 						}
 					}
 				}

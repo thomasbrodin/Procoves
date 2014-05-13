@@ -132,7 +132,7 @@ class IclCommentsTranslation{
 					 GROUP BY tr.language_code
 					 HAVING c > 0
 				 ";
-				$results_prepared = $wpdb->prepare( $results_sql, array() );
+				$results_prepared =  $results_sql;
 
 				$results = $wpdb->get_results( $results_prepared );
 				if ( !empty( $results ) ) {
@@ -250,7 +250,7 @@ class IclCommentsTranslation{
                         <?php if($this->enable_replies_translation && $sitepress->get_icl_translation_enabled() && $sitepress->icl_account_configured()): ?> checked="checked" <?php endif?> <?php if(!$sitepress->get_icl_translation_enabled() || !$sitepress->icl_account_configured()) echo 'disabled="disabled"' ?> /> 
                         <?php _e('Translate my replies.', 'sitepress') ?></label>
                         <?php if(!$sitepress->get_icl_translation_enabled() || !$sitepress->icl_account_configured()): ?>
-                        <?php printf(__('To translate your replies, you need to enable the <a href="%s">professional translation</a>.','sitepress'),'http://wpml.org/?page_id=1169'); ?>
+                        <?php printf(__('To translate your replies, you need to enable the <a href="%s">professional translation</a>.','sitepress'),'https://wpml.org/?page_id=1169'); ?>
                         <?php endif; ?>                        
                         </p>            
                         <span class="description"><?php _e("When this is checked you can write comments in the post's original language. They will not be published immediately but sent to the ICanLocalize translation server and translated. Once translated they are published automatically on your blog.", 'sitepress')?></span>             
@@ -590,9 +590,9 @@ class IclCommentsTranslation{
         global $pagenow, $wpdb;
         if($pagenow == 'index.php'){
             if(preg_match('#SELECT \* FROM (.+)comments ORDER BY comment_date_gmt DESC LIMIT ([0-9]+), ([0-9]+)#i',$sql,$matches)){
-                $res = mysql_query($sql);                
+								$res = $wpdb->get_results($sql);
 				$comments = array();
-				while($row = mysql_fetch_object($res)){
+				foreach( $res as $row){
                     $comments[] = $row;
                 }      
                 
@@ -631,8 +631,7 @@ class IclCommentsTranslation{
             global $sitepress;
             if(preg_match('#SELECT \* FROM (.+)comments USE INDEX \(comment_date_gmt\) WHERE \( comment_approved = \'0\' OR comment_approved = \'1\' \)  AND comment_post_ID = \'([0-9]+)\'  ORDER BY comment_date_gmt ASC LIMIT ([0-9]+), ([0-9]+)#i',$sql,$matches)){
                 $post_type = $wpdb->get_var("SELECT post_type FROM {$wpdb->posts} WHERE ID='{$_POST['post_ID']}'");
-                $res = mysql_query("SELECT language_code FROM {$wpdb->prefix}icl_translations WHERE element_id={$_POST['post_ID']} AND element_type='post_{$post_type}'");
-                $row = mysql_fetch_row($res);                                    
+								$row = $wpdb->get_row("SELECT language_code FROM {$wpdb->prefix}icl_translations WHERE element_id={$_POST['post_ID']} AND element_type='post_{$post_type}'", ARRAY_N);
                 $c_language = $row[0];
                 
                 if($this->enable_comments_translation){

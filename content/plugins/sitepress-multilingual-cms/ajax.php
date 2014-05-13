@@ -75,6 +75,10 @@ switch($_REQUEST['icl_ajx_action']){
                    $tmp = term_exists($tr_cat, 'category');
                    if(!$tmp){
                        $tmp = wp_insert_term($tr_cat, 'category');
+											 if (is_wp_error($tmp)) {
+												 trigger_error($tmp->get_error_message(), E_USER_ERROR);
+												 continue;
+											 }
                    }
                    $default_categories[$lang['code']] = $tmp['term_taxonomy_id'];
                 }
@@ -161,27 +165,57 @@ switch($_REQUEST['icl_ajx_action']){
         break;
     case 'icl_save_language_switcher_options':
         $_POST   = stripslashes_deep( $_POST );
-        if(isset($_POST['icl_language_switcher_sidebar'])){
-            global $wp_registered_widgets, $wp_registered_sidebars;
-            $swidgets = wp_get_sidebars_widgets();
-            if(empty($swidgets)){
-                $sidebars = array_keys($wp_registered_sidebars);
-                foreach($sidebars as $sb){
-                    $swidgets[$sb] = array();
-                }
-            }
-            foreach($swidgets as $k=>$v){
-                $key = array_search('icl_lang_sel_widget',(array)$swidgets[$k]);
-                if(false !== $key && $k !== $_POST['icl_language_switcher_sidebar']){
-                    unset($swidgets[$k][$key]);
-                }elseif($k==$_POST['icl_language_switcher_sidebar'] && !in_array('icl_lang_sel_widget',$swidgets[$k])){
-                    $swidgets[$k] = array_reverse($swidgets[$k], false);
-                    array_push($swidgets[$k],'icl_lang_sel_widget');
-                    $swidgets[$k] = array_reverse($swidgets[$k], false);
-                }
-            }
-            wp_set_sidebars_widgets($swidgets);
-        }
+
+	    if ( isset( $_POST[ 'icl_language_switcher_sidebars' ] ) ) {
+		    global $wp_registered_widgets, $wp_registered_sidebars;
+		    $widget_icl_lang_sel_widget = get_option( 'widget_icl_lang_sel_widget' );
+		    $counter                    = is_array( $widget_icl_lang_sel_widget ) ? max( array_keys( $widget_icl_lang_sel_widget ) ) : 0;
+		    if ( ! is_numeric( $counter ) || $counter<=0 ) {
+			    $counter = 1;
+		    }
+
+		    $language_switcher_name            = 'icl_lang_sel_widget';
+		    $language_switcher_prefix          = $language_switcher_name . '-';
+		    $active_widgets                    = get_option( 'sidebars_widgets' );
+		    $posted_language_switcher_sidebars = $_POST[ 'icl_language_switcher_sidebars' ];
+		    $update_sidebars_widgets           = false;
+		    foreach ( $posted_language_switcher_sidebars as $target_sidebar_id => $add_widget ) {
+
+			    $active_sidebar_widgets = $active_widgets[ $target_sidebar_id ];
+			    $widget_exists = false;
+			    foreach ( $active_sidebar_widgets as $index => $active_sidebar_widget ) {
+				    if ( strpos( $active_sidebar_widget, $language_switcher_prefix ) !== false ) {
+					    $widget_exists = true;
+					    break;
+				    }
+			    }
+
+			    if($add_widget && !$widget_exists) {
+				    $active_sidebar_widgets = $active_widgets[ $target_sidebar_id ];
+				    array_unshift( $active_sidebar_widgets, $language_switcher_prefix . $counter );
+				    $language_switcher_content             = get_option( 'widget_' . $language_switcher_name );
+				    $language_switcher_content[ $counter ] = array( 'title_show' => 0 );
+				    if ( ! array_key_exists( '_multiwidget', $language_switcher_content ) ) {
+					    $language_switcher_content[ '_multiwidget' ] = 1;
+				    }
+				    update_option( 'widget_' . $language_switcher_name, $language_switcher_content );
+				    $counter ++;
+				    $active_widgets[ $target_sidebar_id ] = $active_sidebar_widgets;
+				    $update_sidebars_widgets              = true;
+			    }elseif(!$add_widget && $widget_exists) {
+				    foreach ( $active_sidebar_widgets as $index => $active_sidebar_widget ) {
+					    if ( strpos( $active_sidebar_widget, $language_switcher_prefix ) !== false ) {
+						    unset( $active_widgets[ $target_sidebar_id ][ $index ] );
+						    $update_sidebars_widgets = true;
+					    }
+				    }
+			    }
+		    }
+		    if ( $update_sidebars_widgets ) {
+			    wp_set_sidebars_widgets( $active_widgets );
+		    }
+	    }
+
         $iclsettings['icl_lso_link_empty'] = @intval($_POST['icl_lso_link_empty']);
         $iclsettings['icl_lso_flags'] = isset($_POST['icl_lso_flags']) ? @intval($_POST['icl_lso_flags']) : 0;
         $iclsettings['icl_lso_native_lang'] = @intval($_POST['icl_lso_native_lang']);
@@ -190,6 +224,7 @@ switch($_REQUEST['icl_ajx_action']){
         if(!$this->get_setting('setup_complete')){
             $iclsettings['setup_wizard_step'] = 3;
             $iclsettings['setup_complete'] = 1;
+            if(isset($iclsettings['setup_reset'])) unset($iclsettings['setup_reset']);
 
             $active_languages = $this->get_active_languages();
             foreach($active_languages as $code=>$lng){
@@ -715,9 +750,9 @@ switch($_REQUEST['icl_ajx_action']){
 
         $active = $wpdb->get_col("SELECT code FROM {$wpdb->prefix}icl_languages WHERE active = 1");
 
-        mysql_query("TRUNCATE TABLE `{$wpdb->prefix}icl_languages`");
-        mysql_query("TRUNCATE TABLE `{$wpdb->prefix}icl_languages_translations`");
-        mysql_query("TRUNCATE TABLE `{$wpdb->prefix}icl_flags`");
+        $wpdb->query("TRUNCATE TABLE `{$wpdb->prefix}icl_languages`"); // @since 3.1.5 - mysql_* function deprecated in php 5.5+
+        $wpdb->query("TRUNCATE TABLE `{$wpdb->prefix}icl_languages_translations`");
+        $wpdb->query("TRUNCATE TABLE `{$wpdb->prefix}icl_flags`");
 
         foreach($langs_names as $key=>$val){
             if(strpos($key,'Norwegian Bokm')===0){ $key = 'Norwegian Bokmål'; $lang_codes[$key] = 'nb';} // exception for norwegian
@@ -798,7 +833,7 @@ switch($_REQUEST['icl_ajx_action']){
 
                     foreach($_POST['translate_slugs'] as $type => $data){
 
-						$iclsettings['posts_slug_translation']['types'][$type] = isset($data['on']) ? intval(!empty($data['on'])) : false;
+												$iclsettings['posts_slug_translation']['types'][$type] = isset($data['on']) ? intval(!empty($data['on'])) : false;
 
                         //if(empty($_POST['icl_sync_custom_posts'][$type])) continue;
 
@@ -815,9 +850,8 @@ switch($_REQUEST['icl_ajx_action']){
                         }
                         if($string_id){
                             foreach($this->get_active_languages() as $lang){
-								$string_translation_settings = $this->get_setting( 'st' );
-								if($lang['code'] != $string_translation_settings['strings_language']){
-
+															$string_translation_settings = $this->get_setting( 'st' );
+															if($lang['code'] != $string_translation_settings['strings_language']){
                                     // allow '/' in slugs
                                     //$data['langs'][$lang['code']] = sanitize_title_with_dashes($data['langs'][$lang['code']]);
                                     $data['langs'][$lang['code']] = join('/', array_map('sanitize_title_with_dashes', explode('/', $data['langs'][$lang['code']])));

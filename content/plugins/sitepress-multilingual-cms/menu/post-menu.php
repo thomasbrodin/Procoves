@@ -308,13 +308,13 @@ if (isset($translations) && count($translations) == 1 && count(SitePress::get_or
 									$tres = $wpdb->get_row( $tres_prepared );
                                     if($tres->status == ICL_TM_IN_PROGRESS){
                                         $img = 'edit_translation_disabled.png';
-                                        $add_anchor =  sprintf(__('In progress (by a different translator). <a%s>Learn more</a>.','sitepress'), ' href="http://wpml.org/?page_id=52218"');
+                                        $add_anchor =  sprintf(__('In progress (by a different translator). <a%s>Learn more</a>.','sitepress'), ' href="https://wpml.org/?page_id=52218"');
                                     }elseif($tres->status == ICL_TM_NOT_TRANSLATED || $tres->status == ICL_TM_WAITING_FOR_TRANSLATOR){
                                         $img = 'add_translation_disabled.png';
-                                        $add_anchor = sprintf(__('You are not the translator of this document. <a%s>Learn more</a>.','sitepress'), ' href="http://wpml.org/?page_id=52218"');
+                                        $add_anchor = sprintf(__('You are not the translator of this document. <a%s>Learn more</a>.','sitepress'), ' href="https://wpml.org/?page_id=52218"');
                                     }elseif($tres->status == ICL_TM_NEEDS_UPDATE || $tres->status == ICL_TM_COMPLETE){
                                         $img = 'edit_translation_disabled.png';
-                                        $add_anchor = sprintf(__('You are not the translator of this document. <a%s>Learn more</a>.','sitepress'), ' href="http://wpml.org/?page_id=52218"');
+                                        $add_anchor = sprintf(__('You are not the translator of this document. <a%s>Learn more</a>.','sitepress'), ' href="https://wpml.org/?page_id=52218"');
                                     }
 
                                 }
@@ -322,7 +322,7 @@ if (isset($translations) && count($translations) == 1 && count(SitePress::get_or
                                     $add_link = admin_url('admin.php?page='.WPML_TM_FOLDER.'/menu/translations-queue.php&job_id='.$job_id);
                                 }else{
                                     $add_link = '#';
-                                    $add_anchor =  sprintf(__('In progress (by a different translator). <a%s>Learn more</a>.','sitepress'), ' href="http://wpml.org/?page_id=52218"');
+                                    $add_anchor =  sprintf(__('In progress (by a different translator). <a%s>Learn more</a>.','sitepress'), ' href="https://wpml.org/?page_id=52218"');
                                 }
 
                             }else{
@@ -335,7 +335,7 @@ if (isset($translations) && count($translations) == 1 && count(SitePress::get_or
                                 }else{
                                     $add_link = '#';
                                     $img = 'add_translation_disabled.png';
-                                    $add_anchor = sprintf(__('You are not the translator of this document. <a%s>Learn more</a>.','sitepress'), ' href="http://wpml.org/?page_id=52218"');
+                                    $add_anchor = sprintf(__('You are not the translator of this document. <a%s>Learn more</a>.','sitepress'), ' href="https://wpml.org/?page_id=52218"');
                                 }
                             }
                     }else{
@@ -433,7 +433,7 @@ if (isset($translations) && count($translations) == 1 && count(SitePress::get_or
                                 }else{
                                     $edit_link = '#';
                                     $img = 'edit_translation_disabled.png';
-                                    $edit_anchor = sprintf(__('You are not the translator of this document. <a%s>Learn more</a>.','sitepress'), ' href="http://wpml.org/?page_id=52218"');
+                                    $edit_anchor = sprintf(__('You are not the translator of this document. <a%s>Learn more</a>.','sitepress'), ' href="https://wpml.org/?page_id=52218"');
                                 }
                             }else{
                                 if($lang['code'] == $source_language_code){
@@ -445,7 +445,7 @@ if (isset($translations) && count($translations) == 1 && count(SitePress::get_or
                                 }else{
                                     $edit_link = '#';
                                     $img = 'edit_translation_disabled.png';
-                                    $edit_anchor = sprintf(__('You are not the translator of this document. <a%s>Learn more</a>.','sitepress'), ' href="http://wpml.org/?page_id=52218"');
+                                    $edit_anchor = sprintf(__('You are not the translator of this document. <a%s>Learn more</a>.','sitepress'), ' href="https://wpml.org/?page_id=52218"');
                                 }
                             }
                             break;
