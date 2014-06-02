@@ -1572,12 +1572,12 @@ button.normes:focus {
   outline: none;
 }
 
-button i.angle-down {
+button.normes i.angle-down {
   cursor: pointer;
   float: right
 }
 
-button i.angle-down:before{
+button.normes i.angle-down:before{
   display: inline-block;
   font-family: 'FontAwesome';
   font-style: normal;
