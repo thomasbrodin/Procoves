@@ -14,6 +14,7 @@
 		{% endfilter %}
 	</div>
 	<button class="submit-facets" onclick="FWP.refresh()">Soumettre</button>
+	<button class="reset-facets" onclick="FWP.reset()">Reinitialiser</button>
 </div>
 <div class="searchside ajax-hide gammes">
 	<h2><span class="redline"></span>
@@ -37,6 +38,7 @@
 			<div class="box-wrap">
 				<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse1">
 				{{__('Protection Risque Coupure')}}
+				<i class="angle-down"></i>
 				</button>
 				<div class="sub-collapse1 collapse">
 				{% filter shortcodes %}
@@ -47,6 +49,7 @@
 			<div class="box-wrap">
 				<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse2">
 				{{__('Protection Chaleur')}}
+				<i class="angle-down"></i>
 				</button>
 				<div class="sub-collapse2 collapse">
 				{% filter shortcodes %}
@@ -62,6 +65,7 @@
 			<div class="box-wrap">
 				<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse3">
 				{{__('Protection Risque Categorie III')}}
+				<i class="angle-down"></i>
 				</button>
 				<div class="sub-collapse3 collapse">
 				{% filter shortcodes %}
@@ -72,6 +76,7 @@
 			<div class="box-wrap">
 				<button type="button" class="btn normes" data-toggle="collapse" data-parent=".wrapper" data-target=".sub-collapse4">
 				{{__('Protection Norme Agroalimentaire')}}
+				<i class="angle-down"></i>
 				</button>
 				<div class="sub-collapse4 collapse">
 				{% filter shortcodes %}

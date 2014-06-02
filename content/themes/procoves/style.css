@@ -1425,14 +1425,10 @@ div.searchside input.sidebar.used{
 }
 
 .sticky {
-  opacity: 0;
+  top: 0;
   position: absolute;
   z-index: 0;
-}
-
-.redbutton{
   background: rgb(240,70,70);
-  padding:5px;
 }
 
 #navside .searchside {
@@ -1444,7 +1440,8 @@ div.searchside input.sidebar.used{
 
 .sticky a#back-to-top {
   color:#fff;
-  margin-right: 7px;
+  margin-left: 7px;
+  float: none
 }
 
 .sticky a#back-to-top:hover{
@@ -1573,6 +1570,23 @@ button.normes:focus {
   background-color: #000;
   color:#fff;
   outline: none;
+}
+
+button i.angle-down {
+  cursor: pointer;
+  float: right
+}
+
+button i.angle-down:before{
+  display: inline-block;
+  font-family: 'FontAwesome';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 0.75;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: "\f107";
 }
 
 .facetwp-checkbox.norme_unique {
