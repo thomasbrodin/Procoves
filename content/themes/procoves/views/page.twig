@@ -17,11 +17,12 @@
 			</div>
 		</div>
 		<div class="col-md-9 page-content" role="main">
-			<section id="main-parent">
-					
-					{{post.content}}
-				
-			</section>
+			{% if post.content %}
+				<section id="main-parent">
+						{{post.content}}
+				</section>
+			{% endif %}
+			
 			{% for subpage in subpages %}
 				<section id="{{subpage.post_name}}" data-anchor="{{subpage.post_name}}">
 					<h1>

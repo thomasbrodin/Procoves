@@ -6,31 +6,44 @@
 
         {% include 'partials/header.twig' %}
 		
-		<section id="home" role="main" class="content-wrapper">
-		    
-		    <!-- Slider-->
-		    <div id="SliderContainer">
-	            <div class="slider">
-	                <ul class="slides">                                    
-		                {% for image in images %}
-	    					<li>
-				          		<img src="{{TimberImage(image.url).src}}">
-				            	<div class="captionwrap">
-				            		<div class="container">
-				            			<p class="pull-right">{{image.caption}}</p>
-				            		</div>
-				            	<div>
-		  	    			</li>
-						{% endfor %}
-	            
-					</ul>
-				</div>
-				<div id="controlswrap">
-					<div class="container">
+		<section id="home" role="main" class="content-wrapper clearfix">
+	  		
+	  		{% if images|length > 1 %} 
+			    <!-- Slider-->
+			    <div id="SliderContainer">
+		            <div class="slider">
+		                <ul class="slides">                                    
+			                {% for image in images %}
+		    					<li>
+					          		<img src="{{TimberImage(image.url).src}}">
+					            	<div class="captionwrap">
+					            		<div class="container">
+					            			<p class="pull-right">{{image.caption}}</p>
+					            		</div>
+					            	</div>
+			  	    			</li>
+							{% endfor %}
+		            
+						</ul>
 					</div>
+					<div id="controlswrap">
+						<div class="container">
+						</div>
+					</div>
+	           		</div><!--/ #controls -->
 				</div>
-           		</div><!--/ #controls -->
-			</div>
+			{% else %}
+				<div class="img-seul">
+					{% for image in images %}
+			          	<img src="{{TimberImage(image.url).src}}">
+		            	<div class="captionwrap">
+		            		<div class="container">
+		            			<p class="pull-right">{{image.caption}}</p>
+		            		</div>
+		            	</div>
+					{% endfor %}
+				</div>
+			{% endif %}
 
 		    <!-- Marketing messaging  -->
 			<div class="jumbotron">
@@ -45,25 +58,22 @@
 					<div class="col-md-4">
 						<h2><span class="redline"></span>
 							<a href="/entreprise/">{{concep.post_title}}</a></h2>
-						<p>{{concep.get_content}}</p>		 
+					
 					</div><!-- /.col-lg-4 -->
 					<div class="col-md-4">
 						<h2><span class="redline"></span>
 							<a href="/entreprise/">{{fab.post_title}}</a></h2>
-						<p>{{fab.get_content}}</p>	 
+						
 					</div><!-- /.col-lg-4 -->
 					<div class="col-md-4">
 						<h2><span class="redline"></span>
 							<a href="/entreprise/">{{preco.post_title}}</a></h2>
-						<p>{{preco.get_content}}</p>
+						
 					</div><!-- /.col-lg-4 -->
 				</div><!-- /.row -->
 			</div>
 
-			<div id="vedette">
-				{% include 'partials/featured-home.twig' %}
-			</div>
-
+			
 		</section>
 
         {% include 'partials/footer.twig' %}
