@@ -52,12 +52,19 @@
             <ul class="lang-switch">
               {% for lang in languages %} 
                 {% if lang.active %}      
-                  <li class="lang-id"><a href="{{lang.url}}">{{lang.native_name}}</a>
+                  <li class="lang-id">
+                    <a href="{{lang.url}}">{{lang.native_name}}
+                      <span class="pull-right"><img src="{{lang.country_flag_url}}"></span>
+                    </a>
                     <i data-toggle="collapse" data-target="#lang-list" class="angle-down"></i>
                       <ul id="lang-list" class="collapse">
                           {% for lang in languages %} 
                             {% if lang.active == 0 and lang.missing == 0 %}    
-                              <li><a href="{{lang.url}}">{{lang.native_name}}</a></li>
+                              <li>
+                                <a href="{{lang.url}}">{{lang.native_name}}{{lang.country_flag_url}}
+                                  <span class="pull-right"><img src="{{lang.country_flag_url}}"></span>
+                                </a>
+                              </li>
                             {% endif %}
                           {% endfor %}
                       </ul>
