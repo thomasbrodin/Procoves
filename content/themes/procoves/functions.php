@@ -22,6 +22,8 @@
 	add_action('wp_enqueue_scripts', 'load_scripts');	
 	add_action('wp_enqueue_scripts', 'load_styles');
 
+	add_editor_style('editor-style.css');
+
 	add_action( 'widgets_init', 'hex_widgets_init' );
 
 	add_action('init', 'removeHeadLinks');
