@@ -130,6 +130,9 @@
   #SliderContainer .captionwrap p {
     font-size: 2em;
   }
+  .img-seul .captionwrap {
+    top: 25%;
+  }
   .img-seul .captionwrap p {
     font-size: 2em;
   }

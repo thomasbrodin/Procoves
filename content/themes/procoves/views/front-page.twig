@@ -29,13 +29,11 @@
 				
 				</div>
 			{% else %}
-				<div class="img-seul">
+				<div class="container img-seul">
 					{% for image in images %}
 			          	<img src="{{TimberImage(image.url).src}}">
-		            	<div class="captionwrap">
-		            		<div class="container">
-		            			<p class="pull-right">{{image.caption}}</p>
-		            		</div>
+		            	<div class="captionwrap container">
+		            		<p class="pull-right">{{image.caption}}</p>		            	
 		            	</div>
 					{% endfor %}
 				</div>

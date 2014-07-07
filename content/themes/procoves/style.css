@@ -524,8 +524,7 @@ html[xmlns] .slides {display: block;}
 }
 .img-seul .captionwrap {
   position: absolute;
-  top: 25.5%;
-  width: 100%;
+  top: 13%;
   z-index: 3;
 }
 .img-seul .captionwrap p {
@@ -536,6 +535,7 @@ html[xmlns] .slides {display: block;}
   padding: 8px 10px;
   font-size: 1em;
   font-weight: 700;
+  margin-right: 2em
 }
 
 /* Direction Nav */
