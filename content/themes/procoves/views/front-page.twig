@@ -10,7 +10,7 @@
 	  		
 	  		{% if images|length > 1 %} 
 			    <!-- Slider-->
-			    <div id="SliderContainer">
+			    <div id="SliderContainer" class="container">
 		            <div class="slider">
 		                <ul class="slides">                                    
 			                {% for image in images %}
@@ -26,11 +26,7 @@
 		            
 						</ul>
 					</div>
-					<div id="controlswrap">
-						<div class="container">
-						</div>
-					</div>
-	           		</div><!--/ #controls -->
+				
 				</div>
 			{% else %}
 				<div class="img-seul">
@@ -46,8 +42,8 @@
 			{% endif %}
 
 		    <!-- Marketing messaging  -->
-			<div class="jumbotron">
-				<div class="container">
+			<div class="container">
+				<div class="jumbotron clearfix">
 					<h2>{{site.description}}</h2>
 					<span class="pull-right"><img src="{{logo_pro_blanc}}"></span>
 				</div>
@@ -55,17 +51,17 @@
 
 		    <div class="container marketing">
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-4 col-xs-4">
 						<h2><span class="redline"></span>
 							<a href="/entreprise/">{{concep.post_title}}</a></h2>
 					
 					</div><!-- /.col-lg-4 -->
-					<div class="col-md-4">
+					<div class="col-md-4 col-xs-4">
 						<h2><span class="redline"></span>
 							<a href="/entreprise/">{{fab.post_title}}</a></h2>
 						
 					</div><!-- /.col-lg-4 -->
-					<div class="col-md-4">
+					<div class="col-md-4 col-xs-4">
 						<h2><span class="redline"></span>
 							<a href="/entreprise/">{{preco.post_title}}</a></h2>
 						

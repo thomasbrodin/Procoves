@@ -5,6 +5,8 @@
 
   header {
     padding-top: 10px;
+  }
+  #access {
     padding-bottom: 12px
   }
   header .navbar {
@@ -47,16 +49,16 @@
     padding:10px 0;
   }
   section#home {
-    padding-top: 110px;
+    padding-top: 109px;
   }
   section#content {
     padding-top: 215px;
   }
   .jumbotron {
-    padding: 15px 0;
+    padding: 7px 0;
   }
   .jumbotron h2{
-    font-size: 18px;
+    font-size: 16px;
     margin: 12px 0 20px;
     letter-spacing: 0.02em;
   }
@@ -69,6 +71,10 @@
   }
   .marketing{
     margin:12px auto 40px
+  }
+  .marketing h2 {
+    font-size:18px;
+    padding:0 30px 7px 0;
   }
   .container>.navbar-collapse {
     margin-left: 50px;
@@ -127,9 +133,6 @@
   .img-seul .captionwrap p {
     font-size: 2em;
   }
-  #controlswrap {
-    top: 8%;
-  }
   .flex-direction-nav a  { 
     width:30px;
     height:30px;
@@ -137,9 +140,8 @@
   .flex-direction-nav a:before {
     font-size: 29px
   }
-  .flex-direction-nav .flex-next{
-   margin: -30px 0 0;
-  }
+  .flex-direction-nav .flex-prev { left: -40px; }
+  .flex-direction-nav .flex-next { right: -40px;}
   .carousel-caption p {
     margin-bottom: 20px;
     font-size: 21px;
@@ -204,21 +206,16 @@
    .sticky{
     width:213px;
   }
-  #controlswrap {
-    top: 21%;
-  }
 }
 @media (min-width: 1200px) {
-  .flex-direction-nav .flex-prev { 
-    margin-right: 50px;
-  }
-  .flex-direction-nav .flex-next{
-   margin: -40px 0 0;
-  }
+
   .flex-direction-nav a  { 
+    margin: -20px 0 0; 
     width:40px;
     height:40px;
   }
+  .flex-direction-nav .flex-prev { left: -50px; }
+  .flex-direction-nav .flex-next { right: -50px;}
   .flex-direction-nav a:before {
     font-size: 39px
   }
@@ -254,6 +251,9 @@
   }
    .prod-desc-panel ul.normes li a.tax_img img{
     margin-top: -12px;
+  }
+  .jumbotron h2{
+    font-size: 18px;
   }
 }
 

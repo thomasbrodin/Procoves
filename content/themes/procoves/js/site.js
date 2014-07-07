@@ -111,7 +111,7 @@
 			animation: "slide",
 			animationLoop: false,
 			controlNav: false,
-			controlsContainer: "#controlswrap .container",
+			directionNav: true,
 			keyboard: true,
 		});
 		$('.thumbslider').flexslider({

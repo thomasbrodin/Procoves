@@ -23,7 +23,7 @@ body {
 }
 
 section#home{
-  padding-top: 90px
+  padding-top: 88px
 }
 
 section#content {
@@ -256,9 +256,6 @@ header {
 	background-color: #fff;
   border-top:5px solid;
   border-color:rgb(240,70,70);
-  box-shadow: 0px 5px 5px #333;
-  -webkit-box-shadow: 0px 5px 5px #333;
-  -moz-box-shadow: 0px 5px 5px #333;
 }
 header .container {
   padding-right: 0;
@@ -374,7 +371,10 @@ input.sidebar-top:focus{
 }
 
 nav#access {
-  margin-bottom: 0
+  margin-bottom: 0;
+  -webkit-box-shadow: 0 4px 3px -3px rgba(0, 0, 0, 0.7), inset 0 0 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 4px 3px -3px rgba(0, 0, 0, 0.7), inset 0 0 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 3px -3px rgba(0, 0, 0, 0.7), inset 0 0 0 rgba(0, 0, 0, 0.1);
 }
 .navbar-collapse {
   clear: both;
@@ -513,7 +513,6 @@ html[xmlns] .slides {display: block;}
 #controlswrap {
   position: absolute;
   top: 5.5%;
-  width: 100%;
   z-index: 999;
 }
 
@@ -548,22 +547,27 @@ html[xmlns] .slides {display: block;}
   display: block; 
   width: 25px; 
   height: 25px; 
-  color: #fff;
-  background: #333; 
+  margin: -13px 0 0; 
+  position: absolute; 
+  top: 50%; 
   z-index: 10; 
   overflow: hidden; 
-  opacity: 1; 
+  opacity: 0; 
   cursor: pointer; 
-  text-shadow: 1px 1px 0 rgba(255,255,255,0.3); 
-  border:none;
-  text-align: center;
+  color: rgba(250,250,250,0.7); 
+  background:#333;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.3);
+   -webkit-transition: all .3s ease; 
+   -moz-transition: all .3s ease; 
+   transition: all .3s ease; 
+   border:none;
+   text-align: center
 }
-.flex-direction-nav .flex-prev { float: right; margin-right: 35px;}
-.flex-direction-nav .flex-next { float: right; clear:right; margin: -25px 0 0;}
-
-.flex-direction-nav a:hover{
-  background: #555;
-}
+.flex-direction-nav .flex-prev { left: 10px; }
+.flex-direction-nav .flex-next { right: 10px;}
+.slider:hover .flex-prev { opacity: 0.7; }
+.slider:hover .flex-next { opacity: 0.7; }
+.slider:hover .flex-next:hover, .slider:hover .flex-prev:hover { opacity: 1; }
 .flex-direction-nav a:before  { 
   display: inline-block;
   font-style: normal;
@@ -594,13 +598,14 @@ html[xmlns] .slides {display: block;}
   display: inline-block;
   background: #333; 
   padding:8px 10px;
-  font-size: 18px;
+  font-size: 1em;
   font-weight: 700;
+  margin-right: 2em;
 }
 
 /* HEADLINE */
 .jumbotron {
-  padding: 5px 0;
+  padding: 10px 5px;
   margin-bottom: 0;
   color: #fff;
   background-color: rgb(240,70,70);
@@ -615,7 +620,7 @@ html[xmlns] .slides {display: block;}
   font-family:'L Futura W01';
   padding-top: 5px;
   float: left;
-  font-size: 9px;
+  font-size: 10px;
   margin:0;
 }
 
@@ -650,11 +655,11 @@ html[xmlns] .slides {display: block;}
 }
 
 .marketing h2 {
-  font-size:18px;
+  font-size:11px;
   text-transform: uppercase;
   font-family:'L Futura W01';
   border-bottom: 1px solid #ccc;
-  padding:0 30px 7px 0;
+  padding: 0 12px 17px 0;
   display: inline-block;
   color:#333;
   line-height: 1.35;
