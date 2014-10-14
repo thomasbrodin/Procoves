@@ -45,6 +45,7 @@
 	$context['preco'] = Timber::get_post($childs[2]->ID);
 	
 	$context['images'] = get_field('home_slide');
+	$context['accroche'] = get_field('accroche');
 	
 	Timber::render('front-page.twig', $context);
 
