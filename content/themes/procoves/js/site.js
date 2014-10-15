@@ -110,7 +110,7 @@
 			slideshow: true,
 			animation: "slide",
 			animationLoop: false,
-			animationSpeed: 3000,
+			slideshowSpeed: 3000,
 			controlNav: false,
 			directionNav: true,
 			keyboard: true,
