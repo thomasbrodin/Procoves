@@ -107,9 +107,10 @@
 	// Slider
 	$(window).load(function() {
 		$('.slider').flexslider({
-			slideshow: false,
+			slideshow: true,
 			animation: "slide",
 			animationLoop: false,
+			animationSpeed: 3000,
 			controlNav: false,
 			directionNav: true,
 			keyboard: true,
