@@ -30,35 +30,35 @@ if ( is_singular( 'produits' ) ) {
 
 $context['fiche'] = get_field('fiche_tech');
 
-$post_id = get_the_ID();
-$term_order = array('orderby' => 'name', 'order' => 'DESC', 'fields' => 'all');
+// $post_id = get_the_ID();
+// $term_order = array('orderby' => 'name', 'order' => 'DESC', 'fields' => 'all');
 
-$terms_gammes = wp_get_post_terms($post_id, 'gammes', $term_order );
-$context['taxs'] = $terms_gammes;
-$terms_gammes_values = array_map(function($item) {
-                return $item->slug;
-            }, $terms_gammes);
-$terms_gammes_slugs = implode('+', $terms_gammes_values);
+// $terms_gammes = wp_get_post_terms($post_id, 'gammes', $term_order );
+// $context['taxs'] = $terms_gammes;
+// $terms_gammes_values = array_map(function($item) {
+//                 return $item->slug;
+//             }, $terms_gammes);
+// $terms_gammes_slugs = implode('+', $terms_gammes_values);
 
-$terms_normes = wp_get_post_terms($post_id, 'normes', $term_order );
-$terms_normes_values = array_map(function($item) {
-                return $item->slug;
-            }, $terms_normes);
-$terms_normes_slugs = implode('+', $terms_normes_values);
+// $terms_normes = wp_get_post_terms($post_id, 'normes', $term_order );
+// $terms_normes_values = array_map(function($item) {
+//                 return $item->slug;
+//             }, $terms_normes);
+// $terms_normes_slugs = implode('+', $terms_normes_values);
 
-$args = array(
-    'post_type' => 'produits', 
-    'post_status' => 'publish',
-    'posts_per_page' => 4,
-    'orderby' => 'menu_order',
-    'order'         => 'DESC',
-    'suppress_filters' => false,
-    'post__not_in' => array($post_id),
-    'gammes' => $terms_gammes_slugs,
-    'normes' => $terms_normes_slugs
-);
+// $args = array(
+//     'post_type' => 'produits', 
+//     'post_status' => 'publish',
+//     'posts_per_page' => 4,
+//     'orderby' => 'menu_order',
+//     'order'         => 'DESC',
+//     'suppress_filters' => false,
+//     'post__not_in' => array($post_id),
+//     'gammes' => $terms_gammes_slugs,
+//     'normes' => $terms_normes_slugs
+// );
 
-$context['similaires'] = Timber::get_posts($args);
+// $context['similaires'] = Timber::get_posts($args);
 
 $context['actu'] = Timber::get_post('category_name=a-la-une');
 $context['email'] = get_field('email', 'option');
