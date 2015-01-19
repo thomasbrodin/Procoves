@@ -1,3 +1,169 @@
+### 2.4.11
+- **[Fix]** Fixed an issue that prevented post attribution when using explicit IDs
+- **[Fix]** Set proper flags when all search terms have been invalidated
+- **[Fix]** PHP Warning cleanup with Dashboard Widget
+- **[Improvement]** Further optimization of results pool reduction when exclusions are in place
+- **[Update]** Updated translation source files
+- **[Change]** `searchwp_term_in` filter now has a 3rd parameter with the original (e.g. unstemmed when stemming is enabled) term
+
+### 2.4.10
+- **[Fix]** PHP 5.2 compatibility with PDF parser fallback
+- **[Fix]** Fixed an issue where some search strings were not properly ignored
+- **[Fix]** Proper clearing of meta boxes on stats page at certain resolutions
+
+### 2.4.9
+- **[Fix]** Fixed an issue where limiting Media results to All Documents did not apply the expected limit
+- **[Fix]** Fixed an issue where AND logic refinement may cause zero results to display depending on Title weight
+- **[Update]** Updated PHP PDF parser (requires PHP 5.3+, will still fall back to less reliable legacy parser if PHP 5.2)
+- **[Change]** Return WP_Error when an invalid search engine name is used
+
+
+### 2.4.8
+- **[Fix]** Fixed an issue where proper weights may not have been properly retained throughout the entire search algorithm, resulting in zero results
+- **[Fix]** Default search results now take into account an offset (if one was set)
+- **[New]** New filter `searchwp_query_offset` allowing for customization of the offset of the default search engine
+
+
+### 2.4.7
+- **[Fix]** PHP Warning cleanup: removed deprecated usage of `mysql_get_server_info()`
+
+
+### 2.4.6
+- **[Fix]** Fixed an issue that prevented parsed PDF content from being indexed on the first pass
+- **[New]** Version numbers (SearchWP, WordPress, PHP, MySQL) are now passed along with support requests
+
+
+### 2.4.5.1
+- **[Fix]** PHP Warning cleanup for `in_array()` in `searchwp.php` on line 1588
+
+
+### 2.4.5
+- **[New]** Direct integration of support ticket creation within the WordPress admin
+- **[New]** New filter `searchwp_lightweight_settings` allowing for a speedier but degraded settings screen loading (e.g. not loading taxonomy terms)
+- **[New]** New filter `searchwp_dashboard_widget_cap` for more control over Dashboard Widget visibility (defaults to settings cap (which defaults to `manage_options`))
+- **[New]** Settings export/import facilitated by copying and pasting JSON of engine configuration(s)
+- **[Improvement]** Due to numerous issues with object caching, index validation hashes are stored as options instead of transients
+- **[Improvement]** Updated licensing system framework
+- **[Improvement]** Better handling of initial UI load on settings screen by obstructing UI until all bindings are properly in place
+- **[Change]** Switched to [Chartist](http://gionkunz.github.io/chartist-js/) for statistics graphs
+- **[Change]** Reinstated automatic theme conflict notices (filter conflicts continue to appear only when debugging is enabled)
+- **[Fix]** Search statistics for Today are more accurate
+- **[Fix]** Fixed an issue that prevented Shortcodes from being processed when using `searchwp_do_shortcode`
+- **[Fix]** Fixed an issue triggered by a Custom Post Type named `label` preventing proper SearchWP settings storage
+- **[Fix]** Fixed an issue that prevented Dashboard Widget transient storage if supplemental search names exceeded 17 characters
+
+
+### 2.4.4
+- **[Fix]** Fixed an issue where certain search terms were being double-stemmed
+
+
+### 2.4.3
+- **[Fix]** Fixed an issue where PDFs attributed to their post parent weren't showing up in search results
+
+
+### 2.4.2
+- **[Improvement]** Resolved query latency introduced in 2.4.1 concerning attribution
+
+
+### 2.4.1
+- **[Fix]** Fixed an issue that prevented parent attribution from working properly in certain cases
+
+
+### 2.4
+- **[New]** SearchWP will now detect whether you're using HTTP Basic Authentication
+- **[New]** New Filter: `searchwp_basic_auth_creds` allowing developers to define HTTP Basic Authentication credentials
+- **[New]** New Filter: `searchwp_query_select_inject` allowing developers the ability to inject their own statements into the main search query, allowing for extensive customization of results display beyond keyword weights
+- **[New]** Search Statistics Dashboard Widget
+- **[New]** New Filter: `searchwp_dashboard_widget` allowing developers to disable the Search Statistics Dashboard Widget
+- **[New]** System Information panel (on the Advanced settings screen) to ease support
+- **[Improvement]** Better handling of `searchwp_indexer_enabled` when used at the same time as `searchwp_indexer_paused`
+- **[Improvement]** Better handling of accented characters
+- **[Fix]** Force transient deletion
+- **[Fix]** Fixed an issue where keyword stemming may have not been appropriately applied
+- **[Change]** Conflict notices are now only displayed when debugging is enabled
+
+
+### 2.3.3
+- **[Improvement]** Admin Bar entry now elaborates on why a post is not indexed (e.g. draft status if not filtered)
+- **[Improvement]** Admin Bar entry now more accurately calls out when a post is in the process of being indexed
+- **[Fix]** Fixed an issue that may have prevented strings of only digits from being properly indexed
+
+
+### 2.3.2
+- **[Improvement]** Better capture of `SQL_BIG_SELECTS` errors by including a link to the fix in the Admin Bar
+- **[Improvement]** Better handling of character encoding when parsing PDFs
+- **[Fix]** Fixed an issue where posts excluded from the index were not properly listed on the exclusions page
+
+
+### 2.3.1
+- **[Fix]** Fixed a check for DOMDocument and cleaned up PHP warning about empty DOMDocument content
+- **[Fix]** Fixed an issue where saved Custom Field keys were not retrieved properly on the settings screen
+- **[Fix]** Fixed an issue where exclusion fields weren't treated with select2 when creating supplemental search engines
+- **[Change]** Loading the settings screen UI partial via AJAX is now opt-in
+ - **[New]** New Filter: `searchwp_lazy_settings` allowing developers to trigger a cachebusting version of the settings screen
+
+
+### 2.3
+- **[New]** Added UI feedback when the indexer has been automatically throttled due to excessive server load
+- **[New]** Deprecated `$searchwp` global in favor of new function `SWP()`
+- **[New]** You can now retrieve the specific weights that set the order for search results per-post and per-post-type-per-post (`SWP()->results_weights`)
+- **[New]** New Filter: `searchwp_endpoint` allowing developers to customize the endpoint used by the indexer for each pass (uses only the slug, the `site_url()` is automatically prepended)
+- **[New]** SearchWP will now index what it considers valuable HTML element attribute content (e.g. alt text)
+- **[New]** New Filter: `searchwp_indexer_tag_attributes` allowing developers to customize which elements and attributes are considered valuable
+- **[Improvement]** Significant performance increase of main search algorithm
+- **[Improvement]** Better UTF-8 support when tokenizing
+- **[Improvement]** Indexer now ensures it's not being throttled before jumpstarting
+- **[Improvement]** Reset `AUTO_INCREMENT` when the index is purged
+- **[Improvement]** Deprecated and removed explicit `indexed` meta flag in favor of utilizing the already present `last_index` meta flag
+- **[Fix]** Removed redundant `error_log` usage with debugging enabled
+- **[Fix]** Properly log searches called directly from search class
+- **[Fix]** Empty searches are no longer logged when performed via the API
+- **[Change]** Removed Remote Debugging as it no longer applies to support
+- **[Change]** Settings screen is now loaded via AJAX so as to get around excessive page caching in the WP admin by certain hosts
+- **[Change]** MyISAM is no longer explicitly used when creating custom database tables (uses your MySQL default instead)
+- **[Change]** Refined default common words
+
+
+### 2.2.3
+- **[Improvement]** Another revision to the indexer stall check
+- **[Improvement]** Updated translation source
+- **[New]** Added an admin notice if your log file exceeds 2MB
+
+
+### 2.2.2
+- **[Improvement]** Better indexer stall check
+- **[Improvement]** Better handling of search logs (moved from main class method to search class) to better accommodate 3rd party integrations
+
+
+### 2.2.1
+- **[Improvement]** Better handling of indexer stall check
+- **[Improvement]** Switched Admin Bar entry from 'Currently Being Indexed' to 'In index queue' for accuracy's sake
+- **[Improvement]** Better handling of delta updates prior to the initial index being built
+- **[Improvement]** Better implementation of `searchwp_exclusive_regex_matches` usage, matches are now extracted earlier resulting in more concise results
+- **[Fix]** Fixed an issue that prevented search queries from being logged when instantiating the search class directly
+- **[Fix]** Fixed an issue where manually edited PDF content would be overwritten by a subsequent delta index update after saving
+- **[Fix]** Fixed an issue that may have prevented the indexer from fully waking up when waking up the indexer
+- **[Fix]** Fixed a false positive when checking for WPML Integration
+- **[Fix]** Fixed an issue with Xpdf Integration not saving the extracted text
+
+
+### 2.2
+- **[New]** New class: `SearchWP_Stats` which will eventually house a number of utility methods for better statistics as development continues
+- **[New]** SearchWP will now detect if you're running a plugin that has an integration Extension available and tell you about it
+- **[New]** New Filter: `searchwp_omit_meta_key` allows developers to omit specific meta keys from being indexed during indexing
+- **[Improvement]** Hardened the indexer communication process, reducing server resource consumption during indexing
+- **[Improvement]** Better handling of regex whitelist matches that result with multi-word tokens (e.g. spaces within) NOTE: having multi-word matches is not recommended
+- **[Improvement]** Added `$engine` parameter to `searchwp_query_orderby` filter
+- **[Improvement]** Simplified the check for a stalled indexer
+- **[Improvement]** Multi-term regex whitelist matches will no longer be tokenized but indexed as a whole for better phrase-matching
+- **[Fix]** Fixed an issue where Heartbeat index time updates were not prefixed with "Last indexed"
+- **[Fix]** Fixed an issue where the debugger would not properly instantiate thereby preventing additions to the log file
+- **[Fix]** Fixed an issue where Heartbeat API-powered timestamp of last index was missing "Last Indexed" phrasing
+- **[Fix]** Fixed an issue where in some circumstances content blocks parsed from PDFs would not be properly separated, resulted in the last word of one section being lumped together with the first word of the next section
+- **[Fix]** Prevent over-preparation of terms when performing AND logic refinement
+- **[Fix]** Check for indexer being disabled when issuing delta updates
+
+
 ### 2.1.3
 - **[Improvement]** Better encoding and font support for PDF content extraction
 - **[Improvement]** Reduced memory footprint when not indexing PDFs

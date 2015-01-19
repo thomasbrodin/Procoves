@@ -1,6 +1,8 @@
 <?php
 
-if( !defined( 'ABSPATH' ) ) die();
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 /**
  * Class SearchWPUpgrade handles any installation or upgrade procedures that need to take place
@@ -151,7 +153,7 @@ class SearchWPUpgrade {
 				PRIMARY KEY (id),
 				KEY termindex (term),
   				KEY postidindex (post_id)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			) DEFAULT CHARSET=utf8";
 		dbDelta( $sql );
 
 		// terms table
@@ -165,7 +167,7 @@ class SearchWPUpgrade {
 				UNIQUE KEY termunique (term),
 				KEY termindex (term(2)),
   				KEY stemindex (stem(2))
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			) DEFAULT CHARSET=utf8";
 		dbDelta( $sql );
 
 		// custom field table
@@ -180,7 +182,7 @@ class SearchWPUpgrade {
 				KEY metakey (metakey),
 				KEY term (term),
 				KEY postidindex (post_id)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			) DEFAULT CHARSET=utf8";
 		dbDelta( $sql );
 
 		// taxonomy table
@@ -195,7 +197,7 @@ class SearchWPUpgrade {
 				KEY taxonomy (taxonomy),
 				KEY term (term),
 				KEY postidindex (post_id)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			) DEFAULT CHARSET=utf8";
 		dbDelta( $sql );
 
 		// log table
@@ -212,7 +214,7 @@ class SearchWPUpgrade {
 	            KEY eventindex (event),
 	            KEY queryindex (query),
 	            KEY engineindex (engine)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			) DEFAULT CHARSET=utf8";
 		dbDelta( $sql );
 
 	}
@@ -245,7 +247,7 @@ class SearchWPUpgrade {
 				// make sure additional array keys are present and defined
 				foreach( $settings['engines'] as $engine_key => $engine_setting ) {
 					foreach( $settings['engines'][$engine_key] as $post_type => $post_type_settings ) {
-						if( is_array( $settings['engines'][$engine_key][$post_type] ) && ! is_array( $settings['engines'][$engine_key][$post_type]['options'] ) ) {
+						if( is_array( $settings['engines'][$engine_key][$post_type] ) && isset( $settings['engines'][$engine_key][$post_type]['options'] ) && ! is_array( $settings['engines'][$engine_key][$post_type]['options'] ) ) {
 							$settings['engines'][$engine_key][$post_type]['options'] = array(
 								'exclude' 		=> false,
 								'attribute_to' 	=> false,
@@ -434,13 +436,60 @@ class SearchWPUpgrade {
 			}
 		}
 
+		// add 'busy' option
+		if( version_compare( $this->last_version, '2.1.5', '<' ) ) {
+			searchwp_add_option( 'busy', false );
+			searchwp_add_option( 'doing_delta', false );
+		}
+
+		// force a wakeup
+		if( version_compare( $this->last_version, '2.2.1', '<' ) ) {
+			if( function_exists( 'searchwp_wake_up_indexer' ) ) {
+				searchwp_wake_up_indexer();
+			}
+		}
+
+		// add new 'waiting' flag, prep for possible new custom endpoint, clear out redundant post meta
+		if( version_compare( $this->last_version, '2.3', '<' ) ) {
+			searchwp_add_option( 'waiting', false );
+			searchwp_set_setting( 'endpoint', '' );
+
+			// now using last_index instead of indexed, we don't need separate records
+			$wpdb->delete( $wpdb->prefix . 'postmeta', array( 'meta_key' => '_' . SEARCHWP_PREFIX . 'indexed' ) );
+		}
+
+		if( version_compare( $this->last_version, '2.4.5', '<' ) ) {
+
+			// implement our settings backup
+			$live_settings = searchwp_get_option( 'settings' );
+			$settings_backups = array();
+			$settings_backups[ current_time( 'timestamp' ) ] = $live_settings;
+			searchwp_add_option( 'settings_backup', $settings_backups );
+
+			// there was a bug triggered by a custom post type name of 'label' that caused issues
+			// so we need to update all of the supplemental engine label keys to searchwp_engine_label
+			// which will not trigger the issue because it is 21 characters in length and WordPress
+			// requires post type names to be 20 characters or less
+			if ( isset( $live_settings['engines'] ) ) {
+				foreach( $live_settings['engines'] as $live_settings_engine_key => $live_settings_engine_values ) {
+					if ( isset( $live_settings_engine_values['label'] ) ) {
+						$engine_label = $live_settings_engine_values['label'];
+						unset( $live_settings['engines'][ $live_settings_engine_key ]['label'] );
+						$live_settings['engines'][ $live_settings_engine_key ]['searchwp_engine_label'] = $engine_label;
+					}
+				}
+			}
+			searchwp_update_option( 'settings', $live_settings );
+		}
+
 	}
 
 }
 
 
 function searchwp_generate_settings( $engines ) {
-	global $searchwp;
+
+	$searchwp = SWP();
 
 	// grab this early because they're going to be nested
 	$dismissed_filter_nags = searchwp_get_option( 'dismissed' );
@@ -498,6 +547,7 @@ function searchwp_generate_settings( $engines ) {
 
 	// save the new options
 	searchwp_add_option( 'settings', $new_settings );
+	searchwp_add_option( 'settings_backup', array() );
 	searchwp_add_option( 'indexer', $indexer_settings );
 	searchwp_add_option( 'purge_queue', searchwp_get_option( 'purgeQueue' ) );
 
