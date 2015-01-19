@@ -50,6 +50,7 @@
   }
   section#home {
     padding-top: 109px;
+    padding-bottom: 109px;
   }
   section#content {
     padding-top: 215px;
@@ -115,17 +116,22 @@
     width: 97px;
     margin-left: 15px;
   }
+  #access .indicator div.left1359, 
+   #access .indicator div.left1857 {
+    width: 94px;
+    margin-left: 141px;
+  }
   #access .indicator div.left122 {
     width: 70px;
-    margin-left: 141px;
+    margin-left: 265px;
   }
   #access .indicator div.left123 {
     width: 85px;
-    margin-left: 242px;
+    margin-left: 366px;
   }
   #access .indicator div.left124 {
     width: 67px;
-    margin-left: 356px;
+    margin-left: 480px;
   }
   #SliderContainer .captionwrap p {
     font-size: 2em;
