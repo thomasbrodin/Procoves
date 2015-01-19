@@ -1,15 +1,20 @@
 <footer id="footer">
 	<div class="container">
-		<div class="bottom-nav">
-		<p>
-			{% for item in footer.get_items %}
-               <a href="{{item.get_path}}">{{item.title}}</a>{% if loop.last %}{% else %}&nbsp;&nbsp;|&nbsp;&nbsp;{% endif %}
-            {% endfor %}
-        </p>
-        <p>&copy;&nbsp;{{"now"|date('Y')}}&nbsp;&middot;&nbsp;PROCOVES INDUSTRIE</p>
-		</div>
-        <div class="iso">
-            <span><img src="{{logo_afaq}}"></span>
+		<div class="row">
+			<div class="col-md-5 text">
+			<p>
+				{% for item in footer.get_items %}
+	               <a href="{{item.get_path}}">{{item.title}}</a>{% if loop.last %}{% else %}&nbsp;&nbsp;|&nbsp;&nbsp;{% endif %}
+	            {% endfor %}
+	        </p>
+	        <p>&copy;&nbsp;{{"now"|date('Y')}}&nbsp;&middot;&nbsp;PROCOVES INDUSTRIE</p>
+			</div>
+			<div class="col-md-2 icon">
+				<span><img src="{{logo_pro_blanc}}"></span>
+			</div>
+	        <div class="col-md-5 icon">
+	            <span class="iso"><img src="{{logo_afaq}}"></span>
+			</div>
 		</div>
 	</div>
 </footer>

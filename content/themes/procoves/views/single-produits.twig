@@ -116,7 +116,12 @@
 		</div><!-- /.container -->
 
 		<div id="vedette">
-			{% include 'partials/featured-single.twig' %}
+			{% if similaires %}
+				{% include 'partials/featured-single.twig' %}
+				<!-- similaires -->
+			{% endif %}
+			{% include 'partials/actu-tease.twig' %}
+			<!-- a la une  -->
 		</div>
 
 	</section>

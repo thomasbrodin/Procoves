@@ -1,24 +1,22 @@
-{% if similaires %}
-	<div id="thumbs-wrap">
-		<h2><span class="redline"></span>{{__('Produits Similaires', 'procoves')}}</h2>
-		<div class="container thumbs">
-		      	<div class="row">
-		      		{% if similaires %}
-			      		{% for produit in similaires %}
-					      	<div class="col-md-3 col-sm-6 related-thumb" onclick="window.location='{{produit.link}}'">	  
-					      			<div class="caption_overlay">
-										<h4>{{produit.title}}</h4>	
-									</div>
-					      			{% if produit.img_prod %}
-						      			<img src="{{TimberImage(produit.img_prod).get_src|resize(500,500)}}">
-									{% else %}
-										<img src="{{theme.uri}}/img/blank.jpg">
-									{% endif %}		  		
-					    	</div>
-					    {% endfor %}
-				    {% endif %}
-				</div>
-	    </div>
-	</div>	
-{% endif %}
-{% include 'partials/actu-tease.twig' %}
+
+<div id="thumbs-wrap">
+	<h2><span class="redline"></span>{{__('Produits Similaires', 'procoves')}}</h2>
+	<div class="container thumbs">
+	      	<div class="row">
+	      		{% if similaires %}
+		      		{% for produit in similaires %}
+				      	<div class="col-md-3 col-sm-6 related-thumb" onclick="window.location='{{produit.link}}'">	  
+				      			<div class="caption_overlay">
+									<h4>{{produit.title}}</h4>	
+								</div>
+				      			{% if produit.img_prod %}
+					      			<img src="{{TimberImage(produit.img_prod).get_src|resize(500,500)}}">
+								{% else %}
+									<img src="{{theme.uri}}/img/blank.jpg">
+								{% endif %}		  		
+				    	</div>
+				    {% endfor %}
+			    {% endif %}
+			</div>
+    </div>
+</div>	
