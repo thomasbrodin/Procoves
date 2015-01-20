@@ -86,7 +86,18 @@
   .marketing h2 {
     font-size:18px;
     padding:0 30px 7px 0;
+    display: inline-block;
   }
+   .marketing h2.right {
+    float:right;
+    padding:0 0 7px 30px;
+   }
+  .marketing .centered {
+   text-align: center
+  }
+   .marketing .centered h2 {
+    padding:0 15px 7px 15px;
+   }
   .container>.navbar-collapse {
     margin-left: 50px;
     position: absolute;

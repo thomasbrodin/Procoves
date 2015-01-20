@@ -651,12 +651,12 @@ html[xmlns] .slides {display: block;}
 }
 
 .marketing h2 {
-  font-size:11px;
+  font-size:14px;
   text-transform: uppercase;
   font-family:'L Futura W01';
   border-bottom: 1px solid #ccc;
-  padding: 0 0 17px 0;
-  display: inline-block;
+  padding: 0 0 14px 0;
+  display: block;
   color:#333;
   line-height: 1.35;
 }
