@@ -37,12 +37,12 @@
 	$context['email'] = get_field('email', 'options');
 	$context['adresse'] = get_field('adresse', 'options');
 
-	// $frontID = get_option('page_on_front');
-	// $childs = get_pages( array( 'child_of' => $frontID,'sort_column' => 'menu_order') );
+	$frontID = get_option('page_on_front');
+	$childs = get_pages( array( 'child_of' => $frontID,'sort_column' => 'menu_order') );
 
-	// $context['concep'] = Timber::get_post($childs[0]->ID);
-	// $context['fab'] = Timber::get_post($childs[1]->ID);
-	// $context['preco'] = Timber::get_post($childs[2]->ID);
+	$context['concep'] = Timber::get_post($childs[0]->ID);
+	$context['fab'] = Timber::get_post($childs[1]->ID);
+	$context['preco'] = Timber::get_post($childs[2]->ID);
 	
 	$context['images'] = get_field('home_slide');
 	// $context['accroche'] = get_field('accroche');
