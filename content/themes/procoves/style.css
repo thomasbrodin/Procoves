@@ -1180,7 +1180,7 @@ article#produit-content {
 }
 
 .prod-desc-heading {
-  margin-bottom: 15px
+  margin-bottom: 20px
 }
 
 h2.produit-title{
@@ -1209,29 +1209,26 @@ h2.produit-title{
   max-width: 90px;
 }
 
-.prod-desc-panel {
-  width:70%;
-}
 .prod-desc-panel h4{
   text-transform: uppercase;
   font-weight: 700;
   color: #000;
-  margin-top: 14px;
+  margin-top: 12px;
   font-size: 16px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   clear: both;
 }
 
 .prod-desc-panel ul {
   padding: 0;
-  margin-bottom: 10px
+  margin:0
 }
 
 .prod-desc-panel ul li{
   display: inline-block;
   text-transform: uppercase;
   font-size: 14px;
-  padding: 0 7px 5px 0;
+  padding: 0 5px 4px 0;
 }
 .prod-desc-panel ul.normes {
   margin-top:15px;
@@ -1286,16 +1283,16 @@ h2.produit-title{
 }
 
 .produit-desc .infos {
-  position: absolute;
-  right: 25px;
-  bottom: 0;
+  position: relative;
+  margin-top: 15px
 }
 
 
-.produit-desc .infos span i{
+.produit-desc .infos i{
   border:1px solid #ccc;
   padding:6px 8px;
   display: inline-block;
+  margin-right:8px;
 }
 
 .infos .info:before{
@@ -1336,6 +1333,9 @@ h2.produit-title{
   font-weight: 700;
 }
 
+.blog #navside a {
+  line-height: 1.8
+}
 #navside ul {
   padding-left:0px;
 }
@@ -1809,7 +1809,8 @@ article .actu-body img{
   max-width:50%;
   display: block;
   float: left;
-  padding-right: 30px
+  padding-right: 30px;
+  max-height: 450px;
 }
 
 article.actu p.date {
