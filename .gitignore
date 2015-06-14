@@ -9,3 +9,5 @@ local-config.php
 /content/plugins/akismet
 
 /wp
+
+/wp-config.php
